@@ -33,7 +33,8 @@ export default function Login() {
       <div>
         <Link href="/">
           <a>비밀번호 재설정</a>
-        </Link> <br/>
+        </Link>{" "}
+        <br />
         <Link href="/">
           <a>회원 가입</a>
         </Link>
