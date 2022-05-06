@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import basicprofile from "./Img/basicprofile.png";
+import axios from "axios";
 
 export default function AddInfor() {
   //추가정보 입력 컴포넌트
