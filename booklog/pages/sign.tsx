@@ -7,10 +7,18 @@ export default function sign() {
   const changeSignPage = () => {
     setIsSign(true);
   }
+
+  const changeLoginPage = () => {
+    setIsSign(false);
+  };
   return (
     //로그인, 회원가입
     <>
-      {!isSign ? <Login onChange={changeSignPage} /> : <Signup /> }
+      {!isSign ? (
+        <Login onChange={changeSignPage} />
+      ) : (
+        <Signup onChange={changeLoginPage} />
+      )}
     </>
   );
 }

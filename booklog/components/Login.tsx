@@ -2,9 +2,59 @@ import Image from "next/image";
 import Card from "./UI/Card";
 import Link from "next/link";
 import { NextPage } from "next";
+import { useState } from "react";
+import axios from "axios";
+import Button from "./UI/Button";
 
+interface loginDataInput {
+  Email: string,
+  password: string
+}
 
 const Login: NextPage<{ onChange: () => void }> = (props) => {
+  const [userEmail, setuserEmail] = useState("");
+  const [userPassword, setPassword] = useState("");
+  const [saveuserEmail, setSaveuserEmail] = useState(false);
+
+  const userEmailChangeHandler = (e:any) => {
+    setuserEmail(e.target.value);
+  }
+
+  const passwordChangeHandler = (e:any) => {
+    setPassword(e.target.value);
+  }
+
+  const onSubmitHandler = (e : any) => {
+    e.preventDefault();
+    if(userEmail != "" && userPassword != ""){
+      const loginData = {
+        Email: userEmail,
+        password: userPassword,
+      };
+      loginHandler(loginData);
+    }else{
+      //경고메시지 생성
+    }
+  }
+
+  const loginHandler = (loginData: loginDataInput) => {
+    return;
+    axios.post('url',
+    {
+      userEmail: loginData.Email,
+      password: loginData.password
+    },
+    {
+      headers:{ 
+        'Content-type': 'application/json', 
+        'Accept': 'application/json' 
+      } 
+    })
+    .then((res) => {console.log(res.data)})
+    .catch((res) => {console.log('Error!')});
+  };
+
+
   return (
     <>
       <Card>
@@ -16,23 +66,25 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
               width="200px"
               height="50px"
             />
-            <form>
+            <form onSubmit={onSubmitHandler}>
               <input
                 className="text_box"
-                type="email"
+                type="userEmail"
                 placeholder="이메일 주소"
+                onChange={userEmailChangeHandler}
               ></input>
               <br />
               <input
                 className="text_box"
                 type="password"
                 placeholder="비밀번호"
+                onChange={passwordChangeHandler}
               ></input>
               <br />
-              <input id="email-save" type="checkbox"></input>
-              <label htmlFor="email-save">이메일 저장</label>
+              <input id="userEmail-save" type="checkbox"></input>
+              <label htmlFor="userEmail-save">이메일 저장</label>
               <br />
-              <button className="login_button">로그인</button>
+              <Button>로그인</Button>
             </form>
             <p>다른 서비스 계정으로 로그인</p>
             <button>구글 계정으로 로그인</button>
@@ -53,6 +105,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
       </Card>
       <style jsx>{`
         .form_div {
+          background-color: white;
           box-sizing: border-box;
           width: 100%;
           height: 100%;
@@ -62,15 +115,6 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
           width: 100%;
           height: 25px;
           margin-bottom: 10px;
-        }
-        .login_button {
-          background-color: #605EC9;
-          color: white;
-          border: 0px;
-          border-radius: 5px;
-          width : 100%;
-          height: 45px;
-          margin: 10px 0px;
         }
       `}</style>
     </>
