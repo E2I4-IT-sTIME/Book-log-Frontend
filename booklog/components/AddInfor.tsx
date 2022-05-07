@@ -61,15 +61,19 @@ export default function AddInfor(props: infor) {
   const okButtonHandler = async (e: any) => {
     // console.log(`사진 : ${attachment}`);
     try {
-      await axios.post("http://172.30.1.42/join", {
-        email: email,
-        password: password,
-        username: userName,
-        nickname: nickName,
-        birthday: birth,
-        job: job,
-        area: country,
-      });
+      await axios.post(
+        "http://172.30.1.42/join",
+        {
+          email: email,
+          password: password,
+          username: userName,
+          nickname: nickName,
+          birthday: birth,
+          job: job,
+          area: country,
+        },
+        { withCredentials: true }
+      );
     } catch (error) {
       console.log(error);
     }
