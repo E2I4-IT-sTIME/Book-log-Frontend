@@ -4,8 +4,14 @@ import Link from "next/link";
 import basicprofile from "./Img/basicprofile.png";
 import axios from "axios";
 
-export default function AddInfor() {
+interface infor {
+  email: string;
+  password: string;
+}
+
+export default function AddInfor(props: infor) {
   //추가정보 입력 컴포넌트
+  const { email, password } = props;
   const [profile, setProfile] = useState("");
   const [attachment, setAttachment] = useState(basicprofile);
   const [userName, setUserName] = useState("");
@@ -52,13 +58,30 @@ export default function AddInfor() {
     e.preventDefault();
   };
 
-  const okButtonHandler = (e: any) => {
-    console.log(`사진 : ${attachment}`);
+  const okButtonHandler = async (e: any) => {
+    // console.log(`사진 : ${attachment}`);
+    try {
+      await axios.post(
+        "http://172.30.1.42/join",
+        {
+          email: email,
+          password: password,
+          username: userName,
+          nickname: nickName,
+          birthday: birth,
+          job: job,
+          area: country,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
-      <h1>상제정보 입력</h1>
+      <h1>추가정보 입력</h1>
       <span>*은 필수 입력 정보입니다.</span>
       <form onSubmit={onSubmitHandler}>
         <div>

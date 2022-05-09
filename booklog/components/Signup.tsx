@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Card from "./UI/Card";
+
 import Link from "next/link";
 import { NextPage } from "next";
 import { useState } from "react";
@@ -25,6 +26,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         break;
       case "pwd":
         setPassword(value);
+        regularExpression(value);
         break;
       case "check":
         setCheckPwd(value);
@@ -61,8 +63,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
       setRegularStr("안전한 비밀번호입니다😉");
     }
   };
-
-
+  
   const signUpHandler = (e:any) => {
     e.preventDefault();
     return;
