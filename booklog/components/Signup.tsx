@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Card from "./UI/Card";
-
+import AddInfor from "./AddInfor";
 import Link from "next/link";
 import { NextPage } from "next";
 import { useState } from "react";
@@ -104,22 +104,6 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         </div>
         <form onSubmit={signUpHandler}>
           <div className="name_box">
-            <input
-              className="text_box_small"
-              type="text"
-              name="first"
-              placeholder="성"
-              value={first}
-              onChange={inputHandler}
-            ></input>
-            <input
-              className="text_box_small"
-              type="text"
-              name="last"
-              placeholder="이름"
-              value={last}
-              onChange={inputHandler}
-            ></input>
           </div>
           <div className="other_box">
             <input
