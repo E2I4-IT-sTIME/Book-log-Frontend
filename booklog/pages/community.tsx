@@ -1,3 +1,9 @@
+import BookCommunity from "../components/BookCommunity";
+
 export default function community() {
-  return <></>; //독서 커뮤니티
+  return (
+    <>
+      <BookCommunity />
+    </>
+  ); //독서 커뮤니티
 }
