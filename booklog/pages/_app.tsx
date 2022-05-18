@@ -10,7 +10,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <style global jsx>{`
         html,
         body,
-        div#__next {
+        div#__next,
+        div#__next > div {
           height: 100%;
           width: 100%;
           margin: 0px;

@@ -14,7 +14,6 @@ interface loginDataInput {
 const Login: NextPage<{ onChange: () => void }> = (props) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
-  const [saveuserEmail, setSaveuserEmail] = useState(false);
 
   const userEmailChangeHandler = (e:any) => {
     setuserEmail(e.target.value);
@@ -26,32 +25,30 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
 
   const onSubmitHandler = (e : any) => {
     e.preventDefault();
-    if(userEmail != "" && userPassword != ""){
-      const loginData = {
-        Email: userEmail,
-        password: userPassword,
-      };
-      loginHandler(loginData);
-    }else{
-      //경고메시지 생성
-    }
+    loginHandler();
   }
 
-  const loginHandler = (loginData: loginDataInput) => {
-    return;
-    axios.post('url',
-    {
-      userEmail: loginData.Email,
-      password: loginData.password
-    },
-    {
-      headers:{ 
-        'Content-type': 'application/json', 
-        'Accept': 'application/json' 
-      } 
-    })
-    .then((res) => {console.log(res.data)})
-    .catch((res) => {console.log('Error!')});
+  const loginHandler = () => {
+    axios
+      .post(
+        "http://3.39.152.5:8080/login",
+        {
+          username: userEmail,
+          password: userPassword,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log("Error!");
+      });
   };
 
 
@@ -84,7 +81,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
               <input id="userEmail-save" type="checkbox"></input>
               <label htmlFor="userEmail-save">이메일 저장</label>
               <br />
-              <Button>로그인</Button>
+              <button type="submit" className="loginBtn">로그인</button>
             </form>
             <p>다른 서비스 계정으로 로그인</p>
             <button>구글 계정으로 로그인</button>
@@ -115,6 +112,19 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
           width: 100%;
           height: 25px;
           margin-bottom: 10px;
+        }
+        .loginBtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #605ec9;
+          color: white;
+          border: 0px;
+          border-radius: 5px;
+          width: 100%;
+          height: 45px;
+          margin: 10px 0px;
+          cursor: pointer;
         }
       `}</style>
     </>
