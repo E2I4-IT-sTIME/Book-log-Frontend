@@ -65,21 +65,20 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
   };
   
   const signUpHandler = (e:any) => {
+    console.log("버튼누름");
     e.preventDefault();
-    return;
-    if(email != "" && password != ""){
       axios
         .post(
-          "url",
+          "http://3.39.152.5:8080/join",
           {
-            username: name,
-            userEmail: email,
-            userPwd: password,
+            username: "euna",
+            password: "1234",
+            nickname: "euna"
           },
           {
             headers: {
               "Content-type": "application/json",
-              Accept: "application/json",
+              "Accept" : "application/json",
             },
           }
         )
@@ -89,10 +88,6 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         .catch((res) => {
           console.log("Error!");
         });
-    }else{
-      // 경고메시지 출력
-    }
-    
   };
 
   return (
@@ -150,7 +145,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             <button>약관보기</button>
           </div>
 
-          <Button>가입하기</Button>
+          <button type="submit">가입하기</button>
           <div className="other_signup">
             <p>다른 서비스 계정으로 가입</p>
             <button>구글 계정으로 가입</button>

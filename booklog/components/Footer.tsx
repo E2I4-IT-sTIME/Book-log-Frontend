@@ -9,29 +9,28 @@ const Footer = () => {
           <div className="block">Blog</div>
           <div className="block">Resources</div>
         </div>
-        <div className="icon">
-          <img />
-          <img />
-          <img />
-          <img />
-        </div>
         <div>© Photo, Inc. 2021. We love our users!</div>
       </div>
       <style jsx>{`
         .footer {
-          height: 50px;
-          border-top: 1px solid black;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          height: 50px;
+          width: 100%;
+          border-top: 1px solid black;
+          position: absolute;
+          bottom: 0px;
+          padding: 10px 0;
         }
-        .block{
-          margin: 0px 10px;
+        .block {
+          margin: 0 10px;
         }
         .link {
           display: flex;
           flex-direction: row;
+          margin-bottom : 5px;
         }
       `}</style>
     </>

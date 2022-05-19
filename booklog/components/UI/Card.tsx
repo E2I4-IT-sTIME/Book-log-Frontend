@@ -10,7 +10,7 @@ export default function Card({ children }: LayoutProps) {
         .card {
           width: 500px;
           height: 600px;
-          margin : 20px auto;
+          margin : 0px auto;
           border: 1px solid black;
           display: flex;
           flex-direction: column;
