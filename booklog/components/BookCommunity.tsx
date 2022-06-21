@@ -18,6 +18,14 @@ export default function BookCommunity() {
   const [keywords, setKeywords] = useState("");
   const [rank, setRank] = useState(0);
 
+  const [modalImgSrc, setModalImg] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalAuthor, setModalAuthor] = useState("");
+  const [modalPublisher, setModalPublisher] = useState("");
+  const [modalDateTime, setModalDateTime] = useState("");
+  const [modalContent, setModalContent] = useState("");
+  const [modalUrl, setModalUrl] = useState("");
+
   const onInputHandler = (e: any) => {
     setKeywords(e.target.value);
   };
@@ -50,6 +58,16 @@ export default function BookCommunity() {
     }
   };
 
+  const modalOpen = (book: any) => {
+    setModalImg(book.thumbnail);
+    setModalTitle(book.title);
+    setModalAuthor(book.authors[0]);
+    setModalPublisher(book.publisher);
+    setModalDateTime(book.datetime);
+    setModalContent(book.contents);
+    setModalUrl(book.url);
+  };
+
   return (
     <>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -62,16 +80,18 @@ export default function BookCommunity() {
       </form>
       <div>
         {books.map((book: any) => (
-          <BookInfoPrev
-            rank={rank}
-            imgSrc={book.thumbnail}
-            bookTitle={book.title}
-            author={book.authors[0]}
-            publisher={book.publisher}
-            dateTime={book.datetime}
-            content={book.contents}
-            url={book.url}
-          ></BookInfoPrev>
+          <div key={book.isbn} onClick={() => modalOpen(book)}>
+            <BookInfoPrev
+              rank={rank}
+              imgSrc={book.thumbnail}
+              bookTitle={book.title}
+              author={book.authors[0]}
+              publisher={book.publisher}
+              dateTime={book.datetime}
+              content={book.contents}
+              url={book.url}
+            ></BookInfoPrev>
+          </div>
         ))}
       </div>
     </>

@@ -7,8 +7,8 @@ import axios from "axios";
 import Button from "./UI/Button";
 
 interface loginDataInput {
-  Email: string,
-  password: string
+  Email: string;
+  password: string;
 }
 
 const Login: NextPage<{ onChange: () => void }> = (props) => {
@@ -16,44 +16,49 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
   const [userPassword, setPassword] = useState("");
   const [saveuserEmail, setSaveuserEmail] = useState(false);
 
-  const userEmailChangeHandler = (e:any) => {
+  const userEmailChangeHandler = (e: any) => {
     setuserEmail(e.target.value);
-  }
+  };
 
-  const passwordChangeHandler = (e:any) => {
+  const passwordChangeHandler = (e: any) => {
     setPassword(e.target.value);
-  }
+  };
 
-  const onSubmitHandler = (e : any) => {
+  const onSubmitHandler = (e: any) => {
     e.preventDefault();
-    if(userEmail != "" && userPassword != ""){
+    if (userEmail != "" && userPassword != "") {
       const loginData = {
         Email: userEmail,
         password: userPassword,
       };
       loginHandler(loginData);
-    }else{
+    } else {
       //경고메시지 생성
     }
-  }
-
-  const loginHandler = (loginData: loginDataInput) => {
-    return;
-    axios.post('url',
-    {
-      userEmail: loginData.Email,
-      password: loginData.password
-    },
-    {
-      headers:{ 
-        'Content-type': 'application/json', 
-        'Accept': 'application/json' 
-      } 
-    })
-    .then((res) => {console.log(res.data)})
-    .catch((res) => {console.log('Error!')});
   };
 
+  const loginHandler = (loginData: loginDataInput) => {
+    axios
+      .post(
+        "url",
+        {
+          username: "euna",
+          password: "1234",
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((res) => {
+        console.log("Error!");
+      });
+  };
 
   return (
     <>
@@ -84,7 +89,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
               <input id="userEmail-save" type="checkbox"></input>
               <label htmlFor="userEmail-save">이메일 저장</label>
               <br />
-              <Button>로그인</Button>
+              <button onClick={() => loginHandler}>로그인</button>
             </form>
             <p>다른 서비스 계정으로 로그인</p>
             <button>구글 계정으로 로그인</button>

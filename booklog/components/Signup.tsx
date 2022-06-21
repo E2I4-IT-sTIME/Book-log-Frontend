@@ -37,21 +37,21 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
     }
   };
 
-   const checkPassword = () => {
-     if (password != checkPwd) {
-       setCheck(false);
-       setError("비밀번호가 잘못 입력되었습니다.");
-     } else if (password.length < 8) {
-       setCheck(false);
-       setError("비밀번호는 8자리 이상으로 입력해주세요.");
-     } else if (!regular) {
-       setCheck(false);
-       setError("비밀번호 입력 조건을 확인해주세요.");
-     } else {
-       setCheck(true);
-       setOk(true);
-     }
-   };
+  const checkPassword = () => {
+    if (password != checkPwd) {
+      setCheck(false);
+      setError("비밀번호가 잘못 입력되었습니다.");
+    } else if (password.length < 8) {
+      setCheck(false);
+      setError("비밀번호는 8자리 이상으로 입력해주세요.");
+    } else if (!regular) {
+      setCheck(false);
+      setError("비밀번호 입력 조건을 확인해주세요.");
+    } else {
+      setCheck(true);
+      setOk(true);
+    }
+  };
 
   const regularExpression = (typing: string) => {
     const reg = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/; //숫자, 영문자 포함 8자 이상
@@ -63,36 +63,35 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
       setRegularStr("안전한 비밀번호입니다😉");
     }
   };
-  
-  const signUpHandler = (e:any) => {
+
+  const signUpHandler = (e: any) => {
     e.preventDefault();
-    return;
-    if(email != "" && password != ""){
-      axios
-        .post(
-          "url",
-          {
-            username: name,
-            userEmail: email,
-            userPwd: password,
-          },
-          {
-            headers: {
-              "Content-type": "application/json",
-              Accept: "application/json",
-            },
-          }
-        )
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((res) => {
-          console.log("Error!");
-        });
-    }else{
-      // 경고메시지 출력
-    }
-    
+    // if(email != "" && password != ""){
+    //   // axios
+    //   //   .post(
+    //   //     "url",
+    //   //     {
+    //   //       username: name,
+    //   //       userEmail: email,
+    //   //       userPwd: password,
+    //   //     },
+    //   //     {
+    //   //       headers: {
+    //   //         "Content-type": "application/json",
+    //   //         Accept: "application/json",
+    //   //       },
+    //   //     }
+    //   //   )
+    //   //   .then((res) => {
+    //   //     console.log(res.data);
+    //   //   })
+    //   //   .catch((res) => {
+    //   //     console.log("Error!");
+    //   //   });
+
+    // }else{
+    //   // 경고메시지 출력
+    // }
   };
 
   return (
@@ -103,8 +102,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
           하나의 아이디로 북로그의 다양한 서비스를 이용해보세요
         </div>
         <form onSubmit={signUpHandler}>
-          <div className="name_box">
-          </div>
+          <div className="name_box"></div>
           <div className="other_box">
             <input
               className="text_box"
@@ -150,7 +148,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             <button>약관보기</button>
           </div>
 
-          <Button>가입하기</Button>
+          <button onClick={checkPassword}>가입하기</button>
           <div className="other_signup">
             <p>다른 서비스 계정으로 가입</p>
             <button>구글 계정으로 가입</button>
@@ -204,6 +202,5 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
     </>
   );
 };
-
 
 export default Signup;

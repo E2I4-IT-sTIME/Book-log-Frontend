@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useDisclosure } from "@chakra-ui/react";
 
 interface bookInfo {
   rank: number; //랭킹
@@ -16,6 +17,7 @@ export default function BookInfoPrev(props: bookInfo) {
   const { rank, imgSrc, bookTitle, author, publisher, dateTime, content, url } =
     props;
   const [title, setTitle] = useState(""); //책 제목 12글자마다 개행
+
   useEffect(() => {
     if (bookTitle.length > 22) {
       setTitle(`${bookTitle.substring(0, 22)}…`);
@@ -23,6 +25,7 @@ export default function BookInfoPrev(props: bookInfo) {
       setTitle(bookTitle);
     }
   }, [bookTitle]);
+
   return (
     <>
       <div className="container">
@@ -31,6 +34,7 @@ export default function BookInfoPrev(props: bookInfo) {
         <span className="title">{title}</span>
         <span className="author">{author}</span>
       </div>
+
       <style jsx>{`
         .container {
           display: flex;
