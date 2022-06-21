@@ -2,12 +2,12 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function Button({ children }: LayoutProps) {
+export default function Button({ children, ...props }: LayoutProps) {
   return (
     <>
-      <div className="button">{children}</div>
+      <button {...props}>{children}</button>
       <style jsx>{`
-        .button {
+        button {
           display: flex;
           justify-content: center;
           align-items: center;

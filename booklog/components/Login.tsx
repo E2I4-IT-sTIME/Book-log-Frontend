@@ -14,7 +14,6 @@ interface loginDataInput {
 const Login: NextPage<{ onChange: () => void }> = (props) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
-  const [saveuserEmail, setSaveuserEmail] = useState(false);
 
   const userEmailChangeHandler = (e: any) => {
     setuserEmail(e.target.value);
@@ -40,10 +39,10 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
   const loginHandler = (loginData: loginDataInput) => {
     axios
       .post(
-        "url",
+        "http://3.39.152.5:8080/login",
         {
-          username: "euna",
-          password: "1234",
+          username: "userEmail",
+          password: "userPassword",
         },
         {
           headers: {
@@ -53,7 +52,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         }
       )
       .then((res) => {
-        console.log(res.data);
+        console.log(res);
       })
       .catch((res) => {
         console.log("Error!");
@@ -120,6 +119,19 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
           width: 100%;
           height: 25px;
           margin-bottom: 10px;
+        }
+        .loginBtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #605ec9;
+          color: white;
+          border: 0px;
+          border-radius: 5px;
+          width: 100%;
+          height: 45px;
+          margin: 10px 0px;
+          cursor: pointer;
         }
       `}</style>
     </>

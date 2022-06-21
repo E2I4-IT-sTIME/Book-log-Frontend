@@ -63,35 +63,33 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
       setRegularStr("안전한 비밀번호입니다😉");
     }
   };
-
   const signUpHandler = (e: any) => {
     e.preventDefault();
-    // if(email != "" && password != ""){
-    //   // axios
-    //   //   .post(
-    //   //     "url",
-    //   //     {
-    //   //       username: name,
-    //   //       userEmail: email,
-    //   //       userPwd: password,
-    //   //     },
-    //   //     {
-    //   //       headers: {
-    //   //         "Content-type": "application/json",
-    //   //         Accept: "application/json",
-    //   //       },
-    //   //     }
-    //   //   )
-    //   //   .then((res) => {
-    //   //     console.log(res.data);
-    //   //   })
-    //   //   .catch((res) => {
-    //   //     console.log("Error!");
-    //   //   });
-
-    // }else{
-    //   // 경고메시지 출력
-    // }
+    if (email != "" && password != "") {
+      axios
+        .post(
+          "http://3.39.152.5:8080/join",
+          {
+            username: name,
+            userEmail: email,
+            userPwd: password,
+          },
+          {
+            headers: {
+              "Content-type": "application/json",
+              Accept: "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((res) => {
+          console.log("Error!");
+        });
+    } else {
+      // 경고메시지 출력
+    }
   };
 
   return (
@@ -147,7 +145,6 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             </label>
             <button>약관보기</button>
           </div>
-
           <button onClick={checkPassword}>가입하기</button>
           <div className="other_signup">
             <p>다른 서비스 계정으로 가입</p>

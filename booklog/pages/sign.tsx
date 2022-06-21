@@ -12,7 +12,6 @@ export default function sign() {
     setIsSign(false);
   };
   return (
-    //로그인, 회원가입
     <>
       {!isSign ? (
         <Login onChange={changeSignPage} />
