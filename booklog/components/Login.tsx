@@ -7,34 +7,42 @@ import axios from "axios";
 import Button from "./UI/Button";
 
 interface loginDataInput {
-  Email: string,
-  password: string
+  Email: string;
+  password: string;
 }
 
 const Login: NextPage<{ onChange: () => void }> = (props) => {
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
 
-  const userEmailChangeHandler = (e:any) => {
+  const userEmailChangeHandler = (e: any) => {
     setuserEmail(e.target.value);
-  }
+  };
 
-  const passwordChangeHandler = (e:any) => {
+  const passwordChangeHandler = (e: any) => {
     setPassword(e.target.value);
-  }
+  };
 
-  const onSubmitHandler = (e : any) => {
+  const onSubmitHandler = (e: any) => {
     e.preventDefault();
-    loginHandler();
-  }
+    if (userEmail != "" && userPassword != "") {
+      const loginData = {
+        Email: userEmail,
+        password: userPassword,
+      };
+      loginHandler(loginData);
+    } else {
+      //경고메시지 생성
+    }
+  };
 
-  const loginHandler = () => {
+  const loginHandler = (loginData: loginDataInput) => {
     axios
       .post(
         "http://3.39.152.5:8080/login",
         {
-          username: userEmail,
-          password: userPassword,
+          username: "userEmail",
+          password: "userPassword",
         },
         {
           headers: {
@@ -50,7 +58,6 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         console.log("Error!");
       });
   };
-
 
   return (
     <>
@@ -81,7 +88,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
               <input id="userEmail-save" type="checkbox"></input>
               <label htmlFor="userEmail-save">이메일 저장</label>
               <br />
-              <button type="submit" className="loginBtn">로그인</button>
+              <button onClick={() => loginHandler}>로그인</button>
             </form>
             <p>다른 서비스 계정으로 로그인</p>
             <button>구글 계정으로 로그인</button>

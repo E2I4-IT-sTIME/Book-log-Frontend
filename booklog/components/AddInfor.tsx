@@ -18,7 +18,7 @@ export default function AddInfor(props: infor) {
   const [nickName, setNickName] = useState("");
   const [birth, setBirth] = useState("");
   const [job, setJob] = useState("학생");
-  const [country, setCountry] = useState([]);
+  const [country, setCountry] = useState("임시");
 
   const onImageHandler = (e: any) => {
     const {
@@ -62,7 +62,7 @@ export default function AddInfor(props: infor) {
     // console.log(`사진 : ${attachment}`);
     try {
       await axios.post(
-        "http://172.30.1.42/join",
+        "http://3.39.152.5:8080/join",
         {
           email: email,
           password: password,
