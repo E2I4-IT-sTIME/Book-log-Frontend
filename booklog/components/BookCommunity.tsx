@@ -59,7 +59,8 @@ export default function BookCommunity() {
   };
 
   return (
-    <>
+    <div className="container">
+      <div className="explain">책 검색하고, 작성된 서평을 만나보세요!</div>
       <form onSubmit={(e) => e.preventDefault()}>
         <input
           type="text"
@@ -84,6 +85,20 @@ export default function BookCommunity() {
           </div>
         ))}
       </div>
-    </>
+      <style jsx>{`
+        .container {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          padding-top: 20px;
+          gap: 30px;
+        }
+        .explain {
+          color: white;
+          font-size: 1.5rem;
+          letter-spacing: -0.05rem;
+        }
+      `}</style>
+    </div>
   );
 }
