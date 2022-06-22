@@ -1,58 +1,66 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import title from "./Img/frog.png";
+import logo from "./Img/logo_white.png";
 
 export default function NavBar() {
   const router = useRouter();
   return (
     <nav>
-      {/* public 디렉토리 안에 있는 파일 그냥 파일명으로 사용가능 */}
-      <div>
-        <Link href="/">
-          <a className={router.pathname === "/" ? "active" : "non-active"}>
-            홈
-          </a>
-        </Link>
-        <Link href="/meeting">
-          <a
-            className={router.pathname === "/meeting" ? "active" : "non-active"}
-          >
-            독서모임
-          </a>
-        </Link>
-        <Link href="/community">
-          <a
-            className={
-              router.pathname === "/community" ? "active" : "non-active"
-            }
-          >
-            커뮤니티
-          </a>
-        </Link>
-        <Link href="/portfolio">
-          <a
-            className={
-              router.pathname === "/portfolio" ? "active" : "non-active"
-            }
-          >
-            포트폴리오
-          </a>
-        </Link>
-        <Link href="/sign">
-          <a className={router.pathname === "/sign" ? "active" : "non-active"}>
-            로그인
-          </a>
-        </Link>
+      <div className="container">
+        <div className="first-box">
+          <Link href="/">
+            <a className={router.pathname === "/" ? "active" : "non-active"}>
+              <Image src={logo} className="logo" width={130} height={25} />
+            </a>
+          </Link>
+        </div>
+        <div className="second-box">
+          <Link href="/portfolio">
+            <a
+              className={
+                router.pathname === "/portfolio" ? "active" : "non-active"
+              }
+            >
+              PORTFOLIO
+            </a>
+          </Link>
+          <Link href="/meeting">
+            <a
+              className={
+                router.pathname === "/meeting" ? "active" : "non-active"
+              }
+            >
+              CLUB
+            </a>
+          </Link>
+          <Link href="/community">
+            <a
+              className={
+                router.pathname === "/community" ? "active" : "non-active"
+              }
+            >
+              COMMUNITY
+            </a>
+          </Link>
+        </div>
+        <div className="third-box">
+          <Link href="/sign">
+            <a
+              className={router.pathname === "/sign" ? "active" : "non-active"}
+            >
+              LOG IN
+            </a>
+          </Link>
+        </div>
       </div>
       <style jsx>{`
         nav {
-          display: flex;
           gap: 10px;
-          align-items: center;
-          justify-content: center;
-          padding-top: 20px;
+          width: 100%;
+          padding-top: 10px;
           padding-bottom: 10px;
+          background-color: #324a86;
         }
         nav a {
           text-decoration: none;
@@ -60,14 +68,25 @@ export default function NavBar() {
           font-size: 18px;
         }
         .active {
-          color: tomato;
+          color: white;
         }
         .non-active {
-          color: black;
+          color: #88a0dc;
         }
-        nav div {
+        .container {
           display: flex;
-          gap: 10px;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .first-box {
+          margin-left: 30px;
+        }
+        .second-box {
+          display: flex;
+          gap: 20px;
+        }
+        .third-box {
+          margin-right: 30px;
         }
       `}</style>
     </nav>

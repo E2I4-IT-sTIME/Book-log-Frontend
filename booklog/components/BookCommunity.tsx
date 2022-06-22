@@ -1,7 +1,7 @@
 import axios from "axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import BookInfoPrev from "./BookInfoPrev";
+import { useRouter } from "next/router";
 
 const Kakao = axios.create({
   baseURL: "https://dapi.kakao.com",
@@ -18,6 +18,7 @@ export default function BookCommunity() {
   const [books, setBooks] = useState([]);
   const [keywords, setKeywords] = useState("");
   const [rank, setRank] = useState(0);
+  const router = useRouter();
 
   const onInputHandler = (e: any) => {
     setKeywords(e.target.value);
@@ -51,6 +52,12 @@ export default function BookCommunity() {
     }
   };
 
+  const onClickBook = (book: any) => {
+    router.push({
+      pathname: `books/${book.isbn}`,
+    });
+  };
+
   return (
     <>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -63,20 +70,18 @@ export default function BookCommunity() {
       </form>
       <div>
         {books.map((book: any) => (
-          <Link href={`/books/${book.title}`} key={book.isbn}>
-            <a>
-              <BookInfoPrev
-                rank={rank}
-                imgSrc={book.thumbnail}
-                bookTitle={book.title}
-                author={book.authors[0]}
-                publisher={book.publisher}
-                dateTime={book.datetime}
-                content={book.contents}
-                url={book.url}
-              ></BookInfoPrev>
-            </a>
-          </Link>
+          <div onClick={() => onClickBook(book)} key={book.isbn}>
+            <BookInfoPrev
+              rank={rank}
+              imgSrc={book.thumbnail}
+              bookTitle={book.title}
+              author={book.authors[0]}
+              publisher={book.publisher}
+              dateTime={book.datetime}
+              content={book.contents}
+              url={book.url}
+            ></BookInfoPrev>
+          </div>
         ))}
       </div>
     </>
