@@ -17,7 +17,6 @@ const kakaoSearch = (params: any) => {
 export default function BookCommunity() {
   const [books, setBooks] = useState([]);
   const [keywords, setKeywords] = useState("");
-  const [rank, setRank] = useState(0);
   const router = useRouter();
 
   const onInputHandler = (e: any) => {
@@ -78,7 +77,6 @@ export default function BookCommunity() {
         {books.map((book: any) => (
           <div onClick={() => onClickBook(book)} key={book.isbn}>
             <BookInfoPrev
-              rank={rank}
               imgSrc={book.thumbnail}
               bookTitle={book.title}
               author={book.authors[0]}
@@ -138,7 +136,7 @@ export default function BookCommunity() {
         }
 
         .second-box {
-          width: 100%;
+          width: 80%;
           margin-top: 50px;
           display: flex;
           justify-content: center;
@@ -146,7 +144,8 @@ export default function BookCommunity() {
           flex-wrap: wrap;
           row-gap: 3rem;
           column-gap: 6rem;
-          padding-bottom: 100px;
+          margin: auto;
+          padding: 50px 0px 100px 0px;
         }
       `}</style>
     </>
