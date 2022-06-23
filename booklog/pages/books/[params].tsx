@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import defaultImg from "../../components/Img/book_title_no.png";
+import Image from "next/image";
 
 const Kakao = axios.create({
   baseURL: "https://dapi.kakao.com",
@@ -31,7 +33,14 @@ type bookInfo = {
 function Detail() {
   const router = useRouter();
   const temp = `${router.query.params}`;
-  const isbn = temp.substr(0, 10);
+  const [isbn, setIsbn] = useState("");
+  useEffect(() => {
+    if (temp.substr(0, 1) !== " ") {
+      setIsbn(temp.substr(0, 10));
+    } else {
+      setIsbn(temp.substr(1, 13));
+    }
+  }, []);
   const [book, setBook] = useState<bookInfo>();
 
   const search = async () => {
@@ -69,7 +78,11 @@ function Detail() {
         <div>Loading...</div>
       ) : (
         <div>
-          <img src={book.thumbnail} />
+          {book.thumbnail ? (
+            <img src={book.thumbnail} />
+          ) : (
+            <Image src={defaultImg} width={120} height={174} />
+          )}
           <div>
             <span>{book.title}</span>
             <br />
