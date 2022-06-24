@@ -18,6 +18,7 @@ export default function BookCommunity() {
   const [books, setBooks] = useState([]);
   const [keywords, setKeywords] = useState("");
   const router = useRouter();
+  const [isEmpty, setEmpty] = useState(false);
 
   const onInputHandler = (e: any) => {
     setKeywords(e.target.value);
@@ -32,6 +33,7 @@ export default function BookCommunity() {
     try {
       if (searchKey === "") {
         setBooks([]);
+        setEmpty(false);
       } else {
         const params = {
           query: searchKey,
@@ -42,6 +44,8 @@ export default function BookCommunity() {
 
         if (result) {
           setBooks(result.data.documents);
+          if (result.data.documents.length === 0) setEmpty(false);
+          else setEmpty(true);
         } else {
           console.log("fail");
         }
@@ -72,22 +76,25 @@ export default function BookCommunity() {
           </form>
         </div>
       </div>
-
-      <div className="second-box">
-        {books.map((book: any) => (
-          <div onClick={() => onClickBook(book)} key={book.isbn}>
-            <BookInfoPrev
-              imgSrc={book.thumbnail}
-              bookTitle={book.title}
-              author={book.authors[0]}
-              publisher={book.publisher}
-              dateTime={book.datetime}
-              content={book.contents}
-              url={book.url}
-            ></BookInfoPrev>
-          </div>
-        ))}
-      </div>
+      {isEmpty ? (
+        <div className="second-box">
+          {books.map((book: any) => (
+            <div onClick={() => onClickBook(book)} key={book.isbn}>
+              <BookInfoPrev
+                imgSrc={book.thumbnail}
+                bookTitle={book.title}
+                author={book.authors[0]}
+                publisher={book.publisher}
+                dateTime={book.datetime}
+                content={book.contents}
+                url={book.url}
+              ></BookInfoPrev>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-box">검색 결과가 없어요😥</div>
+      )}
 
       <style jsx>{`
         .container {
@@ -146,6 +153,14 @@ export default function BookCommunity() {
           column-gap: 6rem;
           margin: auto;
           padding: 50px 0px 100px 0px;
+        }
+
+        .empty-box {
+          text-align: center;
+          margin-top: 100px;
+          font-size: 1.5rem;
+          color: white;
+          weight: bold;
         }
       `}</style>
     </>

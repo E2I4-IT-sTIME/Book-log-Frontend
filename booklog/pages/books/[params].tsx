@@ -68,36 +68,133 @@ function Detail() {
     if (isbn) search();
   }, [isbn]);
 
-  useEffect(() => {
-    console.log(book);
-  }, [book]);
+  const onClickLink = () => {
+    window.open(`${book?.url}`);
+  };
 
   return (
     <>
       {!book ? (
         <div>Loading...</div>
       ) : (
-        <div>
-          {book.thumbnail ? (
-            <img src={book.thumbnail} />
-          ) : (
-            <Image src={defaultImg} width={120} height={174} />
-          )}
-          <div>
-            <span>{book.title}</span>
-            <br />
-            <span>{book.authors[0]}</span>
+        <div className="container">
+          <div className="first-box">
+            <div className="img-box">
+              {book.thumbnail ? (
+                <div>
+                  <img src={book.thumbnail} className="thumbnail" />
+                </div>
+              ) : (
+                <div>
+                  <Image src={defaultImg} width="250px" height="363px" />
+                </div>
+              )}
+            </div>
+            <div className="info-box">
+              <div className="title">{book.title}</div>
+              <div className="author">{book.authors[0]}</div>
+              <p className="content">{book.contents}...</p>
+              <div className="button-box">
+                <button onClick={() => onClickLink()}>책 구매하러 가기</button>
+                <button>서평 쓰러 가기</button>
+              </div>
+            </div>
           </div>
-          <div>
-            <span>{book.contents}...</span>
-          </div>
-          <div>
-            <button>책 구매하러 가기</button>
-            <button>서평 쓰러 가기</button>
-          </div>
-          <div>
+          <div className="portfolio-box">
             <span>이 책으로 쓰여진 서평들</span>
           </div>
+          <style jsx>{`
+            .container {
+              display: flex;
+              flex-direction: column;
+            }
+
+            .first-box {
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              gap: 100px;
+              margin: 50px 100px 50px 100px;
+              padding: 50px;
+              border-radius: 1rem;
+              background-color: #324a86;
+              box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
+                0 8px 16px -8px rgba(0, 0, 0, 0.3),
+                0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+            }
+
+            .thumbnail {
+              width: 250px;
+            }
+
+            .info-box {
+              display: flex;
+              flex-direction: column;
+              color: white;
+            }
+
+            .title {
+              font-size: 1.5rem;
+              letter-spacing: -0.05;
+              font-weight: bold;
+            }
+
+            .author {
+              margin-top: 10px;
+              font-size: 1.2rem;
+            }
+
+            .content {
+              margin-top: 30px;
+              line-height: 20px;
+            }
+
+            .button-box {
+              display: flex;
+              flex-direction: row;
+              margin-top: 10px;
+              gap: 20px;
+            }
+
+            button {
+              background: #fff;
+              color: #324a86;
+              border: none;
+              position: relative;
+              height: 40px;
+              font-size: 1em;
+              padding: 0 2em;
+              cursor: pointer;
+              transition: 800ms ease all;
+              outline: none;
+            }
+            button:hover {
+              background: #324a86;
+              color: #fff;
+            }
+            button:before,
+            button:after {
+              content: "";
+              position: absolute;
+              top: 0;
+              right: 0;
+              height: 2px;
+              width: 0;
+              background: #fff;
+              transition: 200ms ease all;
+            }
+            button:after {
+              right: inherit;
+              top: inherit;
+              left: 0;
+              bottom: 0;
+            }
+            button:hover:before,
+            button:hover:after {
+              width: 100%;
+              transition: 800ms ease all;
+            }
+          `}</style>
         </div>
       )}
     </>
