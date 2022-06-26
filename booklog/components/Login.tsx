@@ -5,6 +5,7 @@ import { NextPage } from "next";
 import { useState } from "react";
 import axios from "axios";
 import Button from "./UI/Button";
+import logo from "./Img/logo_color.png";
 
 interface loginDataInput {
   Email: string;
@@ -64,12 +65,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
       <Card>
         <div className="form_div">
           <div>
-            <Image
-              src="/vercel.svg"
-              alt="Booklog logo"
-              width="200px"
-              height="50px"
-            />
+            <Image src={logo} alt="Booklog logo" width="350px" height="58px" />
             <form onSubmit={onSubmitHandler}>
               <input
                 className="text_box"
