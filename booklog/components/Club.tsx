@@ -48,15 +48,17 @@ export default function Club() {
             <div className="off">{onoff}</div>
           )}
         </div>
-        <ClubPrev
-          img="https://image.ajunews.com/content/image/2020/06/25/20200625170136679538.png"
-          title="유아인 어쩌고"
-          onoff={false}
-          maxNum={2}
-          curNum={1}
-          subtitle="유아인 잘생겼다 잘생긴게 최고야 나도 유아인할래 제발요"
-          tag={tmp}
-        />
+        <div className="third-box">
+          <ClubPrev
+            img="https://image.ajunews.com/content/image/2020/06/25/20200625170136679538.png"
+            title="유아인 어쩌고"
+            onoff={false}
+            maxNum={2}
+            curNum={1}
+            subtitle="유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다"
+            tag={tmp}
+          />
+        </div>
       </div>
       <style jsx>{`
         .first-box {
@@ -196,6 +198,10 @@ export default function Club() {
           -webkit-transform: translateX(20px);
           -ms-transform: translateX(20px);
           transform: translateX(20px);
+        }
+
+        .third-box {
+          padding: 20px 5% 0px 5%;
         }
       `}</style>
     </>
