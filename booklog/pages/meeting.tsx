@@ -1,3 +1,9 @@
+import Club from "../components/Club";
+
 export default function meeting() {
-  return <></>; //독서모임
+  return (
+    <>
+      <Club />
+    </>
+  ); //독서모임
 }
