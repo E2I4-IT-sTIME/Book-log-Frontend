@@ -15,6 +15,18 @@ export default function Club() {
     else setOnoff("오프라인 모임");
   }, [checked]);
 
+  const club = {
+    img: "https://image.ajunews.com/content/image/2020/06/25/20200625170136679538.png",
+    title: "유아인 어쩌고",
+    onoff: false,
+    maxNum: 2,
+    curNum: 1,
+    subtitle:
+      "유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다",
+    tag: tmp,
+  };
+
+  const clubArray = [club, club, club, club, club, club, club];
   return (
     <>
       <div className="container">
@@ -48,16 +60,36 @@ export default function Club() {
             <div className="off">{onoff}</div>
           )}
         </div>
-        <div className="third-box">
-          <ClubPrev
-            img="https://image.ajunews.com/content/image/2020/06/25/20200625170136679538.png"
-            title="유아인 어쩌고"
-            onoff={false}
-            maxNum={2}
-            curNum={1}
-            subtitle="유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다"
-            tag={tmp}
-          />
+        <div className="third-box-cover">
+          <div className="third-box">
+            {checked
+              ? clubArray
+                  .filter((club: any) => club.onoff)
+                  .map((club: any) => (
+                    <ClubPrev
+                      img={club.img}
+                      title={club.title}
+                      onoff={club.onoff}
+                      maxNum={club.maxNum}
+                      curNum={club.curNum}
+                      subtitle={club.subtitle}
+                      tag={club.tag}
+                    />
+                  ))
+              : clubArray
+                  .filter((club: any) => !club.onoff)
+                  .map((club: any) => (
+                    <ClubPrev
+                      img={club.img}
+                      title={club.title}
+                      onoff={club.onoff}
+                      maxNum={club.maxNum}
+                      curNum={club.curNum}
+                      subtitle={club.subtitle}
+                      tag={club.tag}
+                    />
+                  ))}
+          </div>
         </div>
       </div>
       <style jsx>{`
@@ -67,7 +99,7 @@ export default function Club() {
         .title {
           color: #324a86;
           font-size: 2.5rem;
-          font-weight: bold;
+          font-weight: 900;
           letter-spacing: -0.05;
         }
         .first-inner-box {
@@ -199,9 +231,19 @@ export default function Club() {
           -ms-transform: translateX(20px);
           transform: translateX(20px);
         }
+        .third-box-cover {
+          padding: 20px 0px 60px 4%;
+        }
 
         .third-box {
-          padding: 20px 5% 0px 5%;
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          gap: 50px;
+        }
+
+        button {
+          cursor: pointer;
         }
       `}</style>
     </>
