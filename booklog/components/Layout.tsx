@@ -5,8 +5,18 @@ export default function Layout(props: any) {
   return (
     <>
       <NavBar />
-      <div>{props.children}</div>
-      {/* <Footer /> */}
+      <div className="content">{props.children}</div>
+      <Footer />
+      <style global jsx>
+        {`
+          html, body, #__next{
+          height: 100%;
+          width: 100%;
+          margin:0;
+          }
+        `}
+      </style>
+
     </>
   );
 }
