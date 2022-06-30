@@ -13,11 +13,23 @@ export default function sign() {
   };
   return (
     <>
+    <div className="sign_page">
       {!isSign ? (
         <Login onChange={changeSignPage} />
       ) : (
         <Signup onChange={changeLoginPage} />
       )}
+    </div>
+      <style jsx>{`
+        .sign_page {
+          height: 794px;
+          display:flex;
+          align-items: center;
+          justify-content:center;
+        }
+        
+        
+        `}</style>
     </>
   );
 }

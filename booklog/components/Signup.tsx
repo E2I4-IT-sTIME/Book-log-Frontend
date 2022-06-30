@@ -1,11 +1,9 @@
 import Image from "next/image";
-import Card from "./UI/Card";
 import AddInfor from "./AddInfor";
 import Link from "next/link";
 import { NextPage } from "next";
 import { useState } from "react";
 import axios from "axios";
-import Button from "./UI/Button";
 
 const Signup: NextPage<{ onChange: () => void }> = (props) => {
   const [email, setEmail] = useState("");

@@ -18,7 +18,7 @@ export default function Footer(){
           align-items: center;
           justify-content: center;
 
-          height: 79px;
+          height: 80px;
           width: 100%;
 
           border-top: 1px solid black;
