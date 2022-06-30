@@ -5,12 +5,6 @@ const Home: NextPage = () => {
   return <>
     <div>
     </div>
-    <style global jsx>{`
-      div {
-         height: calc(100% - 50px);
-      }
-      `}</style>
-
   </>;
 };
 
