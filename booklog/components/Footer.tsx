@@ -1,7 +1,7 @@
 export default function Footer(){
   return (
     <>
-      <div className="footer">
+      <footer>
         <div className="link">
           <div className="block"><a href="#">Mobile app</a></div>
           <div className="block"><a href="#">Company</a></div>
@@ -10,20 +10,20 @@ export default function Footer(){
           <div className="block"><a href="#">Resources</a></div>
         </div>
         <div className="desc">© Photo, Inc. 2021. We love our users!</div>
-      </div>
+      </footer>
       <style jsx>{`
-        .footer {
+        footer {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
 
-          height: 80px;
+          height: 79px;
           width: 100%;
 
           border-top: 1px solid black;
-          position:relative;
-          transform : translateY(-100%);
+          position : relative;
+          transform : translateY(0);
           background-color: #324a86;
 
           font-size:18px;
@@ -50,6 +50,7 @@ export default function Footer(){
           min-width: 50%;
         }
         .desc{
+          width:100%;
           margin-top: 3px;
         }
       `}</style>
