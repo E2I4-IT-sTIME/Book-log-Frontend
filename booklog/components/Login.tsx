@@ -88,7 +88,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
                 <button className="loginBtn" onClick={() => loginHandler}>로그인</button>
               </form>
               <div className="login">
-                <p>다른 서비스 계정으로 로그인</p>
+                <p className="other_login">다른 서비스 계정으로 로그인</p>
                 <div className="googleBtn">
                   <Image className="img" src={google} objectFit="contain" width="25px"></Image>
                   <div className="btntext">구글 계정으로 로그인</div>
@@ -227,6 +227,10 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
 
         hr{
           margin: 20px 0;
+        }
+        .other_login{
+          font-size:20px;
+          font-weight:600;
         }
         
         .otherBtn{
