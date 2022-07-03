@@ -47,8 +47,8 @@ export default function ClubPrev(props: ClubInfo) {
 
       <style jsx>{`
         .prev-box {
-          width: 420px;
-          height: 200px;
+          width: 390px;
+          height: 180px;
           background-color: #e5e5e5;
           padding: 30px;
           border-radius: 0.5rem;
@@ -95,8 +95,8 @@ export default function ClubPrev(props: ClubInfo) {
           color: #324a86;
         }
         .hover-box {
-          width: 480px;
-          height: 260px;
+          width: 450px;
+          height: 240px;
           display: flex;
           justify-content: center;
           align-items: center;
