@@ -49,6 +49,11 @@ export default function MakeClub() {
     setGenres((prev) => [...prev, value]);
   };
 
+  const deleteGenre = (value: string) => {
+    let filtered = genres.filter((genre: string) => genre !== value);
+    setGenres(filtered);
+  };
+
   return (
     <div className="body">
       <div className="container">
@@ -132,13 +137,27 @@ export default function MakeClub() {
             </div>
           </div>
           <div className="down-box">
-            <MakeClubDown setContent={pContent} setGenres={pGenres} />
+            <MakeClubDown
+              setContent={pContent}
+              setGenres={pGenres}
+              deleteGenre={deleteGenre}
+              content={content}
+              genres={genres}
+            />
+            <div className="warning">
+              취지에 맞지 않는 모임 및 부적절한 모임명 / 모임소개의 모임은
+              무통보 삭제될 수 있습니다.
+            </div>
           </div>
+        </div>
+        <div className="next-btns">
+          <button>취소</button>
+          <button>다음</button>
         </div>
       </div>
       <style jsx>{`
         .body {
-          height: 2000px;
+          height: 1200px;
         }
         .container {
           display: flex;
@@ -223,7 +242,7 @@ export default function MakeClub() {
           padding: 0px 20px 0px 20px;
           border-radius: 0.5rem;
           border: 2px solid #324a86;
-          background-color: white;
+          background-color: #00ff0000;
           color: #324a86;
           font-weight: bold;
           font-size: 1rem;
@@ -242,7 +261,7 @@ export default function MakeClub() {
           display: flex;
           flex-direction: column;
           gap: 8px;
-          padding-top: 40px;
+          padding-top: 20px;
         }
         .title {
           color: #324a86;
@@ -259,7 +278,6 @@ export default function MakeClub() {
         }
         .down-box {
           width: 90%;
-          height: 500px;
           background-color: #e3ebff;
           border-radius: 100px;
           box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
@@ -270,6 +288,12 @@ export default function MakeClub() {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -10%);
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding-top: 270px;
+          padding-bottom: 100px;
         }
         .club-name {
           margin-top: 30px;
@@ -389,6 +413,9 @@ export default function MakeClub() {
           height: 25px;
           text-align: center;
           align-items: top;
+        }
+        .warning {
+          padding-top: 50px;
         }
       `}</style>
     </div>

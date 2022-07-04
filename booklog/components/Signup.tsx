@@ -69,11 +69,13 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
     if (email != "" && password != "") {
       axios
         .post(
-          "http://3.39.152.5:8080/join",
+          "http://15.164.193.190:8080/join",
           {
             username: name,
             userEmail: email,
-            userPwd: password,
+            password: password,
+            active: 1,
+            birthday: "2000-01-01",
           },
           {
             headers: {
@@ -101,85 +103,104 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
           하나의 아이디로 북로그의 다양한 서비스를 이용해보세요
         </div>
         <div className="name_box">
-        <form className="other_box" onSubmit={signUpHandler}>          
-          <div>
-            <div className="email_div">
+          <form className="other_box" onSubmit={(e) => e.preventDefault()}>
+            <div>
+              <div className="email_div">
+                <input
+                  className="email_box"
+                  type="email"
+                  name="email"
+                  placeholder="이메일 주소"
+                  value={email}
+                  onChange={inputHandler}
+                ></input>
+                <div className="otherBtn">인증번호 전송</div>
+              </div>
               <input
-                className="email_box"
-                type="email"
-                name="email"
-                placeholder="이메일 주소"
+                className="text_box"
+                type="text"
+                name="text"
+                placeholder="인증번호"
                 value={email}
                 onChange={inputHandler}
               ></input>
-              <div className="otherBtn">인증번호 전송</div>
+              <input
+                className="text_box"
+                type="password"
+                name="pwd"
+                placeholder="비밀번호"
+                value={password}
+                onChange={inputHandler}
+              ></input>
+              {regularStr == "" ? null : (
+                <div className="notice">{regularStr}</div>
+              )}
+              <input
+                className="text_box"
+                type="password"
+                name="check"
+                placeholder="비밀번호 확인"
+                value={checkPwd}
+                onChange={inputHandler}
+              ></input>
+              {check ? null : <span>{error}</span>}
             </div>
-            <input
-              className="text_box"
-              type="text"
-              name="text"
-              placeholder="인증번호"
-              value={email}
-              onChange={inputHandler}
-            ></input>
-            <input
-              className="text_box"
-              type="password"
-              name="pwd"
-              placeholder="비밀번호"
-              value={password}
-              onChange={inputHandler}
-            ></input>
-            {regularStr == "" ? null : <div className="notice">{regularStr}</div>}
-            <input
-              className="text_box"
-              type="password"
-              name="check"
-              placeholder="비밀번호 확인"
-              value={checkPwd}
-              onChange={inputHandler}
-            ></input>
-            {check ? null : <span>{error}</span>}
-          </div>
 
-          <div className="check_box">
-            <input id="service_check" type="checkbox"></input>
-            <label className="service_check" htmlFor="service_check">
-              북로그에서 제공하는 서비스 약관에 동의합니다.
-            </label>
-          </div>
-          <div className="signBtn" onClick={checkPassword}>가입하기</div>
-          <div className="other_signup">
-            <p className="sign">다른 서비스 계정으로 가입</p>
-            <div className="googleBtn">
-              <Image className="img" src={google} objectFit="contain" width="25px"></Image>
-              <div className="btntext">구글 계정으로 가입</div>
+            <div className="check_box">
+              <input id="service_check" type="checkbox"></input>
+              <label className="service_check" htmlFor="service_check">
+                북로그에서 제공하는 서비스 약관에 동의합니다.
+              </label>
             </div>
-            <div className="kakaoBtn">
-              <Image className="img" src={kakao} objectFit="contain" width="25px"></Image>
-              <div className="btntext">카카오 계정으로 가입</div>
+            <div className="signBtn" onClick={checkPassword}>
+              가입하기
             </div>
-            <div className="naverBtn">
-              <Image className="img" src={naver} objectFit="contain" width="25px"></Image>
-              <div className="btntext">네이버 계정으로 가입</div>
+            <div className="other_signup">
+              <p className="sign">다른 서비스 계정으로 가입</p>
+              <div className="googleBtn">
+                <Image
+                  className="img"
+                  src={google}
+                  objectFit="contain"
+                  width="25px"
+                ></Image>
+                <div className="btntext">구글 계정으로 가입</div>
+              </div>
+              <div className="kakaoBtn">
+                <Image
+                  className="img"
+                  src={kakao}
+                  objectFit="contain"
+                  width="25px"
+                ></Image>
+                <div className="btntext">카카오 계정으로 가입</div>
+              </div>
+              <div className="naverBtn">
+                <Image
+                  className="img"
+                  src={naver}
+                  objectFit="contain"
+                  width="25px"
+                ></Image>
+                <div className="btntext">네이버 계정으로 가입</div>
+              </div>
             </div>
-          </div>        
-        </form>
+          </form>
         </div>
         <div className="back">
           <a onClick={props.onChange}>로그인 화면으로 돌아가기</a>
         </div>
         <style jsx>{`
-          .signup_background{
+          .signup_background {
             width: 500px;
             margin: 0px auto;
             display: flex;
-            flex-direction:column;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-          } 
+          }
           .main_text {
-            text-align:center;
+            text-align: center;
             font-size: 30px;
             font-weight: 600;
             margin: 10px 0;
@@ -193,48 +214,48 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             width: 80%;
             display: flex;
             display: flex;
-            flex-direction:column;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
           }
-          .other_box{
+          .other_box {
             width: 100%;
           }
 
           .email_div {
-            display:flex;
-            flex-direction:row;
+            display: flex;
+            flex-direction: row;
             width: 100%;
-            margin-bottom:10px;
+            margin-bottom: 10px;
           }
           .email_box {
-            width:70%;
+            width: 70%;
             padding: 0 5px;
           }
 
-          .otherBtn{
-          width: 30%;
-          height: 35px;         
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: #B9C4E0;
-          color:white;
-          font-size: 13px;
-          font-weight: 600;
-          cursor:pointer;
-          border-radius: 5px;  
-          margin-left: 5px;        
-        }
-
-          .service_check{
-            font-size:13px;
+          .otherBtn {
+            width: 30%;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #b9c4e0;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 5px;
           }
 
-          .notice{
-            font-size:13px;
-            margin-bottom:10px; 
-            width:100%;
+          .service_check {
+            font-size: 13px;
+          }
+
+          .notice {
+            font-size: 13px;
+            margin-bottom: 10px;
+            width: 100%;
           }
 
           .text_box_small {
@@ -248,16 +269,16 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             margin-bottom: 10px;
             padding: 0 5px;
           }
-          .sign{
-            font-size:20px;
-            font-weight:600;
+          .sign {
+            font-size: 20px;
+            font-weight: 600;
           }
 
-          .signBtn{
+          .signBtn {
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #324A86;
+            background-color: #324a86;
             color: white;
             border: 0px;
             border-radius: 5px;
@@ -275,67 +296,67 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
             align-items: center;
           }
           .googleBtn {
-          width: 70%;
-          background-color: #ECECEC;
-          height:40px;
-          display:flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: row;
-          margin-bottom: 10px;
-          font-size:13px;
-          cursor:pointer;
-        }
-        .kakaoBtn{
-          width: 70%;
-          background-color: #F4DF4B;
-          height:40px;
-          
-          display:flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: row;
-          margin-bottom: 10px;
-          font-size:13px;
-          cursor:pointer;
-        }
-        .naverBtn{
-          width: 70%;
-          background-color: #30C71F;
-          height:40px;
-          
-          display:flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: row;
-          font-size:13px;
-          cursor:pointer;
-        }
+            width: 70%;
+            background-color: #ececec;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            margin-bottom: 10px;
+            font-size: 13px;
+            cursor: pointer;
+          }
+          .kakaoBtn {
+            width: 70%;
+            background-color: #f4df4b;
+            height: 40px;
 
-        .btntext{
-          width:80%;
-          height:100%;
-          text-align:center;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left:8px;
-          border-left : 1px solid white;
-        }
-       
-        .others{
-          width: 100%;
-          display:flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: row;
-        }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            margin-bottom: 10px;
+            font-size: 13px;
+            cursor: pointer;
+          }
+          .naverBtn {
+            width: 70%;
+            background-color: #30c71f;
+            height: 40px;
 
-        .back{
-          margin-top:20px;
-          font-size:13px;
-          font-weight:600;
-        }
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            font-size: 13px;
+            cursor: pointer;
+          }
+
+          .btntext {
+            width: 80%;
+            height: 100%;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            border-left: 1px solid white;
+          }
+
+          .others {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+          }
+
+          .back {
+            margin-top: 20px;
+            font-size: 13px;
+            font-weight: 600;
+          }
         `}</style>
       </div>
       {ok ? <AddInfor email={email} password={password} /> : null}

@@ -235,12 +235,13 @@ export default function Club() {
           transform: translateX(20px);
         }
         .third-box-cover {
-          padding: 20px 0px 60px 3%;
+          padding: 20px 0px 60px 0px;
         }
 
         .third-box {
           display: flex;
           flex-direction: row;
+          justify-content: center;
           flex-wrap: wrap;
           gap: 40px;
         }
