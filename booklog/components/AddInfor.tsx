@@ -60,9 +60,16 @@ export default function AddInfor(props: infor) {
 
   const okButtonHandler = async (e: any) => {
     // console.log(`사진 : ${attachment}`);
+    console.log(`email: ${email},
+    password: ${password},
+    username: ${userName},
+    nickname: ${nickName},
+    birthday: ${birth},
+    job: ${job},
+    area: ${country},`);
     try {
       await axios.post(
-        "http://3.39.152.5:8080/join",
+        "http://15.164.193.190:8080/join",
         {
           email: email,
           password: password,
@@ -71,6 +78,7 @@ export default function AddInfor(props: infor) {
           birthday: birth,
           job: job,
           area: country,
+          active: 1,
         },
         { withCredentials: true }
       );

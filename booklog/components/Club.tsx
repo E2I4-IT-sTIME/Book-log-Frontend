@@ -1,5 +1,6 @@
 import ClubPrev from "./ClubPrev";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Club() {
   const tmp = ["추리", "판타지"];
@@ -42,7 +43,9 @@ export default function Club() {
               <button>🔍</button>
             </form>
             <button className="btns">내 모임</button>
-            <button className="btns">모임 만들기</button>
+            <Link href="/makeclub">
+              <button className="btns">모임 만들기</button>
+            </Link>
           </div>
         </div>
         <hr />
@@ -232,14 +235,15 @@ export default function Club() {
           transform: translateX(20px);
         }
         .third-box-cover {
-          padding: 20px 0px 60px 4%;
+          padding: 20px 0px 60px 0px;
         }
 
         .third-box {
           display: flex;
           flex-direction: row;
+          justify-content: center;
           flex-wrap: wrap;
-          gap: 50px;
+          gap: 40px;
         }
 
         button {
