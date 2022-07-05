@@ -3,6 +3,9 @@ import no_img from "./Img/book_title_no.png";
 import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
 import MakeClubDown from "./MakeClubDown";
+import Router from "next/router";
+import { useRecoilState } from "recoil";
+import { recoilCreateBookClubState } from "../states/recoilCreateBookClub";
 
 type EventHandlers<T> = Omit<
   DOMAttributes<T>,
@@ -14,14 +17,34 @@ export type Event<
   TEventHandler extends keyof EventHandlers<TElement>
 > = ComponentProps<TElement>[TEventHandler];
 
-export default function MakeClub() {
+interface CreateBookClubState {
+  name: string;
+  img: string;
+  onoff: boolean;
+  max_num: number;
+  tag: Array<string>;
+  content: string;
+  welcome: string;
+  question: Array<string>;
+}
+
+interface stepProps {
+  nextSteps: () => void;
+}
+
+export default function MakeClub(props: stepProps) {
+  const { nextSteps } = props;
   const [profile, setProfile] = useState("");
-  const [attachment, setAttachment] = useState();
+  const [attachment, setAttachment] = useState("");
   const [clubName, setClubName] = useState("");
   const [maxPerson, setMax] = useState(1);
   const [onoff, setOnoff] = useState(false);
   const [content, setContent] = useState("");
   const [genres, setGenres] = useState([""]);
+  const router = Router;
+
+  const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
+  const defaultState: CreateBookClubState = { ...recoilInfo };
 
   const handleOnChange: Event<"input", "onChange"> = (e) => {
     if (window.FileReader) {
@@ -42,7 +65,7 @@ export default function MakeClub() {
   };
 
   const pContent = (value: string) => {
-    setContent(value);
+    if (content.length < 200) setContent(value);
   };
 
   const pGenres = (value: string) => {
@@ -52,6 +75,47 @@ export default function MakeClub() {
   const deleteGenre = (value: string) => {
     let filtered = genres.filter((genre: string) => genre !== value);
     setGenres(filtered);
+  };
+
+  const cancel = () => {
+    if (
+      confirm(
+        "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
+      )
+    )
+      router.back();
+  };
+
+  const nextBtn = () => {
+    if (
+      clubName !== "" &&
+      attachment !== "" &&
+      maxPerson !== 0 &&
+      content !== "" &&
+      genres.length !== 1
+    ) {
+      if (
+        confirm(
+          "다음단계로 이동하시겠습니까?\n작성하던 내용은 수정할 수 없습니다."
+        )
+      ) {
+        genres.shift();
+        saveState();
+      }
+    } else {
+      alert("모든 정보를 입력해주세요.");
+    }
+  };
+
+  const saveState = () => {
+    defaultState.name = clubName;
+    defaultState.img = attachment;
+    defaultState.max_num = maxPerson;
+    defaultState.onoff = onoff;
+    defaultState.content = content;
+    defaultState.tag = genres;
+    setRecoilInfo(defaultState);
+    nextSteps();
   };
 
   return (
@@ -151,8 +215,8 @@ export default function MakeClub() {
           </div>
         </div>
         <div className="next-btns">
-          <button>취소</button>
-          <button>다음</button>
+          <button onClick={() => cancel()}>취소</button>
+          <button onClick={() => nextBtn()}>다음</button>
         </div>
       </div>
       <style jsx>{`
@@ -287,13 +351,13 @@ export default function MakeClub() {
           position: absolute;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -10%);
+          transform: translate(-50%, -9%);
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
           padding-top: 270px;
-          padding-bottom: 100px;
+          padding-bottom: 80px;
         }
         .club-name {
           margin-top: 30px;
@@ -416,6 +480,33 @@ export default function MakeClub() {
         }
         .warning {
           padding-top: 50px;
+        }
+        .next-btns {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          margin: auto;
+          padding-top: 550px;
+        }
+        .next-btns button {
+          padding: 10px 25px 10px 25px;
+          border-radius: 0.5rem;
+          border: 2px solid #324a86;
+          background-color: white;
+          color: #324a86;
+          font-weight: bold;
+          font-size: 1rem;
+          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
+            0 3px 10px -3px rgba(0, 0, 0, 0.137),
+            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
+          transition: 0.25s;
+          cursor: pointer;
+        }
+
+        .next-btns button:hover {
+          border: 2px solid white;
+          background-color: #324a86;
+          color: white;
         }
       `}</style>
     </div>

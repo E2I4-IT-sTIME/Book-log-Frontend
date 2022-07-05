@@ -60,13 +60,14 @@ export default function MakeClubDown(props: setter) {
           <div className="genres">
             {genres
               .filter((genre) => genre !== "")
-              .map((genre) => (
+              .map((genre, index) => (
                 <div
                   className="genre"
                   onClick={() => {
                     deleteGenre(genre);
                     setError("");
                   }}
+                  key={index}
                 >
                   #{genre}
                 </div>
