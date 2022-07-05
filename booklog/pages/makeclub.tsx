@@ -1,9 +1,9 @@
-import MakeClub from "../components/MakeClub";
+import CreateBookClub from "../components/CreateBookClub";
 
 export default function makeclub() {
   return (
     <>
-      <MakeClub />
+      <CreateBookClub />
     </>
   );
 }
