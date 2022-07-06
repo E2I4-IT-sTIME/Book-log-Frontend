@@ -33,8 +33,8 @@ export default function ClubPrev(props: ClubInfo) {
           <span className="onoff">{onoffTag}</span>
           <p className="subtitle">{clubSubtitle}</p>
           <div className="tag-box">
-            {tag.map((tag: string) => (
-              <div key={tag} className="tag">
+            {tag.map((tag: string, index) => (
+              <div key={index} className="tag">
                 {tag}
               </div>
             ))}

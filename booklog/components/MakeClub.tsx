@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
 import MakeClubDown from "./MakeClubDown";
 import Router from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { recoilCreateBookClubState } from "../states/recoilCreateBookClub";
 
 type EventHandlers<T> = Omit<
@@ -51,16 +51,18 @@ export default function MakeClub(props: stepProps) {
       const {
         currentTarget: { files, value },
       } = e;
-      const theFile = files![0];
-      const reader = new FileReader();
-      setProfile(value);
-      reader.onloadend = (finishedEvent: any) => {
-        const {
-          target: { result },
-        } = finishedEvent;
-        setAttachment(result);
-      };
-      reader.readAsDataURL(theFile);
+      if (files !== null) {
+        const theFile = files![0];
+        const reader = new FileReader();
+        setProfile(value);
+        reader.onloadend = (finishedEvent: any) => {
+          const {
+            target: { result },
+          } = finishedEvent;
+          setAttachment(result);
+        };
+        reader.readAsDataURL(theFile);
+      }
     }
   };
 
@@ -82,8 +84,10 @@ export default function MakeClub(props: stepProps) {
       confirm(
         "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
       )
-    )
+    ) {
+      useResetRecoilState(recoilCreateBookClubState);
       router.back();
+    }
   };
 
   const nextBtn = () => {
@@ -123,7 +127,7 @@ export default function MakeClub(props: stepProps) {
       <div className="container">
         <div className="upper-box">
           <div className="img-box">
-            {attachment ? (
+            {attachment !== "" ? (
               <img src={attachment} className="attachment" />
             ) : (
               <Image src={no_img} />
@@ -342,11 +346,6 @@ export default function MakeClub(props: stepProps) {
         }
         .down-box {
           width: 90%;
-          background-color: #e3ebff;
-          border-radius: 100px;
-          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
-            0 3px 10px -3px rgba(0, 0, 0, 0.137),
-            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
           z-index: -1;
           position: absolute;
           top: 50%;
@@ -358,6 +357,10 @@ export default function MakeClub(props: stepProps) {
           align-items: center;
           padding-top: 270px;
           padding-bottom: 80px;
+
+          border-radius: 50px;
+          background: #e3ebff;
+          box-shadow: 35px 35px 70px #c1c8d9, -35px -35px 70px #ffffff;
         }
         .club-name {
           margin-top: 30px;
