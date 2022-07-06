@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { recoilCreateBookClubState } from "../states/recoilCreateBookClub";
 import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
@@ -72,8 +72,10 @@ export default function MakeClubQuestion(props: stepProps) {
       confirm(
         "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
       )
-    )
+    ) {
+      useResetRecoilState(recoilCreateBookClubState);
       router.back();
+    }
   };
 
   const nextBtn = () => {
@@ -85,7 +87,7 @@ export default function MakeClubQuestion(props: stepProps) {
       )
         saveState();
     } else {
-      alert("모든 정보를 입력해주세요.");
+      alert("환영멘트와 모임질문을 모두 작성해주세요.");
     }
   };
 
@@ -120,7 +122,7 @@ export default function MakeClubQuestion(props: stepProps) {
               <span className="subtitle">가입질문</span>
               <span className="additional">
                 모임 신청하는 분에게 물어보고 싶은 질문을 작성해보세요! ( 최소
-                1개부터 최대 3개까지 작성 가능해요.)
+                1개부터 최대 5개까지 작성 가능해요.)
               </span>
             </div>
             <div className="question-list">
@@ -128,7 +130,10 @@ export default function MakeClubQuestion(props: stepProps) {
                 <form onSubmit={(e) => e.preventDefault()} key={index}>
                   <span className="q-title">질문{index + 1}.</span>
                   <input type="text" value={q} disabled />
-                  <button onClick={() => deleteQuestion(index)}>
+                  <button
+                    className="deleteQuestionBtn"
+                    onClick={() => deleteQuestion(index)}
+                  >
                     - 질문 삭제하기
                   </button>
                 </form>
@@ -143,7 +148,10 @@ export default function MakeClubQuestion(props: stepProps) {
                     value={question}
                     onChange={inputHandler}
                   />
-                  <button onClick={() => addQuestionBtn()}>
+                  <button
+                    className="addQuestionBtn"
+                    onClick={() => addQuestionBtn()}
+                  >
                     + 질문 추가하기
                   </button>
                 </form>
@@ -163,7 +171,7 @@ export default function MakeClubQuestion(props: stepProps) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 20px;
+          gap: 40px;
           padding-top: 50px;
         }
 
@@ -176,10 +184,13 @@ export default function MakeClubQuestion(props: stepProps) {
         .box {
           width: 85%;
           background-color: #e3ebff;
-          border-radius: 100px;
           padding: 100px 0px 100px 0px;
           display: flex;
           justify-content: center;
+
+          border-radius: 50px;
+          background: #e3ebff;
+          box-shadow: 35px 35px 70px #c1c8d9, -35px -35px 70px #ffffff;
         }
 
         .content {
@@ -256,7 +267,6 @@ export default function MakeClubQuestion(props: stepProps) {
 
         .question-list button {
           border: none;
-          background-color: #cdd6f0;
           height: 40px;
           padding: 0px 16px 0px 15px;
           border-radius: 10px;
@@ -268,12 +278,19 @@ export default function MakeClubQuestion(props: stepProps) {
           cursor: pointer;
         }
 
+        .addQuestionBtn {
+          background-color: #cdd6f0;
+        }
+        .deleteQuestionBtn {
+          background-color: #f4c4c5;
+        }
+
         .next-btns {
           display: flex;
           flex-direction: row;
           gap: 10px;
           margin: auto;
-          padding-bottom: 100px;
+          padding: 20px 0px 60px 0px;
         }
         .next-btns button {
           padding: 10px 25px 10px 25px;
