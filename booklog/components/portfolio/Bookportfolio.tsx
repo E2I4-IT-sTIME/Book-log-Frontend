@@ -1,19 +1,30 @@
+import { useState } from "react";
 import PortfolioList from "./PortfolioList";
 
 const Bookportfolio = () => {
+    const [isEdit, setIsEdit] = useState(false);
+
+    let username = "Euna";
+    let big_text = isEdit ? "Edit " : username + "'s ";
+
+    const onChangeEdit = () => {
+        setIsEdit(true);
+        if(isEdit == true) setIsEdit(false);
+    }
+    
     return (
         <>
         <div className="background">
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text">User's Portfolio.</div>
+                        <div className="big_text">{big_text} Portfolio.</div>
                         <div className="small_text">나만의 포트폴리오</div>
                     </div>
                     <hr />
                     <div className="buttons">
                         <button>+ 만들기</button>
-                        <button>편집하기</button>
+                        <button onClick={onChangeEdit}>편집하기</button>
                     </div>
                 </div>
                 <div className="content">
@@ -21,6 +32,12 @@ const Bookportfolio = () => {
                 </div>
 
             </div>
+            {isEdit ? 
+                <div className="edit_div">
+                    <button className="cancle">취소</button>
+                    <button className="save">저장</button>
+                </div>
+            : null}
         </div>
         <style jsx>{`
             .background {
@@ -80,10 +97,35 @@ const Bookportfolio = () => {
                 padding : 10px 30px;
                 width: 50%;
                 margin-bottom:10px;
+                box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
             }
+            button:hover{
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
+                cursor: pointer;
+                transition: box-shadow 0.1s linear;
+            }
+
             .content{
                 width: calc(100% + 20px);
                 padding: 20px 0 ;
+            }
+            
+            .edit_div{
+                position: fixed;
+                bottom: 10%;
+                left:40%;
+                display:flex;
+                flex-direction:row;
+                width: 20%;;
+            }
+
+            .cancle{
+                padding: 15px 30px;
+                background-color:#B6BDCD;
+                margin-right:10px;
+            }
+            .save{
+                background-color:#324A86;
             }
         
         `}</style>
