@@ -3,10 +3,10 @@ import Link from "next/link";
 import { NextPage } from "next";
 import { useState } from "react";
 import axios from "axios";
-import logo from "./Img/logo_color.png";
-import google from "./Img/google.png";
-import kakao from "./Img/kakao.png";
-import naver from "./Img/naver.png";
+import logo from "../Img/logo_color.png";
+import google from "../Img/google.png";
+import kakao from "../Img/kakao.png";
+import naver from "../Img/naver.png";
 
 interface loginDataInput {
   Email: string;
