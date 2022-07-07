@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Login from "../components/Login";
-import Signup from "../components/Signup";
+import Login from "../components/sign/Login";
+import Signup from "../components/sign/Signup";
 
 export default function sign() {
   const [isSign, setIsSign] = useState(false);

@@ -27,7 +27,7 @@ const BookReview = () => {
                 </div>
             </div>
             <div className="title">
-
+                
             </div>
             <hr/>
             <div className="desc">
