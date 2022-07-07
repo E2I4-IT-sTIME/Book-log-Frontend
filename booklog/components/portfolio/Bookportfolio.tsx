@@ -10,6 +10,7 @@ const Bookportfolio = () => {
                         <div className="big_text">User's Portfolio.</div>
                         <div className="small_text">나만의 포트폴리오</div>
                     </div>
+                    <hr />
                     <div className="buttons">
                         <button>+ 만들기</button>
                         <button>편집하기</button>
@@ -31,12 +32,23 @@ const Bookportfolio = () => {
                 display:flex;
                 flex-direction:column;
                 width:80%;
-                margin : 0 10%;
+                margin : 0 5%;
+                padding-left : 5%;
+                border-left: 5px solid #324A86;
             }
             .article{
                 display:flex;
                 flex-direction:row;
-                padding: 20px 0;
+                padding: 20px 0;  
+                position: relative;      
+            }
+            hr {
+               position: absolute;
+               top: 93%;
+               left:-20%;
+               width:132%;
+               height: 2px;
+               background-color: #324A86;
             }
             .title{
                 width:80%;
