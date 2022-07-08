@@ -21,7 +21,6 @@ export default function Footer(){
           height: 80px;
           width: 100%;
 
-          border-top: 1px solid black;
           position : relative;
           transform : translateY(0);
           background-color: #324a86;

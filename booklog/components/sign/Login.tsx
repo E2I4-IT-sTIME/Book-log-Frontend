@@ -65,7 +65,6 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
     <>
       <div className="login_background">
         <div className="form_div">
-          <div>
             <div className="logodiv">
               <Image
                 src={logo}
@@ -99,14 +98,15 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
                 로그인
               </button>
             </form>
+            
             <div className="login">
               <p className="other_login">다른 서비스 계정으로 로그인</p>
               <div className="googleBtn">
                 <Image
-                  className="img"
                   src={google}
                   objectFit="contain"
                   width="25px"
+                  height="25px"
                 ></Image>
                 <div className="btntext">구글 계정으로 로그인</div>
               </div>
@@ -116,6 +116,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
                   src={kakao}
                   objectFit="contain"
                   width="25px"
+                  height="25px"
                 ></Image>
                 <div className="btntext">카카오 계정으로 로그인</div>
               </div>
@@ -125,41 +126,44 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
                   src={naver}
                   objectFit="contain"
                   width="25px"
+                  height="25px"
                 ></Image>
                 <div className="btntext">네이버 계정으로 로그인</div>
               </div>
             </div>
 
             <hr />
-          </div>
           <div className="others">
             <div className="otherBtn">비밀번호 재설정</div>
             <div className="otherBtn">
               <a onClick={props.onChange}>회원 가입</a>
             </div>
           </div>
+          
         </div>
       </div>
       <style jsx>{`
         .login_background {
           width: 500px;
-          margin: 0px auto;
+          height:600px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
-        .logodiv {
-          width: 100%;
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
         .form_div {
           background-color: white;
           box-sizing: border-box;
           width: 80%;
           height: 100%;
         }
+
+        .logodiv {
+          width: 100%;
+          text-align: center;
+          margin-bottom: 40px;
+        }
+
+        
         .text_box {
           width: 97%;
           height: 25px;
