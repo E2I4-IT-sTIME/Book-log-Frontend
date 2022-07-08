@@ -44,11 +44,14 @@ const Bookportfolio = () => {
                 background-color:#F7F8FC;
                 width:100%;
                 height:100%;
+                min-height: calc(100vh - 130px);
             }
             .main_div{
                 display:flex;
                 flex-direction:column;
                 width:80%;
+                height:100%;
+                min-height: calc(100vh - 130px);
                 margin : 0 5%;
                 padding-left : 5%;
                 border-left: 5px solid #324A86;
