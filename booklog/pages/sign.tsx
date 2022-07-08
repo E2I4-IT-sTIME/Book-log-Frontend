@@ -22,13 +22,11 @@ export default function sign() {
     </div>
       <style jsx>{`
         .sign_page {
-          height: 794px;
+          height: calc(100vh - 130px);
           display:flex;
           align-items: center;
           justify-content:center;
-        }
-        
-        
+        }      
         `}</style>
     </>
   );

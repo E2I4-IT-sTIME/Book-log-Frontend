@@ -71,7 +71,6 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         .post(
           "http://15.164.193.190:8080/join",
           {
-            username: name,
             userEmail: email,
             password: password,
             active: 1,
