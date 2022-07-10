@@ -1,15 +1,31 @@
 import { useState } from "react";
+import MakePortfolio from "./MakePortfolio";
 import PortfolioList from "./PortfolioList";
 
 const Bookportfolio = () => {
     const [isEdit, setIsEdit] = useState(false);
+    const [isMake, setIsMake] = useState(false);
+
 
     let username = "Euna";
-    let big_text = isEdit ? "Edit " : username + "'s ";
+    let big_text2 = isEdit ? "Edit " : username + "'s ";
+    let big_text = isMake ? "New " : big_text2;
+
+    let sub_text2 = isEdit ? "포트폴리오를 편집해보세요 ! " :  "나만의 독서 포트폴리오";
+    let sub_text = isMake ? "새로운 포트폴리오를 추가해보세요 ! " : sub_text2;
 
     const onChangeEdit = () => {
+        if(isMake == true) return;
+
         setIsEdit(true);
         if(isEdit == true) setIsEdit(false);
+    }
+
+    const onChakeMake = () =>{
+        if(isEdit == true) return;
+
+        setIsMake(true);
+        if(isMake == true) setIsMake(false);
     }
     
     return (
@@ -18,17 +34,17 @@ const Bookportfolio = () => {
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text">{big_text} Portfolio.</div>
-                        <div className="small_text">나만의 포트폴리오</div>
+                        <div className="big_text" > {big_text} Portfolio.</div>
+                        <div className="small_text">{sub_text}</div>
                     </div>
                     <hr />
                     <div className="buttons">
-                        <button>+ 만들기</button>
+                        <button onClick={onChakeMake}>+ 만들기</button>
                         <button onClick={onChangeEdit}>편집하기</button>
                     </div>
                 </div>
                 <div className="content">
-                    <PortfolioList />
+                    {isMake ? <MakePortfolio /> : <PortfolioList />};
                 </div>
 
             </div>
@@ -77,6 +93,10 @@ const Bookportfolio = () => {
                 color:#324A86;
                 font-size: 80px;
                 font-weight: 600;
+            }
+
+            .big_color{
+                color:rgba(136, 190, 228, 1);
             }
             .small_text{
                 color:#324A86;
