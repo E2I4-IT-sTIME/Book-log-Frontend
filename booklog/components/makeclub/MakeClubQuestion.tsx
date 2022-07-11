@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { recoilCreateBookClubState } from "../states/recoilCreateBookClub";
+import { recoilCreateBookClubState } from "../../states/recoilCreateBookClub";
 import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
 import Router from "next/router";

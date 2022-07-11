@@ -1,4 +1,4 @@
-import BookCommunity from "../components/BookCommunity";
+import BookCommunity from "../components/community/BookCommunity";
 import { useState, useEffect } from "react";
 
 export default function community() {
@@ -7,8 +7,8 @@ export default function community() {
       <BookCommunity />
       <style jsx>{`
         .body {
-          background: linear-gradient(to bottom, #324a86 5%, white 95%);
-          height: 100%;
+          background: linear-gradient(to bottom, #324a86 10%, white 40%);
+          min-height: 800px;
         }
       `}</style>
     </div>

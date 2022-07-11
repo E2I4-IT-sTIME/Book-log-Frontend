@@ -42,7 +42,9 @@ export default function Club() {
               <input type="text" placeholder="모임명을 입력해주세요"></input>
               <button>🔍</button>
             </form>
-            <button className="btns">내 모임</button>
+            <Link href="/myclub">
+              <button className="btns">내 모임</button>
+            </Link>
             <Link href="/makeclub">
               <button className="btns">모임 만들기</button>
             </Link>
