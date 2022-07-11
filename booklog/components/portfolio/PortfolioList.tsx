@@ -1,6 +1,28 @@
+import axios from "axios";
 import PortfolioCard from "./PortfolioCard";
 
 const PortfolioList = () => {
+  const username = "";
+
+  const LookupHandler = (e:any) => {
+    e.preventDefault();
+    axios
+      .get(
+        "http://15.164.193.190:8080/api/user/11/porfols",
+      {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          withCredentials:true,
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+  };
+
+ // LookupHandler();
   const card = {
     id: 1,
     title : "독서 동아리 포트폴리오",
@@ -9,7 +31,7 @@ const PortfolioList = () => {
   const portfolio_arr: any[] = [ card, card, card, card, card, card, card, card];
   return (
     <>
-    <div className="background">
+    <div className="background" onClick={LookupHandler}>
       {portfolio_arr.map((ele) => {
         let id = ele.id;
         let title = ele.title;
@@ -25,9 +47,7 @@ const PortfolioList = () => {
           flex-wrap: wrap;
           justify-content: flex-start;
           width:100%;
-        }
-      
-      
+        }     
     `}</style>
 
     </>
