@@ -1,11 +1,11 @@
 import Image from "next/image";
-import no_img from "./Img/book_title_no.png";
+import no_img from "../Img/book_title_no.png";
 import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
 import MakeClubDown from "./MakeClubDown";
 import Router from "next/router";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { recoilCreateBookClubState } from "../states/recoilCreateBookClub";
+import { recoilCreateBookClubState } from "../../states/recoilCreateBookClub";
 
 type EventHandlers<T> = Omit<
   DOMAttributes<T>,

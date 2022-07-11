@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import defaultImg from "./Img/book_title_no.png";
+import defaultImg from "../Img/book_title_no.png";
 
 interface bookInfo {
   imgSrc: string; //책 표지

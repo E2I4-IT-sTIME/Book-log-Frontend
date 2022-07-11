@@ -1,4 +1,4 @@
-import Club from "../components/Club";
+import Club from "../components/club/Club";
 
 export default function meeting() {
   return (

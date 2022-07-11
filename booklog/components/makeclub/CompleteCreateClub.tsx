@@ -1,4 +1,4 @@
-import logo_color from "./Img/logo_color.png";
+import logo_color from "../Img/logo_color.png";
 import Image from "next/image";
 
 export default function CompleteCreateClub() {
