@@ -1,11 +1,12 @@
 import { useState } from "react";
 import MakePortfolio from "./MakePortfolio";
 import PortfolioList from "./PortfolioList";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { isEditState, isMakeState } from "../../states/recoilBookPortfolio";
 
 const Bookportfolio = () => {
-    const [isEdit, setIsEdit] = useState(false);
-    const [isMake, setIsMake] = useState(false);
-
+    const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState);
 
     let username = "Euna";
     let big_text2 = isEdit ? "Edit " : username + "'s ";
@@ -34,7 +35,7 @@ const Bookportfolio = () => {
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" > {big_text} Portfolio.</div>
+                        <div className="big_text" > <span className={`${isEdit || isMake? 'textcolor' : ''} `}>{big_text}</span> Portfolio.</div>
                         <div className="small_text">{sub_text}</div>
                     </div>
                     <hr />
@@ -95,7 +96,7 @@ const Bookportfolio = () => {
                 font-weight: 600;
             }
 
-            .big_color{
+            .textcolor{
                 color:rgba(136, 190, 228, 1);
             }
             .small_text{
@@ -157,3 +158,4 @@ const Bookportfolio = () => {
 }
 
 export default Bookportfolio;
+
