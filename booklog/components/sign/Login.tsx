@@ -7,6 +7,7 @@ import logo from "../Img/logo_color.png";
 import google from "../Img/google.png";
 import kakao from "../Img/kakao.png";
 import naver from "../Img/naver.png";
+import Router from "next/router";
 
 interface loginDataInput {
   Email: string;
@@ -14,6 +15,7 @@ interface loginDataInput {
 }
 
 const Login: NextPage<{ onChange: () => void }> = (props) => {
+  const router = Router;
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
 
@@ -41,20 +43,17 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
   const loginHandler = (loginData: loginDataInput) => {
     axios
       .post(
-        "http://3.39.152.5:8080/login",
+        "http://15.164.193.190:8080/login",
         {
           username: loginData.Email,
           password: loginData.password,
         },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-          },
-        }
+        { withCredentials: true }
       )
       .then((res) => {
         console.log(res);
+        localStorage.setItem("token", res.headers.authorization);
+        router.push("/");
       })
       .catch((res) => {
         console.log("Error!");
@@ -65,87 +64,86 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
     <>
       <div className="login_background">
         <div className="form_div">
-            <div className="logodiv">
-              <Image
-                src={logo}
-                alt="Booklog logo"
-                objectFit="contain"
-                width="300px"
-                height="58px"
-              />
-            </div>
-            <form onSubmit={onSubmitHandler}>
-              <input
-                className="text_box"
-                type="userEmail"
-                placeholder="이메일 주소"
-                onChange={userEmailChangeHandler}
-              ></input>
-              <br />
-              <input
-                className="text_box"
-                type="password"
-                placeholder="비밀번호"
-                onChange={passwordChangeHandler}
-              ></input>
-              <br />
-              <input id="userEmail-save" type="checkbox"></input>
-              <label className="emailsave" htmlFor="userEmail-save">
-                이메일 저장
-              </label>
-              <br />
-              <button className="loginBtn" onClick={() => onSubmitHandler}>
-                로그인
-              </button>
-            </form>
-            
-            <div className="login">
-              <p className="other_login">다른 서비스 계정으로 로그인</p>
-              <div className="googleBtn">
-                <Image
-                  src={google}
-                  objectFit="contain"
-                  width="25px"
-                  height="25px"
-                ></Image>
-                <div className="btntext">구글 계정으로 로그인</div>
-              </div>
-              <div className="kakaoBtn">
-                <Image
-                  className="img"
-                  src={kakao}
-                  objectFit="contain"
-                  width="25px"
-                  height="25px"
-                ></Image>
-                <div className="btntext">카카오 계정으로 로그인</div>
-              </div>
-              <div className="naverBtn">
-                <Image
-                  className="img"
-                  src={naver}
-                  objectFit="contain"
-                  width="25px"
-                  height="25px"
-                ></Image>
-                <div className="btntext">네이버 계정으로 로그인</div>
-              </div>
-            </div>
+          <div className="logodiv">
+            <Image
+              src={logo}
+              alt="Booklog logo"
+              objectFit="contain"
+              width="300px"
+              height="58px"
+            />
+          </div>
+          <form onSubmit={onSubmitHandler}>
+            <input
+              className="text_box"
+              type="userEmail"
+              placeholder="이메일 주소"
+              onChange={userEmailChangeHandler}
+            ></input>
+            <br />
+            <input
+              className="text_box"
+              type="password"
+              placeholder="비밀번호"
+              onChange={passwordChangeHandler}
+            ></input>
+            <br />
+            <input id="userEmail-save" type="checkbox"></input>
+            <label className="emailsave" htmlFor="userEmail-save">
+              이메일 저장
+            </label>
+            <br />
+            <button className="loginBtn" onClick={() => onSubmitHandler}>
+              로그인
+            </button>
+          </form>
 
-            <hr />
+          <div className="login">
+            <p className="other_login">다른 서비스 계정으로 로그인</p>
+            <div className="googleBtn">
+              <Image
+                src={google}
+                objectFit="contain"
+                width="25px"
+                height="25px"
+              ></Image>
+              <div className="btntext">구글 계정으로 로그인</div>
+            </div>
+            <div className="kakaoBtn">
+              <Image
+                className="img"
+                src={kakao}
+                objectFit="contain"
+                width="25px"
+                height="25px"
+              ></Image>
+              <div className="btntext">카카오 계정으로 로그인</div>
+            </div>
+            <div className="naverBtn">
+              <Image
+                className="img"
+                src={naver}
+                objectFit="contain"
+                width="25px"
+                height="25px"
+              ></Image>
+              <div className="btntext">네이버 계정으로 로그인</div>
+            </div>
+          </div>
+
+          <hr />
           <div className="others">
             <div className="otherBtn">비밀번호 재설정</div>
             <div className="otherBtn">
               <a onClick={props.onChange}>회원 가입</a>
             </div>
           </div>
-          
         </div>
       </div>
       <style jsx>{`
         .login_background {
           width: 500px;
-          height:600px;
+          height: 600px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -163,7 +161,6 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
           margin-bottom: 40px;
         }
 
-        
         .text_box {
           width: 97%;
           height: 25px;
