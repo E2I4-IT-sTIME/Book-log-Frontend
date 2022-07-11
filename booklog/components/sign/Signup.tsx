@@ -14,7 +14,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
   const [checkPwd, setCheckPwd] = useState("");
   const [check, setCheck] = useState(true); //true면 비밀번호 동일, false면 비밀번호 틀림
   const [error, setError] = useState(""); //에러 문자
-  const [regular, setRegular] = useState(false); //비밀번호 정규식 검사
+  const [regular, setRegular] = useState(true); //비밀번호 정규식 검사
   const [regularStr, setRegularStr] = useState(""); //정규식 검사 결과
   const [ok, setOk] = useState(false);
 
@@ -27,7 +27,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         break;
       case "pwd":
         setPassword(value);
-        regularExpression(value);
+        // regularExpression(value);
         break;
       case "check":
         setCheckPwd(value);
