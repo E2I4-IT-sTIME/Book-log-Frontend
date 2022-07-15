@@ -1,15 +1,69 @@
+import axios from "axios";
+import { useState } from "react";
+
+interface portfolioContents {
+    title : string,
+    desc : string
+}
+
 const MakePortfolio = () => {
+    const [title, setTitle] = useState("");
+    const [desc, setDesc] = useState("");
+
+    const makePortfolio = (portfolioData: portfolioContents) => {
+        axios
+          .post(
+            "http://15.164.193.190:8080/auth/portfolio",
+            {
+              title: portfolioData.title,
+              userId: 11,
+            },
+            {
+                headers: {
+                  "Content-type": "application/json",
+                  Accept: "application/json",
+                  Authorization: `${localStorage.getItem("token")}`,
+                },
+              }
+          )
+          .then((res) => {
+            console.log(res);
+            localStorage.setItem("token", res.headers.authorization);
+          })
+          .catch((res) => {
+            console.log("Error!");
+          });
+      };
+    const submitHandler = (e:any) => {
+        e.preventDefault();
+        const portData = {
+            title: title,
+            desc: desc
+        }
+        makePortfolio(portData);
+        console.log(portData);
+    }
+
+    const titleChangeHandler = (e:any) =>{
+        setTitle(e.target.value);
+    }
+    const descChangeHandler = (e:any) =>{ 
+        setDesc(e.target.value);
+    }
+
+
+
     return(
         <>
         <div className="background">
-            <form>
+            <form onSubmit={submitHandler}>
                 <div className="title">포트폴리오 제목</div>
-                <input className="title_input" type="text" placeholder="20자 이내로 포트폴리오 제목을 작성해주세요!"></input>
+                <input className="title_input" type="text" placeholder="20자 이내로 포트폴리오 제목을 작성해주세요!" onChange={titleChangeHandler}></input>
                 <div className="desc">포트폴리오 상세 설명</div>
-                <textarea className="desc_input"  placeholder="50자 이내로 포트폴리오에 대한 상세 설명을 작성해주세요!" ></textarea>
+                <textarea className="desc_input"  placeholder="50자 이내로 포트폴리오에 대한 상세 설명을 작성해주세요!" onChange={descChangeHandler} ></textarea>
                 <div className="edit_div">
                     <button className="cancle">취소</button>
-                    <button className="save">저장</button>
+                    <button className="save" onClick={(e) => submitHandler}>저장</button>
                 </div>
             </form>           
         </div>
