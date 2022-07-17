@@ -1,8 +1,28 @@
+import { useRecoilState } from "recoil";
+import { isEditState, isMakeState } from "../../states/recoilBookReview";
+import MakeReview from "./MakeReview";
 import ReviewList from "./ReviewList";
 
 const BookReview = () => {
+    const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState);
+
+    const onChangeEdit = () => {
+        if(isMake == true) return;
+
+        setIsEdit(true);
+        if(isEdit == true) setIsEdit(false);
+    }
+
+    const onChakeMake = () =>{
+        if(isEdit == true) return;
+
+        setIsMake(true);
+        if(isMake == true) setIsMake(false);
+    }
+    
     return(
-        <>
+        <>      
         <div className="background">
             <div className="main_div">
                 <div className="article">
@@ -15,13 +35,19 @@ const BookReview = () => {
                     <div className="search">
                         <form><input type="text" className="text" placeholder="서평 검색하기"></input></form>
                         <div className="buttons">
-                            <button >편집하기</button>
-                            <button >+ 서평보기</button>
+                            <button onClick={onChangeEdit}>편집하기</button>
+                            <button onClick={onChakeMake}>+ 서평쓰기</button>
                         </div>
                     </div>
-                    <div className="cards"><ReviewList /></div>
+                    {isMake ? <MakeReview /> : <div className="cards"><ReviewList /></div>}                  
                 </div>
             </div> 
+            {isEdit ? 
+                <div className="edit_div">
+                    <button className="cancle">취소</button>
+                    <button className="save">저장</button>
+                </div>
+            : null}
         </div>
         <style jsx>{`
             .background {
@@ -110,6 +136,24 @@ const BookReview = () => {
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
                 cursor: pointer;
                 transition: box-shadow 0.1s linear;
+            }
+
+            .edit_div{
+                position: fixed;
+                bottom: 10%;
+                left:40%;
+                display:flex;
+                flex-direction:row;
+                width: 20%;;
+            }
+
+            .cancle{
+                padding: 15px 30px;
+                background-color:#B6BDCD;
+                margin-right:10px;
+            }
+            .save{
+                background-color:#324A86;
             }
         
         `}</style>
