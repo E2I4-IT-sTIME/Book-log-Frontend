@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRecoilState, 
     useRecoilValue, 
     useSetRecoilState, 
@@ -12,6 +13,7 @@ const PortfolioCard = (props: any) => {
 
     return (
         <>
+        <Link href="/reveiw">
         <div className="card">
             <div className="title">{props.title}</div>
             <div className="sub">{props.sub}</div>
@@ -19,6 +21,7 @@ const PortfolioCard = (props: any) => {
             null
             }           
         </div>
+        </Link>
         <style jsx>{`
         .card{
             background-color:#E4EAF5;
