@@ -1,4 +1,8 @@
+import { useRecoilState } from "recoil";
+import { isEditState } from "../../states/recoilBookReview";
+
 const ReviewCard = (props:any) =>{
+    const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
     return(
         <>
             <div className="background">
@@ -11,7 +15,8 @@ const ReviewCard = (props:any) =>{
                 </div>
                 <div className="content">
                     {props.content}
-                </div>
+                    {isEdit ?  <div className="btns"><button className="del">삭제</button><button className="alter">수정</button></div> : null}  
+                </div>                         
             </div>
             <style jsx>{`
                 .background {
@@ -21,6 +26,10 @@ const ReviewCard = (props:any) =>{
                     height: 200px;
                     margin-bottom: 30px;
                     margin-right: 30px;
+                }
+
+                .background:hover{
+                    box-shadow: 5px 5px gray;
                 }
                 .header {
                     display: flex;
@@ -56,7 +65,28 @@ const ReviewCard = (props:any) =>{
                     color: #505050;
                     background-color: white;
                     height: 61%;
-                }               
+                }   
+
+                .btns {
+                    display:flex;
+                    justify-content: flex-end;
+                }
+
+                button{
+                    border:0px;
+                    border-radius:10px;
+                    color:white;
+                    font-size:18px;
+                    font-weight:600;
+                    padding: 7px 18px;
+                    margin-right:5px;
+                }
+                .del{
+                    background-color:#F86258;
+                }
+                .alter{
+                    background-color:#88BEE4;
+                }            
             `}</style>
         </>
     );
