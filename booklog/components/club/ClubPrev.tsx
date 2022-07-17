@@ -22,7 +22,7 @@ export default function ClubPrev(props: ClubInfo) {
 
     if (title.length > 20) setTitle(`${title.substring(0, 20)}...`);
 
-    if (subtitle.length > 80) setSubtitle(`${subtitle.substring(0, 60)}...`);
+    if (subtitle.length > 80) setSubtitle(`${subtitle.substring(0, 40)}...`);
   }, []);
   return (
     <div className="container">

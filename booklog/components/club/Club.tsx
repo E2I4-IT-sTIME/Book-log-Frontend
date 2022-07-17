@@ -1,6 +1,21 @@
 import ClubPrev from "./ClubPrev";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import axios from "axios";
+
+interface arrayType {
+  id: number;
+  image: string;
+  info: string;
+  max_num: number;
+  // cur_num: number;
+  ment: string;
+  name: string;
+  onoff: boolean;
+  userId: number;
+  // question:Array<string>,
+  // tags:Array<string>
+}
 
 export default function Club() {
   const tmp = ["추리", "판타지"];
@@ -16,18 +31,24 @@ export default function Club() {
     else setOnoff("오프라인 모임");
   }, [checked]);
 
-  const club = {
-    img: "https://image.ajunews.com/content/image/2020/06/25/20200625170136679538.png",
-    title: "유아인 어쩌고",
-    onoff: false,
-    maxNum: 2,
-    curNum: 1,
-    subtitle:
-      "유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다",
-    tag: tmp,
+  useEffect(() => {
+    getArray();
+  }, []);
+
+  const [clubArray, setClubArray] = useState<Array<arrayType>>();
+  const getArray = () => {
+    axios
+      .get("http://15.164.193.190:8080/meetings")
+      .then((res) => {
+        const data = res.data;
+        setClubArray([...data]);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .then((res) => {});
   };
 
-  const clubArray = [club, club, club, club, club, club, club];
   return (
     <>
       <div className="container">
@@ -67,33 +88,39 @@ export default function Club() {
         </div>
         <div className="third-box-cover">
           <div className="third-box">
-            {checked
-              ? clubArray
-                  .filter((club: any) => club.onoff)
-                  .map((club: any) => (
-                    <ClubPrev
-                      img={club.img}
-                      title={club.title}
-                      onoff={club.onoff}
-                      maxNum={club.maxNum}
-                      curNum={club.curNum}
-                      subtitle={club.subtitle}
-                      tag={club.tag}
-                    />
-                  ))
-              : clubArray
-                  .filter((club: any) => !club.onoff)
-                  .map((club: any) => (
-                    <ClubPrev
-                      img={club.img}
-                      title={club.title}
-                      onoff={club.onoff}
-                      maxNum={club.maxNum}
-                      curNum={club.curNum}
-                      subtitle={club.subtitle}
-                      tag={club.tag}
-                    />
-                  ))}
+            {clubArray ? (
+              <>
+                {checked
+                  ? clubArray
+                      .filter((club: any) => club.onoff)
+                      .map((club: any) => (
+                        <ClubPrev
+                          img={club.image}
+                          title={club.name}
+                          onoff={club.onoff}
+                          maxNum={club.max_num}
+                          curNum={1}
+                          subtitle={club.info}
+                          tag={tmp}
+                        />
+                      ))
+                  : clubArray
+                      .filter((club: any) => !club.onoff)
+                      .map((club: any) => (
+                        <ClubPrev
+                          img={club.image}
+                          title={club.name}
+                          onoff={club.onoff}
+                          maxNum={club.max_num}
+                          curNum={1}
+                          subtitle={club.info}
+                          tag={tmp}
+                        />
+                      ))}
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { recoilCreateBookClubState } from "../../states/recoilCreateBookClub";
 import { useState, useEffect } from "react";
 import { ComponentProps, DOMAttributes } from "react";
 import Router from "next/router";
+import axios from "axios";
 
 type EventHandlers<T> = Omit<
   DOMAttributes<T>,
@@ -49,8 +50,42 @@ export default function CreateBookClubConfirm(props: stepProps) {
   };
 
   const nextBtn = () => {
-    if (confirm("작성한 내용이 올바른가요?\n올바르다면 확인버튼을 눌러주세요."))
-      nextSteps();
+    if (
+      confirm("작성한 내용이 올바른가요?\n올바르다면 확인버튼을 눌러주세요.")
+    ) {
+      saveInfo();
+    }
+  };
+
+  const saveInfo = () => {
+    axios
+      .post(
+        "http://15.164.193.190:8080/auth/meeting",
+        {
+          name: name,
+          info: content,
+          ment: welcome,
+          question: question,
+          tags: tag,
+          max_num: max_num,
+          image: img,
+          onoff: onoff,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        nextSteps();
+      })
+      .catch((res) => {
+        console.log("Error!");
+      });
   };
 
   return (

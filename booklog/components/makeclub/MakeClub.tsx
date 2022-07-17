@@ -148,10 +148,10 @@ export default function MakeClub(props: stepProps) {
             </div>
           </div>
           <div className="title-box">
-            <div className="title">독서모임 생성</div>
-            <div className="subtitle">
+            <span className="title">독서모임 생성</span>
+            <span className="subtitle">
               내가 원하는 독서모임이 없다면, 직접 만들어보세요!
-            </div>
+            </span>
             <div className="club-name">
               모임이름
               <input
@@ -328,8 +328,6 @@ export default function MakeClub(props: stepProps) {
         .title-box {
           display: flex;
           flex-direction: column;
-          gap: 8px;
-          padding-top: 20px;
         }
         .title {
           color: #324a86;
