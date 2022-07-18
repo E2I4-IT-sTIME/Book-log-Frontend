@@ -1,100 +1,69 @@
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { recoilCreateBookClubState } from "../../states/recoilCreateBookClub";
-import { useState, useEffect } from "react";
-import { ComponentProps, DOMAttributes } from "react";
 import Router from "next/router";
-import axios from "axios";
+import { useState, useEffect } from "react";
+import BasicModal from "../BasicModal";
 
-type EventHandlers<T> = Omit<
-  DOMAttributes<T>,
-  "children" | "dangerouslySetInnerHTML"
->;
-
-export type Event<
-  TElement extends keyof JSX.IntrinsicElements,
-  TEventHandler extends keyof EventHandlers<TElement>
-> = ComponentProps<TElement>[TEventHandler];
-
-interface CreateBookClubState {
+interface ClubInfoProps {
   name: string;
   img: string;
   onoff: boolean;
   max_num: number;
+  cur_num: number;
   tag: Array<string>;
   content: string;
   welcome: string;
   question: Array<string>;
 }
 
-interface stepProps {
-  nextSteps: () => void;
-}
-
-export default function CreateBookClubConfirm(props: stepProps) {
-  const { nextSteps } = props;
-  const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
-  const defaultState: CreateBookClubState = { ...recoilInfo };
-  const { name, img, onoff, max_num, tag, content, welcome, question } =
-    defaultState;
+export default function ClubInfo(props: ClubInfoProps) {
+  const {
+    name,
+    img,
+    onoff,
+    max_num,
+    cur_num,
+    tag,
+    content,
+    welcome,
+    question,
+  } = props;
   const router = Router;
-
   const cancel = () => {
-    if (
-      confirm(
-        "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
-      )
-    ) {
-      useResetRecoilState(recoilCreateBookClubState);
-      router.back();
-    }
+    router.back();
   };
 
-  const nextBtn = () => {
-    if (
-      confirm("작성한 내용이 올바른가요?\n올바르다면 확인버튼을 눌러주세요.")
-    ) {
-      saveInfo();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [answers, setAnswers] = useState<Array<string>>([]);
+
+  useEffect(() => {
+    question.forEach((value) => {
+      setAnswers((prev) => [...prev, ""]);
+    });
+  }, []);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const completeJoin = () => {
+    if (confirm("정말 가입하시겠습니까?")) {
+      console.log(answers);
     }
   };
-
-  const saveInfo = () => {
-    axios
-      .post(
-        "http://15.164.193.190:8080/auth/meeting",
-        {
-          name: name,
-          info: content,
-          ment: welcome,
-          question: question,
-          tags: tag,
-          max_num: max_num,
-          image: img,
-          onoff: onoff,
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        nextSteps();
-      })
-      .catch((res) => {
-        console.log("Error!");
-      });
+  const inputAnswer = (ind: number, value: string) => {
+    console.log(`인덱스 : ${ind} / 내용 : ${value}`);
+    setAnswers(
+      answers.map((answer, index) => (ind === index ? value : answer))
+    );
   };
 
   return (
     <div className="container">
-      <span className="title">입력한 정보가 맞는지 확인해주세요!</span>
+      <span className="title">{`앗, 아직 모임 회원이 아니시네요.\n간단하게 가입하고 독서를 즐겨보세요!`}</span>
       <div className="box">
         <div className="upper-box">
           <div className="img-box">
-            <img src={img} alt={name} className="attachment" />
             <div className="hover-box" />
             <div className="club-name">{name}</div>
           </div>
@@ -105,7 +74,7 @@ export default function CreateBookClubConfirm(props: stepProps) {
                 <span className="str">{name}</span> 은(는),
               </span>
               <span>
-                <span className="str">최대 {max_num}명</span>의{" "}
+                <span className="str">{`(${cur_num}/${max_num})명`}</span>의{" "}
                 <span className="str">
                   {onoff ? "온라인 모임" : "오프라인 모임"}
                 </span>{" "}
@@ -144,8 +113,30 @@ export default function CreateBookClubConfirm(props: stepProps) {
       </div>
       <div className="next-btns">
         <button onClick={() => cancel()}>취소</button>
-        <button onClick={() => nextBtn()}>생성완료</button>
+        <button onClick={() => openModal()}>답변하기</button>
       </div>
+      <BasicModal
+        open={modalOpen}
+        close={closeModal}
+        save={completeJoin}
+        header="답변하기"
+      >
+        <div className="modal">
+          {question.map((q, index) => (
+            <div key={index} className="modal-question">
+              <label htmlFor={`${index}`}>{q}</label>
+              <input
+                type="text"
+                placeholder="답변을 입력해주세요."
+                id={`${index}`}
+                value={answers[index]}
+                onChange={(e) => inputAnswer(index, e.target.value)}
+              />
+            </div>
+          ))}
+        </div>
+      </BasicModal>
+
       <style jsx>{`
         .container {
           padding-top: 40px;
@@ -159,6 +150,7 @@ export default function CreateBookClubConfirm(props: stepProps) {
           font-size: 32px;
           color: #324a86;
           font-weight: bold;
+          text-align: center;
           z-index: 1000;
         }
 
@@ -188,16 +180,13 @@ export default function CreateBookClubConfirm(props: stepProps) {
           width: 400px;
           height: 400px;
           border-radius: 100px;
+          background-image: url(${img});
+          background-size: cover;
+          background-position: 50%;
           box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.25),
             0 8px 16px -8px rgba(0, 0, 0, 0.3),
             0 -6px 16px -6px rgba(0, 0, 0, 0.025);
           position: relative;
-        }
-        .attachment {
-          max-width: 100%;
-          min-width: 400px;
-          height: auto;
-          display: block;
         }
         .hover-box {
           display: flex;
@@ -364,6 +353,27 @@ export default function CreateBookClubConfirm(props: stepProps) {
           border: 2px solid white;
           background-color: #324a86;
           color: white;
+        }
+
+        .modal {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .modal-question {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .modal-question label {
+          font-size: 14px;
+          color: #434343;
+        }
+
+        .modal-question input {
+          height: 18px;
         }
       `}</style>
     </div>

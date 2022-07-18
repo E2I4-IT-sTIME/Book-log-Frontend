@@ -81,7 +81,7 @@ export default function MyClub() {
             clubArray.map((club, index) => (
               <div key={index} className="card">
                 <ClubCardItems
-                  id={index}
+                  id={club.id}
                   img={club.img}
                   title={club.title}
                   onoff={club.onoff}

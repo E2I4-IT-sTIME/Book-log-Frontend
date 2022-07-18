@@ -44,6 +44,7 @@ export default function MakeClub(props: stepProps) {
   const router = Router;
 
   const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
+  const reset = useResetRecoilState(recoilCreateBookClubState);
   const defaultState: CreateBookClubState = { ...recoilInfo };
 
   const handleOnChange: Event<"input", "onChange"> = (e) => {
@@ -85,7 +86,7 @@ export default function MakeClub(props: stepProps) {
         "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
       )
     ) {
-      useResetRecoilState(recoilCreateBookClubState);
+      reset;
       router.back();
     }
   };

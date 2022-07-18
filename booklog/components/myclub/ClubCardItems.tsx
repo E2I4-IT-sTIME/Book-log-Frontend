@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Router from "next/router";
 
 interface clubInfo {
   id: number;
@@ -28,6 +29,7 @@ export default function ClubCaredItems(props: clubInfo) {
     deleteFunction,
     index,
   } = props;
+  const router = Router;
 
   const deleteClub = () => {
     if (
@@ -41,8 +43,14 @@ export default function ClubCaredItems(props: clubInfo) {
     }
   };
 
+  const onClickBody = () => {
+    router.push({
+      pathname: `meeting/${id}`,
+    });
+  };
+
   return (
-    <div className="container">
+    <div className="container" onClick={() => onClickBody()}>
       {deleteState ? (
         <button className="delete-box" onClick={() => deleteClub()}>
           X
