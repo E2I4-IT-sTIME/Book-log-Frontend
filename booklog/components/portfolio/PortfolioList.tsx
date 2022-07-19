@@ -1,44 +1,49 @@
 import axios from "axios";
+import { useEffect } from "react";
 import PortfolioCard from "./PortfolioCard";
 
-const PortfolioList = () => {
-  const username = "";
+const PortfolioList = (props:any) => {  
+  let idx = 0;
+  const userIndex = "1" //수정부분
 
-  const LookupHandler = (e:any) => {
-    e.preventDefault();
-    axios
-      .get(
-        "http://15.164.193.190:8080/api/user/11/porfols",
-      {
+  let portfolio_arr: any[] = props.data;
+
+  useEffect(() =>{
+    LookupHandler();
+  }, []);
+
+  const LookupHandler = async () => {
+    console.log("함수 실행");
+    try {
+      let res = await axios({
+        url: "http://15.164.193.190:8080/api/user/" + userIndex + "/portfolios",
+        method: 'get',
         headers: {
           "Content-type": "application/json",
           Accept: "application/json",
           withCredentials:true,
-          Authorization: `${localStorage.getItem("token")}`,
-        },
+          Authorization: `${localStorage.getItem("token")}`
+        }       
       })
-      .then((res) => {
+      if(res.status == 200){
         console.log(res.data);
-      })
+        let portfolios_data = JSON.parse(res.data);
+        portfolio_arr = portfolios_data;
+      }
+    } catch(err){
+      console.log(err);  
+    }
   };
 
- // LookupHandler();
-  const card = {
-    id: 1,
-    title : "독서 동아리 포트폴리오",
-    sub : "포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세"
-  }
-  const portfolio_arr: any[] = [ card, card, card, card, card, card, card, card];
   return (
     <>
-    <div className="background" onClick={LookupHandler}>
+    <div className="background">
       {portfolio_arr.map((ele) => {
-        let id = ele.id;
         let title = ele.title;
         let sub = ele.sub; 
-        return <PortfolioCard title = {title} sub = {sub} key={id}/>
+        idx++;
+        return <PortfolioCard title = {title} sub = {sub} key = {idx} id={idx}/>
       })}
-
     </div>
     <style jsx>{`
         .background{
