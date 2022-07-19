@@ -44,6 +44,7 @@ export default function MakeClub(props: stepProps) {
   const router = Router;
 
   const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
+  const reset = useResetRecoilState(recoilCreateBookClubState);
   const defaultState: CreateBookClubState = { ...recoilInfo };
 
   const handleOnChange: Event<"input", "onChange"> = (e) => {
@@ -85,7 +86,7 @@ export default function MakeClub(props: stepProps) {
         "모임 생성 작업을 정말 취소하시겠습니까?\n작성하던 내용은 저장되지 않습니다."
       )
     ) {
-      useResetRecoilState(recoilCreateBookClubState);
+      reset;
       router.back();
     }
   };
@@ -148,10 +149,10 @@ export default function MakeClub(props: stepProps) {
             </div>
           </div>
           <div className="title-box">
-            <div className="title">독서모임 생성</div>
-            <div className="subtitle">
+            <span className="title">독서모임 생성</span>
+            <span className="subtitle">
               내가 원하는 독서모임이 없다면, 직접 만들어보세요!
-            </div>
+            </span>
             <div className="club-name">
               모임이름
               <input
@@ -328,8 +329,6 @@ export default function MakeClub(props: stepProps) {
         .title-box {
           display: flex;
           flex-direction: column;
-          gap: 8px;
-          padding-top: 20px;
         }
         .title {
           color: #324a86;
