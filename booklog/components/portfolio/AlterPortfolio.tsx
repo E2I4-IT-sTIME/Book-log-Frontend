@@ -9,6 +9,11 @@ interface portfolioContents {
 
 const AlterPortfolio = (props:any) => {
     const cardId = props.id;
+    
+    let beforeProfol = {
+        title : "기존 title",
+        content : "기존 content"
+    }
 
     const savePortfolioData  = (enteredData: portfolioContents) => {
         const portfolioData  = {
@@ -16,6 +21,34 @@ const AlterPortfolio = (props:any) => {
         }
         alterPortfolio(portfolioData);
     }
+
+    const beforePortfolio = async () => {
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/portfolio/" + cardId,
+                method: 'get',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                let beforeData = res.data;
+                let title = beforeData.title;
+                let content = beforeData.content;
+                beforeProfol = {
+                    title : title,
+                    content : content
+                }
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    };
+
+    beforePortfolio();
 
     const alterPortfolio = async (portfolioData: portfolioContents) => {
         console.log("함수 실행");
@@ -41,7 +74,7 @@ const AlterPortfolio = (props:any) => {
         }
     };
 
-    return <InputPortfolio onSavedata={savePortfolioData}/>
+    return <InputPortfolio beforeProfol={beforeProfol} onSavedata={savePortfolioData}/>
 }
 
 export default AlterPortfolio;

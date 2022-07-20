@@ -8,6 +8,7 @@ import router from "next/router";
 
 const Bookportfolio = () => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
 
     let username = "Euna";
     let big_text = isEdit ? "Edit " : username + "'s ";
@@ -27,10 +28,12 @@ const Bookportfolio = () => {
 
     const onChakeMake = () =>{
         let new_id = portfolio_arr.length + 1;
+        setIsMake(true);
         router.push("/portfolio/" + new_id);
     }
 
     const OnCancle = () => {
+        setIsMake(false);
         setIsEdit(false);
     }
     
