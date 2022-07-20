@@ -1,27 +1,52 @@
+import axios from 'axios';
 import Link from 'next/link';
-import { useRecoilState, 
-    useRecoilValue, 
-    useSetRecoilState, 
-    useResetRecoilState 
-  } from 'recoil';
-
-  import { isEditState } from "../../states/recoilBookPortfolio";
+import router from 'next/router';
+import { useRecoilState } from 'recoil';
+import {isEditState } from "../../states/recoilBookPortfolio";
 
 
 const PortfolioCard = (props: any) => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const cardId = props.id;
 
+    const deleltePortfolio = async (e:any) =>{
+        console.log("삭제 함수 실행");
+        console.log(cardId);
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/portfolio/" + cardId,
+                method: 'delete',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                console.log(res);
+                alert("포트폴리오가 삭제되었습니다 !");
+                router.push("/portfolio");
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    }
+
+    const alterPortfolio = () => {
+        router.push("/portfolio/"+ cardId);
+    }
     return (
         <>
-        <Link href="/reveiw">
+
         <div className="card">
             <div className="title">{props.title}</div>
             <div className="sub">{props.sub}</div>
-            {isEdit ?  <div className="btns"><button className="del">삭제</button><button className="alter">수정</button></div> : 
+            {isEdit ?  <div className="btns"><button className="del" onClick={deleltePortfolio}>삭제</button><button className="alter" onClick={alterPortfolio}>수정</button></div> : 
             null
             }           
         </div>
-        </Link>
+
         <style jsx>{`
         .card{
             background-color:#E4EAF5;

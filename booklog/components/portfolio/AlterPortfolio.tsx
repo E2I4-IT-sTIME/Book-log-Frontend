@@ -1,8 +1,5 @@
 import axios from "axios";
 import router from "next/router";
-import { useState } from "react";
-import { useRecoilState } from "recoil";
-import { isEditState } from "../../states/recoilBookPortfolio";
 import InputPortfolio from "./InputPortfolio";
 
 interface portfolioContents {
@@ -10,19 +7,21 @@ interface portfolioContents {
     desc : string
 }
 
-const MakePortfolio = () => {
+const AlterPortfolio = (props:any) => {
+    const cardId = props.id;
+
     const savePortfolioData  = (enteredData: portfolioContents) => {
         const portfolioData  = {
             ...enteredData
         }
-        makePortfolio(portfolioData);
+        alterPortfolio(portfolioData);
     }
 
-    const makePortfolio = async (portfolioData: portfolioContents) => {
+    const alterPortfolio = async (portfolioData: portfolioContents) => {
         console.log("함수 실행");
         try {
             let res = await axios({
-                url: "http://15.164.193.190:8080/auth/portfolio",
+                url: "http://15.164.193.190:8080/auth/portfolio/" + cardId,
                 method: 'post',
                 data : portfolioData,
                 headers: {
@@ -34,17 +33,15 @@ const MakePortfolio = () => {
             })
             if(res.status == 200){
                 console.log(res);
-                alert("포트폴리오가 생성되었습니다 !");
+                alert("포트폴리오가 수정되었습니다 !");
                 router.push("/portfolio");
             }
         } catch(err) {
             console.log(err);  
         }
     };
-    
 
     return <InputPortfolio onSavedata={savePortfolioData}/>
-    
 }
 
-export default MakePortfolio;
+export default AlterPortfolio;

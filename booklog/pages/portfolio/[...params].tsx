@@ -1,65 +1,36 @@
-import { useState } from "react";
-import MakePortfolio from "./MakePortfolio";
-import PortfolioList from "./PortfolioList";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { isEditState, isMakeState } from "../../states/recoilBookPortfolio";
-import AlterPortfolio from "./AlterPortfolio";
-import router from "next/router";
+import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import AlterPortfolio from "../../components/portfolio/AlterPortfolio";
+import MakePortfolio from "../../components/portfolio/MakePortfolio";
+import { isMakeState } from "../../states/recoilBookPortfolio";
 
-const Bookportfolio = () => {
-    const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+const func = () => {
+    const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
+    let big_text = isMake ? "New " : "Alter";
+    let sub_text = isMake ? "새로운 포트폴리오를 추가해보세요 ! " : "포트폴리오를 편집해보세요 ! " ;
 
-    let username = "Euna";
-    let big_text = isEdit ? "Edit " : username + "'s ";
-    let sub_text = isEdit ? "포트폴리오를 편집해보세요 ! " :  "나만의 독서 포트폴리오";
+    const router = useRouter();
+    const card_id = router.query.params;
 
-    const card = {
-        title : "독서 동아리 포트폴리오",
-        sub : "포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세"
-      }
-    
-    let portfolio_arr: any[] = [card, card, card, card, card, card, card, card];
-
-    const onChangeEdit = () => {
-        setIsEdit(true);
-        if(isEdit == true) setIsEdit(false);
-    }
-
-    const onChakeMake = () =>{
-        let new_id = portfolio_arr.length + 1;
-        router.push("/portfolio/" + new_id);
-    }
-
-    const OnCancle = () => {
-        setIsEdit(false);
-    }
-    
-    return (
+     return (
         <>
         <div className="background">
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" > <span className={`${isEdit? 'textcolor' : ''} `}>{big_text}</span> Portfolio.</div>
+                        <div className="big_text" > <span className={`${isMake? 'textcolor' : ''} `}>{big_text}</span> Portfolio.</div>
                         <div className="small_text">{sub_text}</div>
                     </div>
                     <hr />
                     <div className="buttons">
-                        <button onClick={onChakeMake}>+ 만들기</button>
-                        <button onClick={onChangeEdit}>편집하기</button>
+                        <button>+ 만들기</button>
+                        <button>편집하기</button>
                     </div>
                 </div>
                 <div className="content">
-                    <PortfolioList data={portfolio_arr} />
+                    {isMake ? <MakePortfolio/> : <AlterPortfolio  id={card_id} />}
                 </div>
-
             </div>
-            {isEdit ? 
-                <div className="edit_div">
-                    <button className="cancle" onClick={OnCancle}>취소</button>
-                    <button className="save">저장</button>
-                </div>
-            : null}
         </div>
         <style jsx>{`
             .background {
@@ -162,5 +133,4 @@ const Bookportfolio = () => {
     );
 }
 
-export default Bookportfolio;
-
+export default func

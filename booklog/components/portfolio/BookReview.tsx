@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useRecoilState } from "recoil";
 import { isEditState, isMakeState } from "../../states/recoilBookReview";
 import MakeReview from "./MakeReview";
@@ -20,6 +21,29 @@ const BookReview = () => {
         setIsMake(true);
         if(isMake == true) setIsMake(false);
     }
+
+    const makePortfolio = () => {
+        axios
+          .delete(
+            "http://15.164.193.190:8080/auth/review/1",
+            {
+                headers: {
+                  "Content-type": "application/json",
+                  Accept: "application/json",
+                  Authorization: `${localStorage.getItem("token")}`,
+                },
+              }
+          )
+          .then((res) => {
+            console.log(res);
+            localStorage.setItem("token", res.headers.authorization);
+          })
+          .catch((res) => {
+            console.log("Error!");
+          });
+      };
+
+      makePortfolio();
     
     return(
         <>      
@@ -36,7 +60,7 @@ const BookReview = () => {
                         <form><input type="text" className="text" placeholder="서평 검색하기"></input></form>
                         <div className="buttons">
                             <button onClick={onChangeEdit}>편집하기</button>
-                            <button onClick={onChakeMake}>+ 서평쓰기</button>
+                            <button onClick={onChakeMake}>+ 서평 추가</button>
                         </div>
                     </div>
                     {isMake ? <MakeReview /> : <div className="cards"><ReviewList /></div>}                  
