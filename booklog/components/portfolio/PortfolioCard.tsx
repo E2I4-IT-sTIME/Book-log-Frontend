@@ -7,6 +7,7 @@ import {isEditState } from "../../states/recoilBookPortfolio";
 
 const PortfolioCard = (props: any) => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    
     const cardId = props.id;
 
     const deleltePortfolio = async (e:any) =>{
