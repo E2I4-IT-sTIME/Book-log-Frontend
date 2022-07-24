@@ -12,10 +12,12 @@
     "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@types/react-calendar": "^3.5.1",
     "axios": "^0.27.2",
     "framer-motion": "^4",
     "next": "12.1.1",
     "react": "^18.2.0",
+    "react-calendar": "^3.7.0",
     "react-dom": "^18.2.0",
     "recoil": "^0.7.4"
   },

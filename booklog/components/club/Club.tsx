@@ -45,8 +45,7 @@ export default function Club() {
       })
       .catch((error) => {
         console.log(error);
-      })
-      .then((res) => {});
+      });
   };
 
   return (
@@ -95,6 +94,7 @@ export default function Club() {
                       .filter((club: any) => club.onoff)
                       .map((club: any) => (
                         <ClubPrev
+                          id={club.id}
                           img={club.image}
                           title={club.name}
                           onoff={club.onoff}
@@ -108,6 +108,7 @@ export default function Club() {
                       .filter((club: any) => !club.onoff)
                       .map((club: any) => (
                         <ClubPrev
+                          id={club.id}
                           img={club.image}
                           title={club.name}
                           onoff={club.onoff}

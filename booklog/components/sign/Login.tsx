@@ -34,6 +34,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         Email: userEmail,
         password: userPassword,
       };
+      console.log(loginData);
       loginHandler(loginData);
     } else {
       //경고메시지 생성
@@ -45,7 +46,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
       .post(
         "http://15.164.193.190:8080/login",
         {
-          username: loginData.Email,
+          email: loginData.Email,
           password: loginData.password,
         },
         { withCredentials: true }
