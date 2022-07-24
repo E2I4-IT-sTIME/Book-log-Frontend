@@ -1,49 +1,45 @@
 import axios from "axios";
+import router from "next/router";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { isEditState, isMakeState } from "../../states/recoilBookReview";
 import MakeReview from "./MakeReview";
 import ReviewList from "./ReviewList";
 
 const BookReview = () => {
-    const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
-    const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState);
+    const [isTotal, setIsTotal] = useState(false);
+    const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
+    const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState);
+
+    const card = {
+        id: 1,
+        title: "해리포터는 역시 재밌다.",
+        book_name: "해리 포터와 마법사의 돌| J. K. 롤링",
+        time: "2022.07.04 화 05:05 pm",
+        content: "해리포터를 정말 오랜만에 봤다. 영화로 보는 것과 책으로 보는 것은 정말 다르다. 재밌다. 서평 내용 미리보기 서평 내용 미리보기 서평 내용 미리보기 서평 내용 미. 정말 오랜만에 봤다. 영화로 보는 것과 책으로 보는 것은 정말 다르다. "
+    }
+    let review_arr: any[] = [card, card, card, card];
 
     const onChangeEdit = () => {
-        if(isMake == true) return;
-
-        setIsEdit(true);
-        if(isEdit == true) setIsEdit(false);
+        setIsReviewEdit(true);
+        if(isReviewEdit == true) setIsReviewEdit(false);
     }
 
-    const onChakeMake = () =>{
-        if(isEdit == true) return;
-
-        setIsMake(true);
-        if(isMake == true) setIsMake(false);
+    const onChangeTotal = () =>{
+        if(isTotal){
+            let new_id = review_arr.length + 1;
+            setIsReviewMake(true);
+            router.push("/review/" + new_id);
+        }else{
+            setIsTotal(true);
+        }
     }
 
-    const makePortfolio = () => {
-        axios
-          .delete(
-            "http://15.164.193.190:8080/auth/review/1",
-            {
-                headers: {
-                  "Content-type": "application/json",
-                  Accept: "application/json",
-                  Authorization: `${localStorage.getItem("token")}`,
-                },
-              }
-          )
-          .then((res) => {
-            console.log(res);
-            localStorage.setItem("token", res.headers.authorization);
-          })
-          .catch((res) => {
-            console.log("Error!");
-          });
-      };
+    const OnCancle = () => {
+        setIsReviewMake(false);
+        setIsReviewEdit(false);
+    }
 
-      makePortfolio();
     
     return(
         <>      
@@ -51,7 +47,7 @@ const BookReview = () => {
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" >독서 동아리 포트폴리오</div>
+                        <div className="big_text" >{!isTotal ? "독서 동아리 포트폴리오" : "나의 서평 목록"}</div>
                     </div>                  
                 </div>
                 <hr />
@@ -60,15 +56,15 @@ const BookReview = () => {
                         <form><input type="text" className="text" placeholder="서평 검색하기"></input></form>
                         <div className="buttons">
                             <button onClick={onChangeEdit}>편집하기</button>
-                            <button onClick={onChakeMake}>+ 서평 추가</button>
+                            <button onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+서평 추가"}</button>
                         </div>
                     </div>
-                    {isMake ? <MakeReview /> : <div className="cards"><ReviewList /></div>}                  
+                    <div className="cards"><ReviewList data={review_arr}/></div>                  
                 </div>
             </div> 
-            {isEdit ? 
+            {isReviewEdit ? 
                 <div className="edit_div">
-                    <button className="cancle">취소</button>
+                    <button className="cancle" onClick={OnCancle}>취소</button>
                     <button className="save">저장</button>
                 </div>
             : null}

@@ -1,12 +1,12 @@
 import { atom } from "recoil";
 
 export const isEditState = atom<boolean>({
-    key: "isEdit",
+    key: "isReviewEdit",
     default: false,
 })
 
 export const isMakeState = atom<boolean>({
-    key: "isMake",
+    key: "isReviewMake",
     default: false,
 })
 

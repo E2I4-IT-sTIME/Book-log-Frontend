@@ -34,13 +34,16 @@ const PortfolioCard = (props: any) => {
         }
     }
 
+    const onClickCard = () =>{
+        if(!isEdit) router.push("/review");
+    }
+
     const alterPortfolio = () => {
         router.push("/portfolio/"+ cardId);
     }
     return (
         <>
-
-        <div className="card">
+        <div className="card" onClick={onClickCard}>
             <div className="title">{props.title}</div>
             <div className="sub">{props.sub}</div>
             {isEdit ?  <div className="btns"><button className="del" onClick={deleltePortfolio}>삭제</button><button className="alter" onClick={alterPortfolio}>수정</button></div> : 
