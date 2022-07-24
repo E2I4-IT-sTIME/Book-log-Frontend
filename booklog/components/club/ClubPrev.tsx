@@ -1,7 +1,9 @@
 import tmp from "./Img/frog.png";
 import { useState, useEffect } from "react";
+import Router from "next/router";
 
 interface ClubInfo {
+  id: string;
   img: string;
   title: string;
   onoff: boolean;
@@ -12,7 +14,8 @@ interface ClubInfo {
 }
 
 export default function ClubPrev(props: ClubInfo) {
-  const { img, title, onoff, maxNum, curNum, subtitle, tag } = props;
+  const { id, img, title, onoff, maxNum, curNum, subtitle, tag } = props;
+  const router = Router;
   const [onoffTag, setonoff] = useState("");
   const [clubTitle, setTitle] = useState(title);
   const [clubSubtitle, setSubtitle] = useState(subtitle);
@@ -24,8 +27,15 @@ export default function ClubPrev(props: ClubInfo) {
 
     if (subtitle.length > 80) setSubtitle(`${subtitle.substring(0, 40)}...`);
   }, []);
+
+  const onClickBody = () => {
+    router.push({
+      pathname: `meeting/${id}`,
+    });
+  };
+
   return (
-    <div className="container">
+    <div className="container" onClick={() => onClickBody()}>
       <div className="prev-box">
         <img src={img} alt={title} className="club-img" />
         <div className="info-box">

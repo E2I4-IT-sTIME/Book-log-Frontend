@@ -65,7 +65,7 @@ export default function CreateBookClubConfirm(props: stepProps) {
           name: name,
           info: content,
           ment: welcome,
-          question: question,
+          questions: question,
           tags: tag,
           max_num: max_num,
           image: img,

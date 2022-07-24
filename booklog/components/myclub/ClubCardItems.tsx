@@ -50,7 +50,7 @@ export default function ClubCaredItems(props: clubInfo) {
   };
 
   return (
-    <div className="container" onClick={() => onClickBody()}>
+    <div className="container">
       {deleteState ? (
         <button className="delete-box" onClick={() => deleteClub()}>
           X
@@ -58,7 +58,7 @@ export default function ClubCaredItems(props: clubInfo) {
       ) : (
         <></>
       )}
-      <div className="inner-box">
+      <div className="inner-box" onClick={() => onClickBody()}>
         <div className="tag-box">
           {tag.map((t) => (
             <span className="tag">#{t}</span>
