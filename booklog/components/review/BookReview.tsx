@@ -1,12 +1,14 @@
 import axios from "axios";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { isEditState, isMakeState } from "../../states/recoilBookReview";
-import MakeReview from "./MakeReview";
 import ReviewList from "./ReviewList";
 
 const BookReview = () => {
+    const router = useRouter();
+    const port_id = router.query.port_id;
+
     const [isTotal, setIsTotal] = useState(false);
     const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState);
@@ -27,9 +29,8 @@ const BookReview = () => {
 
     const onChangeTotal = () =>{
         if(isTotal){
-            let new_id = review_arr.length + 1;
             setIsReviewMake(true);
-            router.push("/review/" + new_id);
+            router.push(`/portfolio/${port_id}/review/new`);
         }else{
             setIsTotal(true);
         }

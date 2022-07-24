@@ -1,23 +1,25 @@
 import axios from "axios";
-import router from "next/router";
+import router, { useRouter } from "next/router";
+import { useState } from "react";
 import InputReview from "./InputReview";
 
 interface reviewContents {
     title : string,
     book_name : string,
-    time : Date,
     content : string
 }
 
 const AlterReview = (props:any) =>{
+    const router = useRouter();
+    const port_id = router.query.port_id;
     const cardId = props.id;
-    
-    let beforeRev = {
+
+    const [beforeRev, setBeforeRev] = useState({
         title : "기존 서평제목",
         book_name : "기존 책제목",
-        time : "2022-02-21",
         content : "기존 내용"
-    }
+    })
+    
 
     const saveReviewData  = (enteredData: reviewContents) => {
         const reveiwData  = {
@@ -43,13 +45,11 @@ const AlterReview = (props:any) =>{
                 let title = beforeData.title;
                 let content = beforeData.content;
                 let book_name = beforeData.book_name;
-                let time = beforeData.time;
-                beforeRev = {
+                setBeforeRev({
                     title : title,
                     book_name : book_name,
-                    time : time,
                     content : content
-                }
+                });
             }
         } catch(err) {
             console.log(err);  
@@ -75,7 +75,7 @@ const AlterReview = (props:any) =>{
             if(res.status == 200){
                 console.log(res);
                 alert("서평이 수정되었습니다 !");
-                router.push("/review");
+                router.push(`/portfolio/${port_id}/review`);
             }
         } catch(err) {
             console.log(err);  

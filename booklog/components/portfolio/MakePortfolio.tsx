@@ -2,12 +2,12 @@ import axios from "axios";
 import router from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { isEditState } from "../../states/recoilBookPortfolio";
+import { userIndexState } from "../../states/recoilUserIndex";
 import InputPortfolio from "./InputPortfolio";
 
 interface portfolioContents {
     title : string,
-    desc : string
+    content : string
 }
 
 const MakePortfolio = () => {
@@ -15,6 +15,7 @@ const MakePortfolio = () => {
         const portfolioData  = {
             ...enteredData
         }
+        console.log(portfolioData);
         makePortfolio(portfolioData);
     }
 
@@ -33,7 +34,7 @@ const MakePortfolio = () => {
                 }       
             })
             if(res.status == 200){
-                console.log(res);
+                console.log(res.data);
                 alert("포트폴리오가 생성되었습니다 !");
                 router.push("/portfolio");
             }

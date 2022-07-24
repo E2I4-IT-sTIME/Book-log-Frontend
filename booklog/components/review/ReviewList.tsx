@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userIndexState } from "../../states/recoilUserIndex";
 import ReviewCard from "./ReviewCard";
 
 const ReviewList = (props:any) => {
-    let idx = 0;
-    const userIndex = "1" //수정부분
-
-    let review_arr: any[] = props.data;
+    const [userIndex, setUserIndex] = useRecoilState<number>(userIndexState);
+    const [review_arr, setReview_arr] = useState([props.data]);
+    console.log(review_arr.length);
 
     useEffect(() =>{
         LookupHandler();
@@ -16,7 +17,7 @@ const ReviewList = (props:any) => {
         console.log("함수 실행");
         try {
         let res = await axios({
-            url: "http://15.164.193.190:8080/api/user/" + userIndex + "/reviews",
+            url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/reviews",
             method: 'get',
             headers: {
             "Content-type": "application/json",
@@ -26,24 +27,25 @@ const ReviewList = (props:any) => {
             }       
         })
         if(res.status == 200){
-            console.log(res.data);
-            let review_data = JSON.parse(res.data);
-            review_arr = review_data;
+            console.log(res.data.reviewResList);
+            let review_data = res.data.reviewResList;
+            setReview_arr(review_data);
         }
         } catch(err){
-        console.log(err);  
+            console.log(err);  
         }
     };
     return (
         <>
             <div className="background" >
-                {review_arr.map((ele) => {
+                {review_arr.length == 0 ? null :
+                review_arr.map((ele) => {
                     let title = ele.title;
                     let book_name = ele.book_name;
-                    let time = ele.time;
+                    let createDate = ele.createDate;
+                    let id = ele.review_id;
                     let content = ele.content;
-                    idx++;
-                    return <ReviewCard title={title} book_name={book_name} time={time} content={content} key={idx} id={idx} />
+                    return <ReviewCard title={title} book_name={book_name} createDate={createDate} content={content} key={id} id={id} />
                 })}
             </div>
             <style jsx>{`

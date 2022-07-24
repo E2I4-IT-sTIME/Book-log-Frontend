@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import AlterPortfolio from "../../components/portfolio/AlterPortfolio";
-import MakePortfolio from "../../components/portfolio/MakePortfolio";
-import { isMakeState } from "../../states/recoilBookPortfolio";
+import AlterPortfolio from "../../../components/portfolio/AlterPortfolio";
+import MakePortfolio from "../../../components/portfolio/MakePortfolio";
+import { isMakeState } from "../../../states/recoilBookPortfolio";
 
 const func = () => {
     const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
@@ -10,7 +10,7 @@ const func = () => {
     let sub_text = isMake ? "새로운 포트폴리오를 추가해보세요 ! " : "포트폴리오를 편집해보세요 ! " ;
 
     const router = useRouter();
-    const card_id = router.query.params;
+    const card_id = router.query.port_id;
 
      return (
         <>

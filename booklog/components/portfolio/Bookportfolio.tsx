@@ -19,7 +19,7 @@ const Bookportfolio = () => {
         sub : "포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세"
       }
     
-    let portfolio_arr: any[] = [card, card, card, card, card, card, card, card];
+    let portfolio_arr: any[] = [card, card, card, card, card, card, card];
 
     const onChangeEdit = () => {
         setIsEdit(true);
@@ -27,9 +27,8 @@ const Bookportfolio = () => {
     }
 
     const onChakeMake = () =>{
-        let new_id = portfolio_arr.length + 1;
         setIsMake(true);
-        router.push("/portfolio/" + new_id);
+        router.push("/portfolio/new");
     }
 
     const OnCancle = () => {

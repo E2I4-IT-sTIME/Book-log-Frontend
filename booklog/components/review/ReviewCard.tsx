@@ -1,10 +1,13 @@
 import axios from "axios";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import { isEditState } from "../../states/recoilBookReview";
+import { isEditState, isMakeState } from "../../states/recoilBookReview";
 
 const ReviewCard = (props:any) =>{
     const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
+    const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
+    const router = useRouter();
+    const port_id = router.query.port_id;
 
     const cardId = props.id;
 
@@ -25,7 +28,8 @@ const ReviewCard = (props:any) =>{
             if(res.status == 200){
                 console.log(res);
                 alert("서평이 삭제되었습니다 !");
-                router.push("/review");
+                setIsReviewEdit(false);
+                location.reload();
             }
         } catch(err) {
             console.log(err);  
@@ -33,7 +37,8 @@ const ReviewCard = (props:any) =>{
     }
 
     const alterPortfolio = () => {
-        router.push("/review/"+ cardId);
+        setIsReviewMake(true);
+        router.push(`/portfolio/${port_id}/review/${cardId}`);
     }
     
     return(
@@ -43,7 +48,7 @@ const ReviewCard = (props:any) =>{
                     <div className="title">{props.title}</div>
                     <div className="desc">
                         <div className="text">{props.book_name}</div>
-                        <div className="time">{props.time}</div>
+                        <div className="time">{props.createDate}</div>
                     </div>
                 </div>
                 <div className="content">

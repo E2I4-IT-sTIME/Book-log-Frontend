@@ -1,22 +1,23 @@
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { isMakeState } from "../../states/recoilBookReview";
 
 const InputReview = (props:any) => {
+    const router = useRouter();
+    const port_id = router.query.port_id;
+    
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
     const [title, setTitle] = useState(isReviewMake ? "" : props.beforeRev.title);
     const [content, setContent] = useState(isReviewMake ? "" : props.beforeRev.content);
     const [book_name, setBook_name] = useState(isReviewMake ? "" : props.beforeRev.book_name);
-    const [time, setTime] = useState(isReviewMake ? "" : props.beforeRev.time);
 
     const submitHandler = (e:any) => {
         e.preventDefault();
         const reviewData = {
             title: title,
             book_name:book_name,
-            content:content,
-            time:time
+            content: content,
         }
         props.onSavedata(reviewData);
     }
@@ -30,13 +31,10 @@ const InputReview = (props:any) => {
     const book_nameChangeHandler = (e:any) =>{ 
         setBook_name(e.target.value);
     }
-    const timeChangeHandler = (e:any) =>{ 
-        setTime(e.target.value);
-    }
 
     const onCancle = () =>{
         setIsReviewMake(false);
-        router.push("/review/");
+        router.push(`/portfolio/${port_id}/review`);
     }
 
     return (
@@ -53,7 +51,7 @@ const InputReview = (props:any) => {
         <textarea className="content_input" onChange={contentChangeHandler} value={content}></textarea>
         <div className="edit_div">
                 <button className="cancle" onClick={onCancle}>취소</button>
-                <button className="save" onClick={(e) => submitHandler}>저장</button>
+                <button className="save" onClick={submitHandler}>저장</button>
         </div>
     </form>
     <style jsx>{`  
