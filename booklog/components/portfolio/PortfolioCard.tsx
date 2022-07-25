@@ -2,7 +2,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import router from 'next/router';
 import { useRecoilState } from 'recoil';
-import {isEditState } from "../../states/recoilBookPortfolio";
+import { isEditState } from "../../states/recoilBookPortfolio";
 
 
 const PortfolioCard = (props: any) => {
@@ -27,7 +27,8 @@ const PortfolioCard = (props: any) => {
             if(res.status == 200){
                 console.log(res);
                 alert("포트폴리오가 삭제되었습니다 !");
-                router.push("/portfolio");
+                setIsEdit(false);
+                location.reload();
             }
         } catch(err) {
             console.log(err);  
@@ -35,7 +36,7 @@ const PortfolioCard = (props: any) => {
     }
 
     const onClickCard = () =>{
-        if(!isEdit) router.push("/review");
+        if(!isEdit) router.push("/portfolio/"+ cardId + "/review");
     }
 
     const alterPortfolio = () => {
@@ -45,7 +46,7 @@ const PortfolioCard = (props: any) => {
         <>
         <div className="card" onClick={onClickCard}>
             <div className="title">{props.title}</div>
-            <div className="sub">{props.sub}</div>
+            <div className="sub">{props.content}</div>
             {isEdit ?  <div className="btns"><button className="del" onClick={deleltePortfolio}>삭제</button><button className="alter" onClick={alterPortfolio}>수정</button></div> : 
             null
             }           

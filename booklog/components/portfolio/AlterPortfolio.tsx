@@ -1,5 +1,8 @@
 import axios from "axios";
 import router from "next/router";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userIndexState } from "../../states/recoilUserIndex";
 import InputPortfolio from "./InputPortfolio";
 
 interface portfolioContents {
@@ -9,11 +12,18 @@ interface portfolioContents {
 
 const AlterPortfolio = (props:any) => {
     const cardId = props.id;
-    
-    let beforeProfol = {
-        title : "기존 title",
-        content : "기존 content"
-    }
+    const [userIndex, setUserIndex] = useRecoilState<number>(userIndexState);
+
+    const [beforeProfol, setBeforeProfol] = useState({
+        title : "",
+        content : ""
+    })
+
+    useEffect(() =>{
+        beforePortfolio();
+    }, []);
+
+    console.log(beforeProfol);
 
     const savePortfolioData  = (enteredData: portfolioContents) => {
         const portfolioData  = {
@@ -25,7 +35,7 @@ const AlterPortfolio = (props:any) => {
     const beforePortfolio = async () => {
         try {
             let res = await axios({
-                url: "http://15.164.193.190:8080/auth/portfolio/" + cardId,
+                url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios/" + cardId,
                 method: 'get',
                 headers: {
                 "Content-type": "application/json",
@@ -38,24 +48,21 @@ const AlterPortfolio = (props:any) => {
                 let beforeData = res.data;
                 let title = beforeData.title;
                 let content = beforeData.content;
-                beforeProfol = {
+                setBeforeProfol({
                     title : title,
                     content : content
-                }
+                })
             }
         } catch(err) {
             console.log(err);  
         }
     };
-
-    beforePortfolio();
-
     const alterPortfolio = async (portfolioData: portfolioContents) => {
         console.log("함수 실행");
         try {
             let res = await axios({
                 url: "http://15.164.193.190:8080/auth/portfolio/" + cardId,
-                method: 'post',
+                method: 'patch',
                 data : portfolioData,
                 headers: {
                 "Content-type": "application/json",

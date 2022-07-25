@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
-import AlterReview from "../../components/review/AlterReview";
-import MakeReview from "../../components/review/MakeReview";
-import { isMakeState } from "../../states/recoilBookReview";
+import AlterReview from "../../../../../components/review/AlterReview";
+import MakeReview from "../../../../../components/review/MakeReview";
+import { isMakeState } from "../../../../../states/recoilBookReview";
 
 const func = () => {
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
