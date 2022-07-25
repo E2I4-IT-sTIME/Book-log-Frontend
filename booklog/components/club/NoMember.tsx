@@ -1,47 +1,124 @@
 import { useState, useEffect } from "react";
 import ClubInfo from "../../components/club/ClubInfo";
+import axios from "axios";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { recoilLoginedState } from "../../states/recoilLogiendState";
+import { useRouter } from "next/router";
 
 interface clubInfoProps {
   clubId: number;
 }
 
-export default function NoMember(props: clubInfoProps) {
-  //모임 아이디로 모임 정보 받아와야함
-  const { clubId } = props;
+interface clubInfoPublic {
+  id: number;
+  image: string;
+  info: string;
+  max_num: number;
+  cur_num: number;
+  name: string;
+  ment: string;
+  onoff: boolean;
+}
 
-  //임시 모임 정보
-  const tmp = ["추리", "판타지"];
-  const tmpClubInfo = {
-    img: "https://photo.jtbc.joins.com/news/2020/06/06/202006061520254167.jpg",
-    title: "유아인 어쩌고",
-    onoff: false,
-    maxNum: 2,
-    curNum: 1,
-    subtitle:
-      "유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다",
-    tag: tmp,
+const defaultClUbInfo: clubInfoPublic = {
+  id: 0,
+  image: "",
+  info: "",
+  max_num: 0,
+  cur_num: 0,
+  name: "",
+  ment: "",
+  onoff: false,
+};
+
+export default function NoMember(props: clubInfoProps) {
+  const router = useRouter();
+  const [isLogined, setIsLogined] = useRecoilState(recoilLoginedState);
+
+  //모임 아이디로 모임 정보 받아와야함
+  const clubId = Number(`${router.query.params}`);
+  const [clubInfo, setClubInfo] = useState<clubInfoPublic>(defaultClUbInfo);
+  const [tags, setTags] = useState([""]);
+  const [questions, setQuestions] = useState([""]);
+
+  const getClubInfo = () => {
+    axios
+      .get(`http://15.164.193.190:8080/meetings/${clubId}`)
+      .then((res) => {
+        const getData = res.data;
+        const inputData: clubInfoPublic = {
+          id: getData.id,
+          name: getData.name,
+          image: getData.image,
+          info: getData.info,
+          max_num: getData.max_num,
+          cur_num: getData.cur_num,
+          ment: getData.ment,
+          onoff: getData.onoff,
+        };
+        const inputTags: Array<string> = res.data.tags;
+
+        setClubInfo(inputData);
+        setTags([...inputTags]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  const { img, title, onoff, maxNum, curNum, subtitle, tag } = tmpClubInfo;
-  const tmpQuestion = [
-    "가장 좋아하는 책은 뭔가요?",
-    "가장 싫어하는 책은 뭔가요?",
-  ];
-  const tmpWelcome = "어서오세요 언넝 가입하세요ㅎㅎ";
+
+  const getQuestions = () => {
+    axios
+      .get(`http://15.164.193.190:8080/auth/${clubId}/question`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        const getData = res.data;
+        const inputData: Array<string> = getData.questions;
+        setQuestions([...inputData]);
+      })
+      .catch((error) => {
+        console.log(error);
+        logout();
+      });
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsLogined(false);
+    router.push("/sign");
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      getClubInfo();
+      getQuestions();
+    } else {
+      logout();
+    }
+  }, []);
 
   return (
     <div className="container">
       <div>
-        <ClubInfo
-          name={title}
-          img={img}
-          onoff={onoff}
-          max_num={maxNum}
-          cur_num={curNum}
-          tag={tag}
-          content={subtitle}
-          welcome={tmpWelcome}
-          question={tmpQuestion}
-        />
+        {tags[0] !== "" && questions[0] !== "" ? (
+          <ClubInfo
+            name={clubInfo.name}
+            img={clubInfo.image}
+            onoff={clubInfo.onoff}
+            max_num={clubInfo.max_num}
+            cur_num={clubInfo.cur_num}
+            tag={tags}
+            content={clubInfo.info}
+            welcome={clubInfo.ment}
+            question={questions}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <style jsx>{`
         .container {
@@ -50,7 +127,7 @@ export default function NoMember(props: clubInfoProps) {
         .img-box {
           width: 400px;
           height: 500px;
-          background-image: url(${tmpClubInfo.img});
+          background-image: url(${clubInfo.image});
           background-size: cover;
           background-position: 50%;
         }

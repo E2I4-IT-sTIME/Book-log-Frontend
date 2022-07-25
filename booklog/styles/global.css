@@ -11,6 +11,7 @@ body {
 }
 
 .react-calendar {
+  width: 100%;
   border: none;
 }
 .react-calendar__tile--now {

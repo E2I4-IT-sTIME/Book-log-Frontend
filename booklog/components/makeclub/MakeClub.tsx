@@ -26,6 +26,7 @@ interface CreateBookClubState {
   content: string;
   welcome: string;
   question: Array<string>;
+  img_file: File;
 }
 
 interface stepProps {
@@ -41,6 +42,7 @@ export default function MakeClub(props: stepProps) {
   const [onoff, setOnoff] = useState(false);
   const [content, setContent] = useState("");
   const [genres, setGenres] = useState([""]);
+  const [imgFile, setImgFile] = useState<File>();
   const router = Router;
 
   const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
@@ -61,6 +63,7 @@ export default function MakeClub(props: stepProps) {
             target: { result },
           } = finishedEvent;
           setAttachment(result);
+          setImgFile(theFile);
         };
         reader.readAsDataURL(theFile);
       }
@@ -113,14 +116,17 @@ export default function MakeClub(props: stepProps) {
   };
 
   const saveState = () => {
-    defaultState.name = clubName;
-    defaultState.img = attachment;
-    defaultState.max_num = maxPerson;
-    defaultState.onoff = onoff;
-    defaultState.content = content;
-    defaultState.tag = genres;
-    setRecoilInfo(defaultState);
-    nextSteps();
+    if (imgFile) {
+      defaultState.name = clubName;
+      defaultState.img = attachment;
+      defaultState.max_num = maxPerson;
+      defaultState.onoff = onoff;
+      defaultState.content = content;
+      defaultState.tag = genres;
+      defaultState.img_file = imgFile;
+      setRecoilInfo(defaultState);
+      nextSteps();
+    }
   };
 
   return (

@@ -8,13 +8,10 @@ interface arrayType {
   image: string;
   info: string;
   max_num: number;
-  // cur_num: number;
-  ment: string;
+  cur_num: number;
   name: string;
   onoff: boolean;
-  userId: number;
-  // question:Array<string>,
-  // tags:Array<string>
+  tags: Array<string>;
 }
 
 export default function Club() {
@@ -40,6 +37,7 @@ export default function Club() {
     axios
       .get("http://15.164.193.190:8080/meetings")
       .then((res) => {
+        console.log(res);
         const data = res.data;
         setClubArray([...data]);
       })
@@ -99,9 +97,9 @@ export default function Club() {
                           title={club.name}
                           onoff={club.onoff}
                           maxNum={club.max_num}
-                          curNum={1}
+                          curNum={club.curNum}
                           subtitle={club.info}
-                          tag={tmp}
+                          tag={club.tags}
                         />
                       ))
                   : clubArray
@@ -113,9 +111,9 @@ export default function Club() {
                           title={club.name}
                           onoff={club.onoff}
                           maxNum={club.max_num}
-                          curNum={1}
+                          curNum={club.cur_num}
                           subtitle={club.info}
-                          tag={tmp}
+                          tag={club.tags}
                         />
                       ))}
               </>
@@ -265,7 +263,7 @@ export default function Club() {
           transform: translateX(20px);
         }
         .third-box-cover {
-          padding: 20px 0px 60px 0px;
+          padding: 40px 0px 60px 0px;
         }
 
         .third-box {

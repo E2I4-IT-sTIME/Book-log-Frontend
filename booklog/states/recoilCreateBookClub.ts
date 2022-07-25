@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import defaultclub from "../components/Img/defaultclub.jpg";
 
 export interface CreateBookClubState {
   name: string;
@@ -9,7 +10,10 @@ export interface CreateBookClubState {
   content: string;
   welcome: string;
   question: Array<string>;
+  img_file: File;
 }
+
+const file = new File(["foo"], "foo.txt");
 
 const initialState: CreateBookClubState = {
   name: "",
@@ -20,6 +24,7 @@ const initialState: CreateBookClubState = {
   content: "",
   welcome: "",
   question: [],
+  img_file: file,
 };
 
 export const recoilCreateBookClubState = atom({

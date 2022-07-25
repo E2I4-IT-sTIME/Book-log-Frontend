@@ -27,6 +27,7 @@ export default function ClubInfo(props: ClubInfoProps) {
     question,
   } = props;
   const router = Router;
+
   const cancel = () => {
     router.back();
   };
@@ -85,11 +86,15 @@ export default function ClubInfo(props: ClubInfoProps) {
             <div className="tag-box">
               <span>태그</span>
               <div className="tags">
-                {tag.map((t, index) => (
-                  <div className="tag" key={index}>
-                    #{t}
-                  </div>
-                ))}
+                {tag.map((t, index) =>
+                  t !== null ? (
+                    <div className="tag" key={index}>
+                      #{t}
+                    </div>
+                  ) : (
+                    <></>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -102,11 +107,15 @@ export default function ClubInfo(props: ClubInfoProps) {
               <span> "</span>
             </div>
             <div className="question-box">
-              {question.map((q, index) => (
-                <div className="question" key={index}>
-                  Q{index + 1}. {q}
-                </div>
-              ))}
+              {question.map((q, index) =>
+                q !== null ? (
+                  <div className="question" key={index}>
+                    Q{index + 1}. {q}
+                  </div>
+                ) : (
+                  <></>
+                )
+              )}
             </div>
           </div>
         </div>
@@ -122,18 +131,22 @@ export default function ClubInfo(props: ClubInfoProps) {
         header="답변하기"
       >
         <div className="modal">
-          {question.map((q, index) => (
-            <div key={index} className="modal-question">
-              <label htmlFor={`${index}`}>{q}</label>
-              <input
-                type="text"
-                placeholder="답변을 입력해주세요."
-                id={`${index}`}
-                value={answers[index]}
-                onChange={(e) => inputAnswer(index, e.target.value)}
-              />
-            </div>
-          ))}
+          {question.map((q, index) =>
+            q !== null ? (
+              <div key={index} className="modal-question">
+                <label htmlFor={`${index}`}>{q}</label>
+                <input
+                  type="text"
+                  placeholder="답변을 입력해주세요."
+                  id={`${index}`}
+                  value={answers[index]}
+                  onChange={(e) => inputAnswer(index, e.target.value)}
+                />
+              </div>
+            ) : (
+              <></>
+            )
+          )}
         </div>
       </BasicModal>
 
@@ -250,8 +263,6 @@ export default function ClubInfo(props: ClubInfoProps) {
           display: flex;
           flex-direction: column;
           gap: 25px;
-
-          max-width: 40%;
         }
         .tag-box {
           background-color: white;

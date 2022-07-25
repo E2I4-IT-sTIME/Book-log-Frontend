@@ -2,9 +2,23 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import logo from "./Img/logo_white.png";
+import { useEffect } from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { recoilLoginedState } from "../states/recoilLogiendState";
 
 export default function NavBar() {
   const router = useRouter();
+  const [isLogined, setIsLogined] = useRecoilState(recoilLoginedState);
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) setIsLogined(true);
+  }, []);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsLogined(false);
+  };
+
   return (
     <nav>
       <div className="container">
@@ -48,13 +62,21 @@ export default function NavBar() {
         </div>
 
         <div className="third-box">
-          <Link href="/sign">
-            <a
-              className={router.pathname === "/sign" ? "active" : "non-active"}
-            >
-              LOG IN
+          {isLogined ? (
+            <a className="non-active" onClick={() => logout()}>
+              LOG OUT
             </a>
-          </Link>
+          ) : (
+            <Link href="/sign">
+              <a
+                className={
+                  router.pathname === "/sign" ? "active" : "non-active"
+                }
+              >
+                LOG IN
+              </a>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -71,6 +93,7 @@ export default function NavBar() {
           text-decoration: none;
           font-weight: 600;
           font-size: 18px;
+          cursor: pointer;
         }
         .active {
           color: white;

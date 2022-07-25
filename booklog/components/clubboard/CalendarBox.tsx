@@ -13,11 +13,6 @@ export default function CalendarBox(props: calendarProps) {
   return (
     <div className="container">
       <Calendar onChange={setDate} value={date} />
-      <style jsx>{`
-        .react-calendar {
-          border: none;
-        }
-      `}</style>
     </div>
   );
 }
