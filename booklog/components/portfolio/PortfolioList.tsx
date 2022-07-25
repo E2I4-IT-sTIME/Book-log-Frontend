@@ -6,7 +6,7 @@ import PortfolioCard from "./PortfolioCard";
 
 const PortfolioList = (props:any) => {  
   const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
-  const [portfolio_arr, setPortfolio_arr] = useState([props.data]);
+  const [portfolio_arr, setPortfolio_arr] = useState(props.data);
 
   useEffect(() =>{
     LookupHandler();
@@ -38,7 +38,7 @@ const PortfolioList = (props:any) => {
   return (
     <>
     <div className="background">
-      {portfolio_arr.length == 0 ? null :portfolio_arr.map((ele) => {
+      {portfolio_arr.length == 0 ? null :portfolio_arr.map((ele:any) => {
         let title = ele.title;
         let content = ele.content; 
         let id = ele.portfolio_id;

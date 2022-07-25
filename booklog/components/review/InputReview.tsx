@@ -1,14 +1,16 @@
 import axios from "axios";
 import router, { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { isMakeState, isTotalState } from "../../states/recoilBookReview";
+import { userIndexState } from "../../states/recoilUserIndex";
 
 const InputReview = (props:any) => {
     const router = useRouter();
     const port_id = router.query.port_id;
     const card_id = router.query.review_id;
     
+    const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
     const [title, setTitle] = useState("");
@@ -18,7 +20,7 @@ const InputReview = (props:any) => {
     const beforeReview = async () => {
         try {
             let res = await axios({
-                url: "http://15.164.193.190:8080/auth/review/" + card_id,
+                url: "http://15.164.193.190:8080/auth/user/"  + userIndex + "/review/"+ card_id,
                 method: 'get',
                 headers: {
                 "Content-type": "application/json",
@@ -39,7 +41,7 @@ const InputReview = (props:any) => {
     };
 
     if(!isReviewMake) {
-        beforeReview();
+        useEffect(()=>{beforeReview();},[]);
     }
 
     const submitHandler = (e:any) => {
@@ -68,6 +70,11 @@ const InputReview = (props:any) => {
         router.push(`/portfolio/${port_id}/review`);
     }
 
+    const onClickSearchBtn = () => {
+        const yes = confirm("책 검색 페이지로 이동하시겠습니까 ?");
+        if(yes) router.push("/community");        
+    }
+
     return (
     <>
     <form className="background">
@@ -76,7 +83,7 @@ const InputReview = (props:any) => {
         <div className="title">책 제목</div>
         <div className="book_title">
             <input type="text" className="title_input" onChange={book_nameChangeHandler} value={book_name}></input>
-            <div className="search_btn">책 제목 검색</div>
+            <div className="search_btn" onClick={onClickSearchBtn}>책 제목 검색</div>
         </div>
         <div className="title">서평 내용</div>
         <textarea className="content_input" onChange={contentChangeHandler} value={content}></textarea>
@@ -97,10 +104,12 @@ const InputReview = (props:any) => {
         margin-bottom:10px;      
     }
     .review_input{
-        width:100%;
+        width: calc(100% - 10px);
         height:50px;
         border-radius:5px;
         margin-bottom: 10px;
+        font-size : 20px;
+        padding-left: 10px;
     }
     .book_title{
         display:flex;
@@ -112,6 +121,8 @@ const InputReview = (props:any) => {
         border-radius:5px;
         margin-bottom: 10px;
         margin-right: 20px;
+        font-size : 20px;
+        padding-left: 10px;
     }
     .search_btn {
         width:15%;
@@ -122,13 +133,17 @@ const InputReview = (props:any) => {
         font-size: 25px;
         font-weight: 600;
         text-align: center;
+        line-height:60px;
+        cursor:pointer;
     }
     .content_input{
-        width:100%;
+        width: calc(100% - 10px);
         height: 150px;
         border-radius:5px;
         margin-bottom: 30px;
         border: 2px solid black;
+        font-size : 20px;
+        padding:10px;
     }
 
     button{

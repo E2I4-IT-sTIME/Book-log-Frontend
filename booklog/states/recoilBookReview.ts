@@ -20,3 +20,9 @@ export const isAddState = atom<boolean>({
     default: false,
 })
 
+export const profTitleState = atom<string>({
+    key: "profTitle",
+    default: "도르마무",
+})
+
+

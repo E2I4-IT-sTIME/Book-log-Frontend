@@ -57,6 +57,7 @@ const ReviewCard = (props:any) =>{
                 alert("서평이 추가되었습니다 !");
                 setIsTotal(false);
                 setIsReviewEdit(false);
+                setIsAdd(false);
                 router.push(`/portfolio/${port_id}/review`);
             }
         } catch(err) {
@@ -94,7 +95,6 @@ const ReviewCard = (props:any) =>{
 
                 .background:hover{
                     box-shadow: 5px 5px #D7DBE5;
-                    filter:brightness(120%);
                 }
 
                 .header {
