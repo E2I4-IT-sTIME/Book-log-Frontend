@@ -1,16 +1,46 @@
+import axios from "axios";
 import router, { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { isMakeState } from "../../states/recoilBookReview";
+import { isMakeState, isTotalState } from "../../states/recoilBookReview";
 
 const InputReview = (props:any) => {
     const router = useRouter();
     const port_id = router.query.port_id;
+    const card_id = router.query.review_id;
     
+    const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
-    const [title, setTitle] = useState(isReviewMake ? "" : props.beforeRev.title);
-    const [content, setContent] = useState(isReviewMake ? "" : props.beforeRev.content);
-    const [book_name, setBook_name] = useState(isReviewMake ? "" : props.beforeRev.book_name);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [book_name, setBook_name] = useState("");
+
+    const beforeReview = async () => {
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/review/" + card_id,
+                method: 'get',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                let beforeData = res.data;
+                setTitle(beforeData.title);
+                setContent(beforeData.content);
+                setBook_name(beforeData.book_name);
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    };
+
+    if(!isReviewMake) {
+        beforeReview();
+    }
 
     const submitHandler = (e:any) => {
         e.preventDefault();
@@ -33,6 +63,7 @@ const InputReview = (props:any) => {
     }
 
     const onCancle = () =>{
+        setIsTotal(false);
         setIsReviewMake(false);
         router.push(`/portfolio/${port_id}/review`);
     }
@@ -54,6 +85,7 @@ const InputReview = (props:any) => {
                 <button className="save" onClick={submitHandler}>저장</button>
         </div>
     </form>
+
     <style jsx>{`  
     .background{
         display: flex;

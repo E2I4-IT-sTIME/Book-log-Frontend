@@ -10,13 +10,13 @@ const Bookportfolio = () => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
     const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
 
-    let username = "Euna";
+    let username = "도르마무";
     let big_text = isEdit ? "Edit " : username + "'s ";
     let sub_text = isEdit ? "포트폴리오를 편집해보세요 ! " :  "나만의 독서 포트폴리오";
 
     const card = {
         title : "독서 동아리 포트폴리오",
-        sub : "포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세"
+        content : "샘플 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세 설명 포트폴리오 상세"
       }
     
     let portfolio_arr: any[] = [card, card, card, card, card, card, card];
@@ -127,6 +127,7 @@ const Bookportfolio = () => {
                 border: 0px;
                 padding : 10px 30px;
                 width: 50%;
+                min-width:150px;
                 margin-bottom:10px;
                 box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
             }

@@ -8,6 +8,8 @@ import google from "../Img/google.png";
 import kakao from "../Img/kakao.png";
 import naver from "../Img/naver.png";
 import Router from "next/router";
+import { useRecoilState } from "recoil";
+import { userIndexState } from "../../states/recoilUserIndex";
 
 interface loginDataInput {
   Email: string;
@@ -16,6 +18,7 @@ interface loginDataInput {
 
 const Login: NextPage<{ onChange: () => void }> = (props) => {
   const router = Router;
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
 
@@ -54,6 +57,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
       .then((res) => {
         console.log(res);
         localStorage.setItem("token", res.headers.authorization);
+        setUserIndex(res.headers.cookie);
         router.push("/");
       })
       .catch((res) => {

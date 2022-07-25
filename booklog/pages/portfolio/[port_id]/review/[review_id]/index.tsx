@@ -3,14 +3,16 @@ import { useRecoilState } from "recoil";
 import AlterReview from "../../../../../components/review/AlterReview";
 import MakeReview from "../../../../../components/review/MakeReview";
 import { isMakeState } from "../../../../../states/recoilBookReview";
+import portfolio from "../../../../portfolio";
 
 const func = () => {
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
     let big_text = isReviewMake ? "New " : "Alter";
     let sub_text = isReviewMake ? "새로운 서평을 추가해보세요 ! " : "서평을 편집해보세요 ! " ;
 
-    const router = useRouter();
-    const card_id = router.query.params;
+    const router = useRouter();   
+    const card_id = router.query.review_id;
+    console.log(card_id);
 
      return (
         <>
@@ -18,7 +20,7 @@ const func = () => {
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" > <span className={`${isReviewMake? 'textcolor' : ''} `}>{big_text}</span> Portfolio.</div>
+                        <div className="big_text" > <span className='textcolor'>{big_text}</span> BookReview</div>
                         <div className="small_text">{sub_text}</div>
                     </div>
                     <hr />
@@ -55,6 +57,11 @@ const func = () => {
                 padding: 20px 0;  
                 position: relative;      
             }
+
+            .textcolor{
+                color:rgba(136, 190, 228, 1);
+            }
+
             hr {
                position: absolute;
                top: 93%;
@@ -96,6 +103,7 @@ const func = () => {
                 border: 0px;
                 padding : 10px 30px;
                 width: 50%;
+                min-width:150px;
                 margin-bottom:10px;
                 box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
             }

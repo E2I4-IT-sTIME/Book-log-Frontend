@@ -14,12 +14,7 @@ const AlterReview = (props:any) =>{
     const port_id = router.query.port_id;
     const cardId = props.id;
 
-    const [beforeRev, setBeforeRev] = useState({
-        title : "기존 서평제목",
-        book_name : "기존 책제목",
-        content : "기존 내용"
-    })
-    
+    console.log(cardId);
 
     const saveReviewData  = (enteredData: reviewContents) => {
         const reveiwData  = {
@@ -27,36 +22,6 @@ const AlterReview = (props:any) =>{
         }
         alterReview(reveiwData);
     }
-
-    const beforeReview = async () => {
-        try {
-            let res = await axios({
-                url: "http://15.164.193.190:8080/auth/review/" + cardId,
-                method: 'get',
-                headers: {
-                "Content-type": "application/json",
-                Accept: "application/json",
-                withCredentials:true,
-                Authorization: `${localStorage.getItem("token")}`
-                }       
-            })
-            if(res.status == 200){
-                let beforeData = res.data;
-                let title = beforeData.title;
-                let content = beforeData.content;
-                let book_name = beforeData.book_name;
-                setBeforeRev({
-                    title : title,
-                    book_name : book_name,
-                    content : content
-                });
-            }
-        } catch(err) {
-            console.log(err);  
-        }
-    };
-
-    beforeReview();
 
     const alterReview = async (reviewData: reviewContents) => {
         console.log("함수 실행");
@@ -81,7 +46,7 @@ const AlterReview = (props:any) =>{
             console.log(err);  
         }
     };
-    return <InputReview onSavedata={saveReviewData} beforeRev={beforeRev}/>
+    return <InputReview onSavedata={saveReviewData} idx={port_id}/>
 }
 
 export default AlterReview;

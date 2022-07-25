@@ -10,3 +10,13 @@ export const isMakeState = atom<boolean>({
     default: false,
 })
 
+export const isTotalState = atom<boolean>({
+    key: "isTotal",
+    default: false,
+})
+
+export const isAddState = atom<boolean>({
+    key: "isAdd",
+    default: false,
+})
+

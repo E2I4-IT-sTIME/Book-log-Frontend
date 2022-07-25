@@ -5,17 +5,14 @@ import { userIndexState } from "../../states/recoilUserIndex";
 import PortfolioCard from "./PortfolioCard";
 
 const PortfolioList = (props:any) => {  
-  const [userIndex, setUserIndex] = useRecoilState<number>(userIndexState);
-  const [portfolio_arr, setPortfolio_arr] = useState([
-    props.data
-  ])
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
+  const [portfolio_arr, setPortfolio_arr] = useState([props.data]);
 
   useEffect(() =>{
     LookupHandler();
   }, []);
 
   const LookupHandler = async () => {
-    console.log("함수 실행");
     try {
       let res = await axios({
         url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios",
@@ -33,6 +30,7 @@ const PortfolioList = (props:any) => {
         setPortfolio_arr(portfolios_data);
       }
     } catch(err){
+      setPortfolio_arr(props.data);
       console.log(err);  
     }
   };
