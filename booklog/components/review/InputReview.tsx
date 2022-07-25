@@ -1,22 +1,55 @@
-import router from "next/router";
-import { useState } from "react";
+import axios from "axios";
+import router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isMakeState } from "../../states/recoilBookReview";
+import { isMakeState, isTotalState } from "../../states/recoilBookReview";
+import { userIndexState } from "../../states/recoilUserIndex";
 
 const InputReview = (props:any) => {
+    const router = useRouter();
+    const port_id = router.query.port_id;
+    const card_id = router.query.review_id;
+    
+    const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
+    const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
-    const [title, setTitle] = useState(isReviewMake ? "" : props.beforeRev.title);
-    const [content, setContent] = useState(isReviewMake ? "" : props.beforeRev.content);
-    const [book_name, setBook_name] = useState(isReviewMake ? "" : props.beforeRev.book_name);
-    const [time, setTime] = useState(isReviewMake ? "" : props.beforeRev.time);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [book_name, setBook_name] = useState("");
+
+    const beforeReview = async () => {
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/user/"  + userIndex + "/review/"+ card_id,
+                method: 'get',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                let beforeData = res.data;
+                setTitle(beforeData.title);
+                setContent(beforeData.content);
+                setBook_name(beforeData.book_name);
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    };
+
+    if(!isReviewMake) {
+        useEffect(()=>{beforeReview();},[]);
+    }
 
     const submitHandler = (e:any) => {
         e.preventDefault();
         const reviewData = {
             title: title,
             book_name:book_name,
-            content:content,
-            time:time
+            content: content,
         }
         props.onSavedata(reviewData);
     }
@@ -30,13 +63,16 @@ const InputReview = (props:any) => {
     const book_nameChangeHandler = (e:any) =>{ 
         setBook_name(e.target.value);
     }
-    const timeChangeHandler = (e:any) =>{ 
-        setTime(e.target.value);
-    }
 
     const onCancle = () =>{
+        setIsTotal(false);
         setIsReviewMake(false);
-        router.push("/review/");
+        router.push(`/portfolio/${port_id}/review`);
+    }
+
+    const onClickSearchBtn = () => {
+        const yes = confirm("책 검색 페이지로 이동하시겠습니까 ?");
+        if(yes) router.push("/community");        
     }
 
     return (
@@ -47,15 +83,16 @@ const InputReview = (props:any) => {
         <div className="title">책 제목</div>
         <div className="book_title">
             <input type="text" className="title_input" onChange={book_nameChangeHandler} value={book_name}></input>
-            <div className="search_btn">책 제목 검색</div>
+            <div className="search_btn" onClick={onClickSearchBtn}>책 제목 검색</div>
         </div>
         <div className="title">서평 내용</div>
         <textarea className="content_input" onChange={contentChangeHandler} value={content}></textarea>
         <div className="edit_div">
                 <button className="cancle" onClick={onCancle}>취소</button>
-                <button className="save" onClick={(e) => submitHandler}>저장</button>
+                <button className="save" onClick={submitHandler}>저장</button>
         </div>
     </form>
+
     <style jsx>{`  
     .background{
         display: flex;
@@ -67,10 +104,12 @@ const InputReview = (props:any) => {
         margin-bottom:10px;      
     }
     .review_input{
-        width:100%;
+        width: calc(100% - 10px);
         height:50px;
         border-radius:5px;
         margin-bottom: 10px;
+        font-size : 20px;
+        padding-left: 10px;
     }
     .book_title{
         display:flex;
@@ -82,6 +121,8 @@ const InputReview = (props:any) => {
         border-radius:5px;
         margin-bottom: 10px;
         margin-right: 20px;
+        font-size : 20px;
+        padding-left: 10px;
     }
     .search_btn {
         width:15%;
@@ -92,13 +133,17 @@ const InputReview = (props:any) => {
         font-size: 25px;
         font-weight: 600;
         text-align: center;
+        line-height:60px;
+        cursor:pointer;
     }
     .content_input{
-        width:100%;
+        width: calc(100% - 10px);
         height: 150px;
         border-radius:5px;
         margin-bottom: 30px;
         border: 2px solid black;
+        font-size : 20px;
+        padding:10px;
     }
 
     button{

@@ -1,15 +1,28 @@
 import axios from "axios";
-import router from "next/router";
-import { useState } from "react";
+import router, { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isEditState, isMakeState } from "../../states/recoilBookReview";
-import MakeReview from "./MakeReview";
+import { isAddState, isEditState, isMakeState, isTotalState, profTitleState } from "../../states/recoilBookReview";
 import ReviewList from "./ReviewList";
+import TotalReviewList from "./TotalReviewList";
 
 const BookReview = () => {
-    const [isTotal, setIsTotal] = useState(false);
+    const router = useRouter();
+    const port_id = router.query.port_id;
+    let short_title = "";
+
+
+    const [profTitle, setProfTitle] = useRecoilState<string>(profTitleState);
     const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState);
+    const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
+    const [isAdd, setIsAdd] = useRecoilState<boolean>(isAddState);
+
+    useEffect(()=>{
+        setIsTotal(false);
+        setIsReviewEdit(false);
+        setIsAdd(false);
+    },[]);
 
     const card = {
         id: 1,
@@ -21,33 +34,44 @@ const BookReview = () => {
     let review_arr: any[] = [card, card, card, card];
 
     const onChangeEdit = () => {
+        if(isTotal){
+            setIsAdd(true);
+            return;
+        } 
         setIsReviewEdit(true);
-        if(isReviewEdit == true) setIsReviewEdit(false);
+        if(isReviewEdit) setIsReviewEdit(false);
     }
 
     const onChangeTotal = () =>{
         if(isTotal){
-            let new_id = review_arr.length + 1;
             setIsReviewMake(true);
-            router.push("/review/" + new_id);
+            router.push(`/portfolio/${port_id}/review/new`);
         }else{
             setIsTotal(true);
+            setIsReviewEdit(false);
         }
     }
 
     const OnCancle = () => {
         setIsReviewMake(false);
         setIsReviewEdit(false);
+        setIsTotal(false);
+        setIsAdd(false);
     }
 
-    
+    if(profTitle.length >= 10){
+        short_title = profTitle.slice(0,10) + "...";
+    }else {
+        short_title = profTitle;
+    }
+
     return(
         <>      
         <div className="background">
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" >{!isTotal ? "독서 동아리 포트폴리오" : "나의 서평 목록"}</div>
+                        <div className="big_text" >{!isTotal ? short_title : "나의 전체 서평 목록"}</div>
                     </div>                  
                 </div>
                 <hr />
@@ -55,14 +79,14 @@ const BookReview = () => {
                     <div className="search">
                         <form><input type="text" className="text" placeholder="서평 검색하기"></input></form>
                         <div className="buttons">
-                            <button onClick={onChangeEdit}>편집하기</button>
-                            <button onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+서평 추가"}</button>
+                            <button onClick={onChangeEdit}>{isTotal ? "추가하기" : "편집하기"}</button>
+                            <button onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+새 서평"}</button>
                         </div>
                     </div>
-                    <div className="cards"><ReviewList data={review_arr}/></div>                  
+                    <div className="cards">{isTotal ? <TotalReviewList/> : <ReviewList data={review_arr}/>}</div>                  
                 </div>
             </div> 
-            {isReviewEdit ? 
+            {isReviewEdit || isTotal ? 
                 <div className="edit_div">
                     <button className="cancle" onClick={OnCancle}>취소</button>
                     <button className="save">저장</button>
@@ -148,6 +172,7 @@ const BookReview = () => {
                 border: 0px;
                 padding : 10px 30px;
                 width: 42%;
+                min-width:135px;
                 margin-bottom:10px;
                 margin-left:30px;
                 box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);

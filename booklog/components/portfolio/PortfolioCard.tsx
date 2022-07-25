@@ -2,11 +2,14 @@ import axios from 'axios';
 import Link from 'next/link';
 import router from 'next/router';
 import { useRecoilState } from 'recoil';
-import {isEditState } from "../../states/recoilBookPortfolio";
+import { isEditState } from "../../states/recoilBookPortfolio";
+import { profTitleState } from '../../states/recoilBookReview';
 
 
 const PortfolioCard = (props: any) => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
+    const [profTitle, setProfTitle] = useRecoilState<string>(profTitleState);
     
     const cardId = props.id;
 
@@ -27,7 +30,8 @@ const PortfolioCard = (props: any) => {
             if(res.status == 200){
                 console.log(res);
                 alert("포트폴리오가 삭제되었습니다 !");
-                router.push("/portfolio");
+                setIsEdit(false);
+                location.reload();
             }
         } catch(err) {
             console.log(err);  
@@ -35,17 +39,21 @@ const PortfolioCard = (props: any) => {
     }
 
     const onClickCard = () =>{
-        if(!isEdit) router.push("/review");
+        if(!isEdit){
+            setProfTitle(props.title);
+            router.push("/portfolio/"+ cardId + "/review");
+        } 
     }
 
     const alterPortfolio = () => {
+        
         router.push("/portfolio/"+ cardId);
     }
     return (
         <>
         <div className="card" onClick={onClickCard}>
             <div className="title">{props.title}</div>
-            <div className="sub">{props.sub}</div>
+            <div className="sub">{props.content}</div>
             {isEdit ?  <div className="btns"><button className="del" onClick={deleltePortfolio}>삭제</button><button className="alter" onClick={alterPortfolio}>수정</button></div> : 
             null
             }           
@@ -60,6 +68,7 @@ const PortfolioCard = (props: any) => {
             box-shadow: 5px 5px #E5E5E5;
             margin-right: 2.3%;
             margin-bottom: 30px;
+            position:relative;
         } 
         .title{
             color:#324A86;
@@ -80,8 +89,9 @@ const PortfolioCard = (props: any) => {
             box-shadow: 5px 5px gray;
         }
         .btns {
-            display:flex;
-            justify-content: flex-end;
+            position:absolute;
+            bottom:5px;
+            right:5px;
         }
 
         button{

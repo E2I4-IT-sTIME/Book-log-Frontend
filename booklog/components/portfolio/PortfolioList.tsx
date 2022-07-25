@@ -1,22 +1,21 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userIndexState } from "../../states/recoilUserIndex";
 import PortfolioCard from "./PortfolioCard";
 
 const PortfolioList = (props:any) => {  
-  let idx = 0;
-  const userIndex = "1" //수정부분
-
-  let portfolio_arr: any[] = props.data;
+  const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
+  const [portfolio_arr, setPortfolio_arr] = useState(props.data);
 
   useEffect(() =>{
     LookupHandler();
   }, []);
 
   const LookupHandler = async () => {
-    console.log("함수 실행");
     try {
       let res = await axios({
-        url: "http://15.164.193.190:8080/api/user/" + userIndex + "/portfolios",
+        url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios",
         method: 'get',
         headers: {
           "Content-type": "application/json",
@@ -27,10 +26,11 @@ const PortfolioList = (props:any) => {
       })
       if(res.status == 200){
         console.log(res.data);
-        let portfolios_data = JSON.parse(res.data);
-        portfolio_arr = portfolios_data;
+        let portfolios_data = res.data;
+        setPortfolio_arr(portfolios_data);
       }
     } catch(err){
+      setPortfolio_arr(props.data);
       console.log(err);  
     }
   };
@@ -38,11 +38,11 @@ const PortfolioList = (props:any) => {
   return (
     <>
     <div className="background">
-      {portfolio_arr.map((ele) => {
+      {portfolio_arr.length == 0 ? null :portfolio_arr.map((ele:any) => {
         let title = ele.title;
-        let sub = ele.sub; 
-        idx++;
-        return <PortfolioCard title = {title} sub = {sub} key = {idx} id={idx}/>
+        let content = ele.content; 
+        let id = ele.portfolio_id;
+        return <PortfolioCard title = {title} content = {content} key = {id} id={id}/>
       })}
     </div>
     <style jsx>{`

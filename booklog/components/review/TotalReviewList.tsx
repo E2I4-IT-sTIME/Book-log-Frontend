@@ -6,24 +6,22 @@ import { isTotalState } from "../../states/recoilBookReview";
 import { userIndexState } from "../../states/recoilUserIndex";
 import ReviewCard from "./ReviewCard";
 
-const ReviewList = (props:any) => {
+const TotalReviewList = (props:any) => {
     const router = useRouter();
     const port_id = router.query.port_id;
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
-    const [review_arr, setReview_arr] = useState(props.data);
-    console.log(review_arr);
-
+    const [review_arr, setReview_arr] = useState([]);
 
     useEffect(() =>{
-         LookupHandler();
-    }, []);
+        LookupHandler();
+    }, [isTotal]);
 
-    const LookupHandler = async() => {
-        console.log("함수 실행");
+    const LookupHandler = async () => {
+        console.log("전체서평보기");
         try {
         let res = await axios({
-            url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios/" + port_id,
+            url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/reviews",
             method: 'get',
             headers: {
             "Content-type": "application/json",
@@ -38,11 +36,9 @@ const ReviewList = (props:any) => {
             setReview_arr(review_data);
         }
         } catch(err){
-            setReview_arr(props.data);
             console.log(err);  
         }
-    }
-
+    };
 
     return (
         <>
@@ -69,4 +65,4 @@ const ReviewList = (props:any) => {
     );
 }
 
-export default ReviewList;
+export default TotalReviewList;

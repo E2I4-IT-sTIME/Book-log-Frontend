@@ -1,19 +1,50 @@
+import axios from "axios";
 import router from "next/router";
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { isMakeState } from "../../states/recoilBookPortfolio";
+import { userIndexState } from "../../states/recoilUserIndex";
 
 const InputPortfolio = (props:any) => {
+    const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
     const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
-    const [title, setTitle] = useState(isMake ? "" : props.beforeProfol.title);
-    const [desc, setDesc] = useState(isMake ? "" : props.beforeProfol.content);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+
+    const beforePortfolio = async () => {
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios/" + props.id,
+                method: 'get',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                let beforeData = res.data;
+                let title = beforeData.title;
+                let content = beforeData.content;
+                setTitle(title);
+                setContent(content);
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    };
+    
+    if(!isMake){
+        useEffect(() => {beforePortfolio()},[]) 
+    }
 
     const submitHandler = (e:any) => {
         e.preventDefault();
         const portData = {
             title: title,
-            desc: desc
+            content: content
         }
         props.onSavedata(portData);
     }
@@ -22,7 +53,7 @@ const InputPortfolio = (props:any) => {
         setTitle(e.target.value);
     }
     const descChangeHandler = (e:any) =>{ 
-        setDesc(e.target.value);
+        setContent(e.target.value);
     }
 
     const onCancle = () =>{
@@ -38,7 +69,7 @@ const InputPortfolio = (props:any) => {
                 <input className="title_input" type="text" placeholder="20자 이내로 포트폴리오 제목을 작성해주세요!" onChange={titleChangeHandler} value={title} >
                 </input>
                 <div className="desc">포트폴리오 상세 설명</div>
-                <textarea className="desc_input"  placeholder="50자 이내로 포트폴리오에 대한 상세 설명을 작성해주세요!" onChange={descChangeHandler} value={desc} >
+                <textarea className="desc_input"  placeholder="50자 이내로 포트폴리오에 대한 상세 설명을 작성해주세요!" onChange={descChangeHandler} value={content} >
                 </textarea>
                 <div className="edit_div">
                     <button className="cancle" onClick={onCancle}>취소</button>

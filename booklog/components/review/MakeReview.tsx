@@ -1,15 +1,17 @@
 import axios from "axios";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import InputReview from "./InputReview";
 
 interface reviewContents {
     title : string,
     book_name : string,
-    time : Date,
     content : string
 }
 
 const MakeReview = () => {
+    const router = useRouter();
+    const port_id = router.query.port_id;
+    
     const saveReveiwData  = (enteredData: reviewContents) => {
         const reviewData  = {
             ...enteredData
@@ -34,7 +36,7 @@ const MakeReview = () => {
             if(res.status == 200){
                 console.log(res);
                 alert("서평이 생성되었습니다 !");
-                router.push("/review");
+                router.push(`/portfolio/${port_id}/review`);
             }
         } catch(err) {
             console.log(err);  
