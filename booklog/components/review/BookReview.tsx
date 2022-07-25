@@ -1,19 +1,28 @@
 import axios from "axios";
 import router, { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { isAddState, isEditState, isMakeState, isTotalState } from "../../states/recoilBookReview";
+import { isAddState, isEditState, isMakeState, isTotalState, profTitleState } from "../../states/recoilBookReview";
 import ReviewList from "./ReviewList";
 import TotalReviewList from "./TotalReviewList";
 
 const BookReview = () => {
     const router = useRouter();
     const port_id = router.query.port_id;
+    let short_title = "";
 
+
+    const [profTitle, setProfTitle] = useRecoilState<string>(profTitleState);
     const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState);
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [isAdd, setIsAdd] = useRecoilState<boolean>(isAddState);
+
+    useEffect(()=>{
+        setIsTotal(false);
+        setIsReviewEdit(false);
+        setIsAdd(false);
+    },[]);
 
     const card = {
         id: 1,
@@ -39,6 +48,7 @@ const BookReview = () => {
             router.push(`/portfolio/${port_id}/review/new`);
         }else{
             setIsTotal(true);
+            setIsReviewEdit(false);
         }
     }
 
@@ -49,13 +59,19 @@ const BookReview = () => {
         setIsAdd(false);
     }
 
+    if(profTitle.length >= 10){
+        short_title = profTitle.slice(0,10) + "...";
+    }else {
+        short_title = profTitle;
+    }
+
     return(
         <>      
         <div className="background">
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" >{!isTotal ? "독서 동아리 포트폴리오" : "나의 전체 서평 목록"}</div>
+                        <div className="big_text" >{!isTotal ? short_title : "나의 전체 서평 목록"}</div>
                     </div>                  
                 </div>
                 <hr />
@@ -67,7 +83,7 @@ const BookReview = () => {
                             <button onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+새 서평"}</button>
                         </div>
                     </div>
-                    <div className="cards">{isTotal ? <TotalReviewList data={review_arr}/> : <ReviewList />}</div>                  
+                    <div className="cards">{isTotal ? <TotalReviewList/> : <ReviewList data={review_arr}/>}</div>                  
                 </div>
             </div> 
             {isReviewEdit || isTotal ? 

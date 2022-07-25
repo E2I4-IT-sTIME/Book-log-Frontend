@@ -11,8 +11,9 @@ const ReviewList = (props:any) => {
     const port_id = router.query.port_id;
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
-    const [review_arr, setReview_arr] = useState([
-    ]);
+    const [review_arr, setReview_arr] = useState(props.data);
+    console.log(review_arr);
+
 
     useEffect(() =>{
          LookupHandler();
@@ -47,7 +48,7 @@ const ReviewList = (props:any) => {
         <>
             <div className="background" >
                 {review_arr.length == 0 ? null :
-                review_arr.map((ele) => {
+                review_arr.map((ele:any) => {
                     let title = ele.title;
                     let book_name = ele.book_name;
                     let id = ele.review_id;

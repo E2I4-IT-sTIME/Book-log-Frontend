@@ -1,7 +1,7 @@
 import axios from "axios";
 import router from "next/router";
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { isMakeState } from "../../states/recoilBookPortfolio";
 import { userIndexState } from "../../states/recoilUserIndex";
@@ -37,7 +37,7 @@ const InputPortfolio = (props:any) => {
     };
     
     if(!isMake){
-        beforePortfolio();
+        useEffect(() => {beforePortfolio()},[]) 
     }
 
     const submitHandler = (e:any) => {

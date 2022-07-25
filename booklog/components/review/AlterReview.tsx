@@ -14,8 +14,6 @@ const AlterReview = (props:any) =>{
     const port_id = router.query.port_id;
     const cardId = props.id;
 
-    console.log(cardId);
-
     const saveReviewData  = (enteredData: reviewContents) => {
         const reveiwData  = {
             ...enteredData
@@ -28,7 +26,7 @@ const AlterReview = (props:any) =>{
         try {
             let res = await axios({
                 url: "http://15.164.193.190:8080/auth/review/" + cardId,
-                method: 'post',
+                method: 'patch',
                 data : reviewData,
                 headers: {
                 "Content-type": "application/json",
