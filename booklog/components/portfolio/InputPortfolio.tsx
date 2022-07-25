@@ -1,15 +1,44 @@
+import axios from "axios";
 import router from "next/router";
 import Router from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { isMakeState } from "../../states/recoilBookPortfolio";
+import { userIndexState } from "../../states/recoilUserIndex";
 
 const InputPortfolio = (props:any) => {
+    const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
     const [isMake, setIsMake] = useRecoilState<boolean>(isMakeState); //make상태가 아니면 alter상태다.
-    const [title, setTitle] = useState(isMake ? "?" : props.beforeProfol.title);
-    const [content, setContent] = useState(isMake ? "?" : props.beforeProfol.content);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
 
-    console.log(props);
+    const beforePortfolio = async () => {
+        try {
+            let res = await axios({
+                url: "http://15.164.193.190:8080/auth/user/" + userIndex + "/portfolios/" + props.id,
+                method: 'get',
+                headers: {
+                "Content-type": "application/json",
+                Accept: "application/json",
+                withCredentials:true,
+                Authorization: `${localStorage.getItem("token")}`
+                }       
+            })
+            if(res.status == 200){
+                let beforeData = res.data;
+                let title = beforeData.title;
+                let content = beforeData.content;
+                setTitle(title);
+                setContent(content);
+            }
+        } catch(err) {
+            console.log(err);  
+        }
+    };
+    
+    if(!isMake){
+        beforePortfolio();
+    }
 
     const submitHandler = (e:any) => {
         e.preventDefault();

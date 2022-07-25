@@ -18,7 +18,7 @@ const func = () => {
             <div className="main_div">
                 <div className="article">
                     <div className="title">
-                        <div className="big_text" > <span className={`${isMake? 'textcolor' : ''} `}>{big_text}</span> Portfolio.</div>
+                        <div className="big_text" > <span className='textcolor'>{big_text}</span> Portfolio.</div>
                         <div className="small_text">{sub_text}</div>
                     </div>
                     <hr />

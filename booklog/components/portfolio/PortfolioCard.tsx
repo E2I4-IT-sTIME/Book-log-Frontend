@@ -3,10 +3,13 @@ import Link from 'next/link';
 import router from 'next/router';
 import { useRecoilState } from 'recoil';
 import { isEditState } from "../../states/recoilBookPortfolio";
+import { isTotalState } from '../../states/recoilBookReview';
 
 
 const PortfolioCard = (props: any) => {
     const [isEdit, setIsEdit] = useRecoilState<boolean>(isEditState);
+    const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
+    const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     
     const cardId = props.id;
 
@@ -36,7 +39,10 @@ const PortfolioCard = (props: any) => {
     }
 
     const onClickCard = () =>{
-        if(!isEdit) router.push("/portfolio/"+ cardId + "/review");
+        if(!isEdit){
+            setIsTotal(false);
+            router.push("/portfolio/"+ cardId + "/review");
+        } 
     }
 
     const alterPortfolio = () => {
@@ -61,6 +67,7 @@ const PortfolioCard = (props: any) => {
             box-shadow: 5px 5px #E5E5E5;
             margin-right: 2.3%;
             margin-bottom: 30px;
+            position:relative;
         } 
         .title{
             color:#324A86;
@@ -81,8 +88,9 @@ const PortfolioCard = (props: any) => {
             box-shadow: 5px 5px gray;
         }
         .btns {
-            display:flex;
-            justify-content: flex-end;
+            position:absolute;
+            bottom:5px;
+            right:5px;
         }
 
         button{

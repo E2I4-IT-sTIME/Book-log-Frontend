@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const userIndexState = atom<number>({
+export const userIndexState = atom<String>({
     key: "userIndex",
-    default: 6,
+    default: "0",
 })
