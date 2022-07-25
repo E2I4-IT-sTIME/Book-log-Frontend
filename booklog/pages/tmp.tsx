@@ -1,4 +1,16 @@
 import axios from "axios";
+import { ComponentProps, DOMAttributes, useState } from "react";
+import FormData from "form-data";
+
+type EventHandlers<T> = Omit<
+  DOMAttributes<T>,
+  "children" | "dangerouslySetInnerHTML"
+>;
+
+export type Event<
+  TElement extends keyof JSX.IntrinsicElements,
+  TEventHandler extends keyof EventHandlers<TElement>
+> = ComponentProps<TElement>[TEventHandler];
 
 export default function tmp() {
   const listView = () => {
@@ -309,6 +321,50 @@ export default function tmp() {
       });
   };
 
+  const [profile, setProfile] = useState("");
+  const [attachment, setAttachment] = useState("");
+  const [imgFile, setImgFile] = useState<File>();
+
+  const handleOnChange: Event<"input", "onChange"> = (e) => {
+    if (window.FileReader) {
+      const {
+        currentTarget: { files, value },
+      } = e;
+      if (files !== null) {
+        const theFile = files![0];
+        const reader = new FileReader();
+        setProfile(value);
+        reader.onloadend = (finishedEvent: any) => {
+          const {
+            target: { result },
+          } = finishedEvent;
+          setAttachment(result);
+          setImgFile(theFile);
+        };
+        reader.readAsDataURL(theFile);
+      }
+    }
+  };
+
+  const multipartFile = new FormData();
+  const imgUpload = () => {
+    if (imgFile) {
+      multipartFile.append("images", imgFile);
+      axios
+        .post("http://15.164.193.190:8080/images", multipartFile, {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
+  };
+
   return (
     <>
       <button onClick={() => listView()}>모임받아오기</button>
@@ -327,6 +383,16 @@ export default function tmp() {
       <button onClick={() => viewComment()}>공지댓글조회</button>
       <button onClick={() => deleteComment()}>공지댓글삭제</button>
       <button onClick={() => patchComment()}>공지댓글수정</button>
+      <label htmlFor="file">업로드</label>
+      <input
+        name="file"
+        type="file"
+        id="file"
+        accept="image/*"
+        onChange={handleOnChange}
+        value={profile}
+      />
+      <button onClick={() => imgUpload()}>이미지업로드</button>
     </>
   );
 }

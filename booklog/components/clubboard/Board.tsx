@@ -65,33 +65,17 @@ export default function Board(props: clubIndexProps) {
         />
       </div>
       <div className="down-box">
-        <div className="left-box">
-          <CalendarBox date={date} setDate={setDate} />
-          <NoticeBox notice={info.notice} />
-        </div>
-        <div className="right-box">
-          <CalendarDetail
-            date={`${date}`}
-            content={calendarContent}
-            check={calendarCheck}
-          />
-        </div>
+        <NoticeBox notice={info.notice} />
+        <CalendarBox date={date} setDate={setDate} />
       </div>
       <style jsx>{`
         .container {
           padding: 50px;
         }
         .down-box {
-          padding-top: 50px;
           display: flex;
           flex-direction: row;
-          gap: 20px;
-          justify-content: center;
-        }
-        .left-box {
-          display: flex;
-          flex-direction: column;
-          gap: 40px;
+          margin-top: 70px;
         }
       `}</style>
     </div>

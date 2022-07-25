@@ -11,7 +11,8 @@ interface clubInfo {
   subtitle: string;
   tag: Array<string>;
   deleteState: boolean;
-  deleteFunction: (ind: number) => void;
+  deleteFunction: (ind: number, id:number) => void;
+  resignFunction: (ind: number, id:number) => void;
   index: number;
 }
 
@@ -27,6 +28,7 @@ export default function ClubCaredItems(props: clubInfo) {
     tag,
     deleteState,
     deleteFunction,
+    resignFunction,
     index,
   } = props;
   const router = Router;
@@ -39,7 +41,7 @@ export default function ClubCaredItems(props: clubInfo) {
     ) {
       //탏퇴하는 api 통신
       //성공한다면
-      deleteFunction(index);
+      deleteFunction(index, id);
     }
   };
 
@@ -48,6 +50,10 @@ export default function ClubCaredItems(props: clubInfo) {
       pathname: `meeting/${id}`,
     });
   };
+
+  useEffect(() => {
+    console.log(tag);
+  }, []);
 
   return (
     <div className="container">
@@ -60,9 +66,13 @@ export default function ClubCaredItems(props: clubInfo) {
       )}
       <div className="inner-box" onClick={() => onClickBody()}>
         <div className="tag-box">
-          {tag.map((t) => (
-            <span className="tag">#{t}</span>
-          ))}
+          {tag ? (
+            tag.map((t) =>
+              t !== null ? <span className="tag">#{t}</span> : <></>
+            )
+          ) : (
+            <></>
+          )}
         </div>
         <div className="info-box">
           <div className="prev-box">

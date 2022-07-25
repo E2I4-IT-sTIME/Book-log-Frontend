@@ -58,7 +58,7 @@ export default function ClubPrev(props: ClubInfo) {
       <style jsx>{`
         .prev-box {
           width: 390px;
-          height: 180px;
+          min-height: 180px;
           background-color: #e5e5e5;
           padding: 30px;
           border-radius: 0.5rem;
@@ -68,12 +68,12 @@ export default function ClubPrev(props: ClubInfo) {
           display: flex;
           flex-direction: row;
           align-items: center;
-          gap: 30px;
+          gap: 20px;
           position: relative;
         }
         .club-img {
-          width: 215px;
-          height: 215px;
+          width: 200px;
+          height: 200px;
           object-fit: cover;
         }
         .info-box {
@@ -96,6 +96,7 @@ export default function ClubPrev(props: ClubInfo) {
           display: flex;
           flex-direction: row;
           gap: 10px;
+          flex-wrap: wrap;
         }
         .tag {
           background-color: white;
@@ -105,8 +106,8 @@ export default function ClubPrev(props: ClubInfo) {
           color: #324a86;
         }
         .hover-box {
-          width: 450px;
-          height: 240px;
+          width: 100%;
+          height: 100%;
           display: flex;
           justify-content: center;
           align-items: center;

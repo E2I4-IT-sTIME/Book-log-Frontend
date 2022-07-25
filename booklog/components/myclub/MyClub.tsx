@@ -1,52 +1,46 @@
 import ClubCardItems from "./ClubCardItems";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 interface clubInfo {
+  username: string;
   id: number;
-  img: string;
-  title: string;
+  image: string;
+  name: string;
   onoff: boolean;
-  maxNum: number;
-  curNum: number;
-  subtitle: string;
-  tag: Array<string>;
+  max_num: number;
+  cur_num: number;
+  info: string;
+  tags: Array<string>;
 }
 
 export default function MyClub() {
   const [editState, setEditState] = useState(false);
 
+  const [userId, setUserId] = useState(localStorage.getItem("index"));
+  const [userName, setUserName] = useState("");
   const [clubArray, setClubArray] = useState<Array<clubInfo>>();
-  const name = "이준규"; //useEffect 사용해서 사용자 이름 받아오기
-  const tmp = ["추리", "판타지"];
-  const club = {
-    id: 123,
-    img: "https://photo.jtbc.joins.com/news/2020/06/06/202006061520254167.jpg",
-    title: "유아인 어쩌고",
-    onoff: false,
-    maxNum: 2,
-    curNum: 1,
-    subtitle:
-      "유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다유아인 잘생겼다",
-    tag: tmp,
+  const getMyClubs = () => {
+    axios
+      .get(`http://15.164.193.190:8080/auth/user/${userId}/meetings`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setClubArray(res.data);
+        setUserName(res.data[0].username);
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
   useEffect(() => {
-    let tmpArray = [
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-      club,
-    ];
-    setClubArray(tmpArray);
+    getMyClubs();
   }, []);
 
   const onEditHandler = () => {
@@ -55,17 +49,55 @@ export default function MyClub() {
     } else setEditState((prev) => !prev);
   };
 
-  const deleteClubByIndex = (ind: number) => {
-    if (clubArray) {
-      let filtered = clubArray.filter((club, index) => index !== ind);
-      setClubArray(filtered);
-    }
+  const deleteClubByIndex = (ind: number, id: number) => {
+    axios
+      .delete(`http://15.164.193.190:8080/auth/meeting/${id}`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (clubArray) {
+          let filtered = clubArray.filter((club, index) => index !== ind);
+          setClubArray(filtered);
+        }
+      })
+      .catch((error) => {
+        alert("모임 삭제에 실패했습니다.");
+        console.log(error);
+      });
+  };
+
+  const resignClubByIndex = (ind: number, id: number) => {
+    axios
+      .delete(`http://15.164.193.190:8080/auth/meeting/${id}/out`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+
+        if (clubArray) {
+          let filtered = clubArray.filter((club, index) => index !== ind);
+          setClubArray(filtered);
+        }
+      })
+      .catch((error) => {
+        alert("모임 탈퇴에 실패했습니다.");
+        console.log(error);
+      });
   };
 
   return (
     <div className="container">
       <div className="upper-cover">
-        <div className="name">{name}님의 독서모임📚</div>
+        <div className="name">{userName}님의 독서모임📚</div>
         <div className="btns">
           <Link href="/makeclub">
             <button>독서모임 만들기</button>
@@ -82,15 +114,16 @@ export default function MyClub() {
               <div key={index} className="card">
                 <ClubCardItems
                   id={club.id}
-                  img={club.img}
-                  title={club.title}
+                  img={club.image}
+                  title={club.name}
                   onoff={club.onoff}
-                  maxNum={club.maxNum}
-                  curNum={club.curNum}
-                  subtitle={club.subtitle}
-                  tag={club.tag}
+                  maxNum={club.max_num}
+                  curNum={club.cur_num}
+                  subtitle={club.info}
+                  tag={club.tags}
                   deleteState={editState}
                   deleteFunction={deleteClubByIndex}
+                  resignFunction={resignClubByIndex}
                   index={index}
                 />
               </div>

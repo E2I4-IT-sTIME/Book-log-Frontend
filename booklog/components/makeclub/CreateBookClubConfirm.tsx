@@ -24,6 +24,7 @@ interface CreateBookClubState {
   content: string;
   welcome: string;
   question: Array<string>;
+  img_file: File;
 }
 
 interface stepProps {
@@ -34,9 +35,43 @@ export default function CreateBookClubConfirm(props: stepProps) {
   const { nextSteps } = props;
   const [recoilInfo, setRecoilInfo] = useRecoilState(recoilCreateBookClubState);
   const defaultState: CreateBookClubState = { ...recoilInfo };
-  const { name, img, onoff, max_num, tag, content, welcome, question } =
-    defaultState;
+  const {
+    name,
+    img,
+    onoff,
+    max_num,
+    tag,
+    content,
+    welcome,
+    question,
+    img_file,
+  } = defaultState;
   const router = Router;
+
+  const multipartFile = new FormData();
+  const postReq = {
+    name: name,
+    info: content,
+    ment: welcome,
+    questions: question,
+    hashtags: tag,
+    max_num: max_num,
+    onoff: onoff,
+  };
+
+  useEffect(() => {
+    let onoffNum = "0";
+    if (onoff) onoffNum = "1";
+
+    multipartFile.append("image", img_file);
+    multipartFile.append("name", name);
+    multipartFile.append("info", content);
+    multipartFile.append("ment", welcome);
+    multipartFile.append("max_num", `${max_num}`);
+    multipartFile.append("onoff", onoffNum);
+    multipartFile.append("questions", question.toString());
+    multipartFile.append("hashtags", tag.toString());
+  }, []);
 
   const cancel = () => {
     if (
@@ -53,38 +88,24 @@ export default function CreateBookClubConfirm(props: stepProps) {
     if (
       confirm("작성한 내용이 올바른가요?\n올바르다면 확인버튼을 눌러주세요.")
     ) {
+      console.log();
       saveInfo();
     }
   };
 
   const saveInfo = () => {
     axios
-      .post(
-        "http://15.164.193.190:8080/auth/meeting",
-        {
-          name: name,
-          info: content,
-          ment: welcome,
-          questions: question,
-          tags: tag,
-          max_num: max_num,
-          image: img,
-          onoff: onoff,
+      .post("http://15.164.193.190:8080/auth/meeting", multipartFile, {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`,
         },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Accept: "application/json",
-            Authorization: `${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      })
       .then((res) => {
         console.log(res);
         nextSteps();
       })
       .catch((res) => {
-        console.log("Error!");
+        console.log(res);
       });
   };
 

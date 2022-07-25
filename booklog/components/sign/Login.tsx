@@ -8,6 +8,8 @@ import google from "../Img/google.png";
 import kakao from "../Img/kakao.png";
 import naver from "../Img/naver.png";
 import Router from "next/router";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { recoilLoginedState } from "../../states/recoilLogiendState";
 
 interface loginDataInput {
   Email: string;
@@ -18,6 +20,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
   const router = Router;
   const [userEmail, setuserEmail] = useState("");
   const [userPassword, setPassword] = useState("");
+  const [isLogined, setIsLogined] = useRecoilState(recoilLoginedState);
 
   const userEmailChangeHandler = (e: any) => {
     setuserEmail(e.target.value);
@@ -34,7 +37,6 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         Email: userEmail,
         password: userPassword,
       };
-      console.log(loginData);
       loginHandler(loginData);
     } else {
       //경고메시지 생성
@@ -52,8 +54,10 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res);
         localStorage.setItem("token", res.headers.authorization);
+        localStorage.setItem("index", res.headers.cookie);
+        localStorage.setItem("email", loginData.Email);
+        setIsLogined(true);
         router.push("/");
       })
       .catch((res) => {
