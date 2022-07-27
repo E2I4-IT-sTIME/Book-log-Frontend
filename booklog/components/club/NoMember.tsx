@@ -4,6 +4,7 @@ import axios from "axios";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
 import { useRouter } from "next/router";
+import CompleteJoin from "./CompleteJoin";
 
 interface clubInfoProps {
   clubId: number;
@@ -34,6 +35,7 @@ const defaultClUbInfo: clubInfoPublic = {
 export default function NoMember(props: clubInfoProps) {
   const router = useRouter();
   const [isLogined, setIsLogined] = useRecoilState(recoilLoginedState);
+  const [steps, setSteps] = useState(false); //true되면 가입신청완료
 
   //모임 아이디로 모임 정보 받아와야함
   const clubId = Number(`${router.query.params}`);
@@ -105,17 +107,23 @@ export default function NoMember(props: clubInfoProps) {
     <div className="container">
       <div>
         {tags[0] !== "" && questions[0] !== "" ? (
-          <ClubInfo
-            name={clubInfo.name}
-            img={clubInfo.image}
-            onoff={clubInfo.onoff}
-            max_num={clubInfo.max_num}
-            cur_num={clubInfo.cur_num}
-            tag={tags}
-            content={clubInfo.info}
-            welcome={clubInfo.ment}
-            question={questions}
-          />
+          steps ? (
+            <CompleteJoin />
+          ) : (
+            <ClubInfo
+              id={clubInfo.id}
+              name={clubInfo.name}
+              img={clubInfo.image}
+              onoff={clubInfo.onoff}
+              max_num={clubInfo.max_num}
+              cur_num={clubInfo.cur_num}
+              tag={tags}
+              content={clubInfo.info}
+              welcome={clubInfo.ment}
+              question={questions}
+              setSteps={setSteps}
+            />
+          )
         ) : (
           <></>
         )}

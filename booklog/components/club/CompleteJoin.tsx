@@ -1,5 +1,6 @@
 import logo_color from "../Img/logo_color.png";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function CompleteJoin() {
   return (
@@ -14,7 +15,11 @@ export default function CompleteJoin() {
           북로그는 당신의 열정을 응원합니다.
         </div>
       </div>
-      <button>내 모임</button>
+      <Link href="/myclub">
+        <a>
+          <button>내 모임</button>
+        </a>
+      </Link>
       <style jsx>{`
         .container {
           display: flex;

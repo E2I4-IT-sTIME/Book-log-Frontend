@@ -1,8 +1,10 @@
 import Router from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import BasicModal from "../BasicModal";
+import axios from "axios";
 
 interface ClubInfoProps {
+  id: number;
   name: string;
   img: string;
   onoff: boolean;
@@ -12,10 +14,12 @@ interface ClubInfoProps {
   content: string;
   welcome: string;
   question: Array<string>;
+  setSteps: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ClubInfo(props: ClubInfoProps) {
   const {
+    id,
     name,
     img,
     onoff,
@@ -25,6 +29,7 @@ export default function ClubInfo(props: ClubInfoProps) {
     content,
     welcome,
     question,
+    setSteps,
   } = props;
   const router = Router;
 
@@ -48,15 +53,40 @@ export default function ClubInfo(props: ClubInfoProps) {
     setModalOpen(true);
   };
   const completeJoin = () => {
-    if (confirm("정말 가입하시겠습니까?")) {
-      console.log(answers);
+    if (answers.length === 5) {
+      if (confirm("정말로 가입 신청하시겠습니까?")) {
+        join();
+      }
     }
   };
   const inputAnswer = (ind: number, value: string) => {
-    console.log(`인덱스 : ${ind} / 내용 : ${value}`);
     setAnswers(
       answers.map((answer, index) => (ind === index ? value : answer))
     );
+  };
+
+  const join = async () => {
+    await axios
+      .post(
+        `http://15.164.193.190:8080/auth/meetings/${id}`,
+        {
+          answers: answers,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Accept: "application/json",
+            Authorization: `${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        setSteps(true);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (

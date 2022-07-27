@@ -21,6 +21,7 @@ export default function ClubDetail() {
       })
       .then((res) => {
         if (res.data === "가입") setIsMember(true);
+        console.log(res);
       })
       .catch((error) => {
         console.log(error);

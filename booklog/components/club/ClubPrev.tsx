@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Router from "next/router";
 
 interface ClubInfo {
-  id: string;
+  id: number;
   img: string;
   title: string;
   onoff: boolean;

@@ -1,18 +1,12 @@
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import { Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 
-interface calendarProps {
-  date: Date;
-  setDate: Dispatch<SetStateAction<Date>>;
-}
-
-export default function CalendarBox(props: calendarProps) {
-  const { date, setDate } = props;
+export default function CalendarBox() {
+  const [date, setDate] = useState(new Date());
 
   return (
     <div className="container">
-      <Calendar onChange={setDate} value={date} />
+      <span>Stamp</span>
     </div>
   );
 }

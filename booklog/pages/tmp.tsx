@@ -28,7 +28,7 @@ export default function tmp() {
   const personalClubView = () => {
     //모임 개별조회
     axios
-      .get("http://15.164.193.190:8080/meetings/1")
+      .get("http://15.164.193.190:8080/auth/meetings/1")
       .then((res) => {
         console.log(res);
       })
