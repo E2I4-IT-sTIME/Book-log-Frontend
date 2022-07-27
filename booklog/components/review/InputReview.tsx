@@ -135,7 +135,13 @@ const InputReview = (props:any) => {
         text-align: center;
         line-height:60px;
         cursor:pointer;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
     }
+    .search_btn:hover{
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
+        transition: box-shadow 0.1s linear;
+    }
+
     .content_input{
         width: calc(100% - 10px);
         height: 150px;
