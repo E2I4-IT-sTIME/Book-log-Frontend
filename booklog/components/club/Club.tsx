@@ -38,7 +38,6 @@ export default function Club() {
     axios
       .get("http://15.164.193.190:8080/meetings")
       .then((res) => {
-        console.log(res);
         const data = res.data;
         setClubArray([...data]);
       })

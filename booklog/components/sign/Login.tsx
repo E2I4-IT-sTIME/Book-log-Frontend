@@ -13,7 +13,6 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { recoilLoginedState } from "../../states/recoilLogiendState";
 import { userIndexState } from "../../states/recoilUserIndex";
 
-
 interface loginDataInput {
   Email: string;
   password: string;
@@ -67,6 +66,7 @@ const Login: NextPage<{ onChange: () => void }> = (props) => {
         router.push("/");
       })
       .catch((res) => {
+        alert("로그인에 실패하였습니다.");
         console.log("Error!");
       });
   };

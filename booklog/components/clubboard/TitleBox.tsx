@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BasicModal from "../BasicModal";
+import WaitingModal from "./WaitingModal";
 
 interface titleProps {
+  isAdmin: boolean;
   id: number;
-  email: string;
   name: string;
   info: string;
   tags: Array<string>;
@@ -13,16 +15,16 @@ interface titleProps {
 interface answerInterface {
   answers: Array<string>;
   email: string;
+  qna_id: number;
   questions: Array<string>;
   user_id: number;
   username: string;
 }
 
 export default function TitleBox(props: titleProps) {
-  const { id, email, name, info, tags, stamps } = props;
+  const { isAdmin, id, name, info, tags, stamps } = props;
   const [members, setMembers] = useState<Array<answerInterface>>();
-  const [memberNum, setMemberNum] = useState(1);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [memberNum, setMemberNum] = useState(0);
 
   const getUserAnswers = () => {
     axios
@@ -34,9 +36,13 @@ export default function TitleBox(props: titleProps) {
         },
       })
       .then((res) => {
+        console.log(res);
         if (res.data.length > 0) {
           setMembers(res.data);
-          setMemberNum((prev) => prev + res.data.length);
+          setMemberNum(res.data.length);
+        } else {
+          setMembers([]);
+          setMemberNum(0);
         }
       })
       .catch((error) => {
@@ -47,10 +53,12 @@ export default function TitleBox(props: titleProps) {
 
   useEffect(() => {
     getUserAnswers();
-    if (localStorage.getItem("email") === email) {
-      setIsAdmin(true);
-    }
   }, []);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   return (
     <div className="container">
@@ -68,13 +76,30 @@ export default function TitleBox(props: titleProps) {
       <div className="detail-box">
         {isAdmin ? (
           <span>
-            <span>{memberNum}명</span>의 인원이 함께하고있어요.
+            <span onClick={() => setModalOpen(true)}>{memberNum}명</span>의
+            인원이 승인을 기다리고있어요.
           </span>
         ) : (
           <></>
         )}
         <span>총 {stamps}개의 스탬프를 받았어요!</span>
       </div>
+      <BasicModal
+        open={modalOpen}
+        close={closeModal}
+        save={closeModal}
+        header="수락 대기인원"
+      >
+        {members ? (
+          <WaitingModal
+            meetingId={id}
+            waiting={members}
+            update={getUserAnswers}
+          />
+        ) : (
+          <WaitingModal meetingId={id} waiting={[]} update={getUserAnswers} />
+        )}
+      </BasicModal>
     </div>
   );
 }

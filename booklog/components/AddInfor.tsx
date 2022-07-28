@@ -15,6 +15,7 @@ export default function AddInfor(props: infor) {
   const { email, password } = props;
   const [profile, setProfile] = useState("");
   const [attachment, setAttachment] = useState(basicprofile);
+  const [imgFile, setImgFile] = useState<File>();
   const [userName, setUserName] = useState("");
   const [nickName, setNickName] = useState("");
   const [birth, setBirth] = useState("");
@@ -34,6 +35,7 @@ export default function AddInfor(props: infor) {
         currentTarget: { result },
       } = finishedEvent;
       setAttachment(result);
+      setImgFile(theFile);
     };
     reader.readAsDataURL(theFile);
   };
@@ -60,17 +62,26 @@ export default function AddInfor(props: infor) {
     e.preventDefault();
   };
 
-  const okButtonHandler = async (e: any) => {
+  const multipartFile = new FormData();
+  const okButtonHandler = () => {
+    if (imgFile) {
+      multipartFile.append("image", imgFile);
+      multipartFile.append("username", userName);
+      multipartFile.append("password", password);
+      multipartFile.append("email", email);
+      multipartFile.append("birthday", "2010-10-10");
+      multipartFile.append("job", job);
+      join;
+    } else {
+      alert("아직 모든 정보를 입력하지 않으셨습니다.");
+    }
+  };
+
+  const join = async () => {
     axios
-      .post(
-        "http://15.164.193.190:8080/join",
-        {
-          email: email,
-          password: password,
-          username: userName,
-        },
-        { withCredentials: true }
-      )
+      .post("http://15.164.193.190:8080/join", multipartFile, {
+        withCredentials: true,
+      })
       .then((res) => {
         if (
           res.data ===

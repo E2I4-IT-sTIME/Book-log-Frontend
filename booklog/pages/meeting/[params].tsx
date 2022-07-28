@@ -1,17 +1,19 @@
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
 import NoMember from "../../components/club/NoMember";
 import Member from "./../../components/club/Member";
+import WaitAccept from "../../components/club/WaitAccept";
 import axios from "axios";
+import { GetServerSideProps } from "next";
+import { useState, useEffect } from "react";
 
-export default function ClubDetail() {
-  const router = useRouter();
-  const clubID = Number(`${router.query.params}`);
+interface serversideProps {
+  clubID: number;
+}
 
-  //통신으로 가입한 독서모임인지 아닌지 확인해야함
-  const [isMember, setIsMember] = useState(false);
-  useEffect(() => {
-    axios
+export default function ClubDetail(props: serversideProps) {
+  const { clubID } = props;
+  const [isMember, setIsMember] = useState(0);
+  const getIsMember = async () => {
+    await axios
       .get(`http://15.164.193.190:8080/auth/meeting/${clubID}/check`, {
         headers: {
           "Content-type": "application/json",
@@ -20,15 +22,29 @@ export default function ClubDetail() {
         },
       })
       .then((res) => {
-        if (res.data === "가입") setIsMember(true);
-        console.log(res);
+        setIsMember(Number(res.data));
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getIsMember();
   }, []);
 
   return (
-    <>{isMember ? <Member clubId={clubID} /> : <NoMember clubId={clubID} />}</>
+    <>
+      {isMember === 0 ? (
+        <NoMember clubId={clubID} />
+      ) : isMember === 1 ? (
+        <WaitAccept />
+      ) : (
+        <Member clubId={clubID} isAdmin={isMember} />
+      )}
+    </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const clubID = query.params;
+  return { props: { clubID } };
+};

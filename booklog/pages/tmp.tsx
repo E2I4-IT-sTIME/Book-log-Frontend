@@ -28,7 +28,7 @@ export default function tmp() {
   const personalClubView = () => {
     //모임 개별조회
     axios
-      .get("http://15.164.193.190:8080/auth/meetings/1")
+      .get("http://15.164.193.190:8080/meetings/1")
       .then((res) => {
         console.log(res);
       })
@@ -365,6 +365,19 @@ export default function tmp() {
     }
   };
 
+  const checkSign = async () => {
+    const res = await axios
+      .get(`http://15.164.193.190:8080/auth/meeting/1/check`, {
+        headers: {
+          "Content-type": "application/json",
+          Accept: "application/json",
+          Authorization: `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <button onClick={() => listView()}>모임받아오기</button>
@@ -383,6 +396,7 @@ export default function tmp() {
       <button onClick={() => viewComment()}>공지댓글조회</button>
       <button onClick={() => deleteComment()}>공지댓글삭제</button>
       <button onClick={() => patchComment()}>공지댓글수정</button>
+      <button onClick={() => checkSign()}>가입여부확인</button>
       <label htmlFor="file">업로드</label>
       <input
         name="file"

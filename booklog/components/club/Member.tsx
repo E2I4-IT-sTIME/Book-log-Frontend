@@ -3,13 +3,14 @@ import Board from "../clubboard/Board";
 
 interface clubInfoProps {
   clubId: number;
+  isAdmin: number;
 }
 
 export default function Member(props: clubInfoProps) {
-  const { clubId } = props;
+  const { isAdmin, clubId } = props;
   return (
     <>
-      <Board clubId={clubId} />
+      <Board isAdmin={isAdmin === 3 ? true : false} clubId={clubId} />
     </>
   );
 }
