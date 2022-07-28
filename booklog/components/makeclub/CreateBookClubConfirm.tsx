@@ -60,15 +60,12 @@ export default function CreateBookClubConfirm(props: stepProps) {
   };
 
   useEffect(() => {
-    let onoffNum = "0";
-    if (onoff) onoffNum = "1";
-
     multipartFile.append("image", img_file);
     multipartFile.append("name", name);
     multipartFile.append("info", content);
     multipartFile.append("ment", welcome);
     multipartFile.append("max_num", `${max_num}`);
-    multipartFile.append("onoff", onoffNum);
+    multipartFile.append("onoff", JSON.stringify(onoff));
     multipartFile.append("questions", question.toString());
     multipartFile.append("hashtags", tag.toString());
   }, []);

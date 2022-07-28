@@ -16,6 +16,8 @@ export default function NavBar() {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("index");
     setIsLogined(false);
   };
 
@@ -84,7 +86,7 @@ export default function NavBar() {
         nav {
           gap: 10px;
           width: 100%;
-          height:30px;
+          height: 30px;
           padding-top: 10px;
           padding-bottom: 10px;
           background-color: #324a86;

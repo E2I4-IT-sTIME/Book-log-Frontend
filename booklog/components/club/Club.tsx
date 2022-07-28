@@ -2,6 +2,7 @@ import ClubPrev from "./ClubPrev";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import axios from "axios";
+import Router from "next/router";
 
 interface arrayType {
   id: number;
@@ -16,7 +17,7 @@ interface arrayType {
 
 export default function Club() {
   const tmp = ["추리", "판타지"];
-
+  const router = Router;
   const [checked, setChecked] = useState(false);
   const [onoff, setOnoff] = useState("오프라인 모임");
   const onoffHandler = (checked: boolean) => {
@@ -37,13 +38,22 @@ export default function Club() {
     axios
       .get("http://15.164.193.190:8080/meetings")
       .then((res) => {
-        console.log(res);
         const data = res.data;
         setClubArray([...data]);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const moveMyClub = () => {
+    if (localStorage.getItem("token")) {
+      router.push("/myclub");
+    } else {
+      if (confirm("로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?")) {
+        router.push("/sign");
+      }
+    }
   };
 
   return (
@@ -61,7 +71,9 @@ export default function Club() {
               <button>🔍</button>
             </form>
             <Link href="/myclub">
-              <button className="btns">내 모임</button>
+              <button className="btns" onClick={() => moveMyClub()}>
+                내 모임
+              </button>
             </Link>
             <Link href="/makeclub">
               <button className="btns">모임 만들기</button>
@@ -89,22 +101,8 @@ export default function Club() {
               <>
                 {checked
                   ? clubArray
-                      .filter((club: any) => club.onoff)
-                      .map((club: any) => (
-                        <ClubPrev
-                          id={club.id}
-                          img={club.image}
-                          title={club.name}
-                          onoff={club.onoff}
-                          maxNum={club.max_num}
-                          curNum={club.curNum}
-                          subtitle={club.info}
-                          tag={club.tags}
-                        />
-                      ))
-                  : clubArray
-                      .filter((club: any) => !club.onoff)
-                      .map((club: any) => (
+                      .filter((club: arrayType) => club.onoff)
+                      .map((club: arrayType) => (
                         <ClubPrev
                           id={club.id}
                           img={club.image}
@@ -114,6 +112,22 @@ export default function Club() {
                           curNum={club.cur_num}
                           subtitle={club.info}
                           tag={club.tags}
+                          key={club.id}
+                        />
+                      ))
+                  : clubArray
+                      .filter((club: arrayType) => !club.onoff)
+                      .map((club: arrayType) => (
+                        <ClubPrev
+                          id={club.id}
+                          img={club.image}
+                          title={club.name}
+                          onoff={club.onoff}
+                          maxNum={club.max_num}
+                          curNum={club.cur_num}
+                          subtitle={club.info}
+                          tag={club.tags}
+                          key={club.id}
                         />
                       ))}
               </>

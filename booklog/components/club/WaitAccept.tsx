@@ -2,7 +2,7 @@ import logo_color from "../Img/logo_color.png";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function CompleteJoin() {
+export default function WaitAccept() {
   return (
     <div className="container">
       <div className="box">
@@ -10,14 +10,14 @@ export default function CompleteJoin() {
           <Image src={logo_color} />
         </div>
         <div className="title">
-          독서모임 가입신청이 완료되었어요!
+          아직 가입 승인이 완료되지 않았어요.
           <br />
-          북로그는 당신의 열정을 응원합니다.
+          모임장의 승인을 조금만 기다려주세요!
         </div>
       </div>
-      <Link href="/myclub">
+      <Link href="/meeting">
         <a>
-          <button>내 모임</button>
+          <button>돌아가기</button>
         </a>
       </Link>
       <style jsx>{`

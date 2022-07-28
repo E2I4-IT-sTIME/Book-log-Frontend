@@ -3,6 +3,7 @@ import Router from "next/router";
 
 interface clubInfo {
   id: number;
+  email: string;
   img: string;
   title: string;
   onoff: boolean;
@@ -11,14 +12,15 @@ interface clubInfo {
   subtitle: string;
   tag: Array<string>;
   deleteState: boolean;
-  deleteFunction: (ind: number, id:number) => void;
-  resignFunction: (ind: number, id:number) => void;
+  deleteFunction: (ind: number, id: number) => void;
+  resignFunction: (ind: number, id: number) => void;
   index: number;
 }
 
 export default function ClubCaredItems(props: clubInfo) {
   const {
     id,
+    email,
     img,
     title,
     onoff,
@@ -34,14 +36,22 @@ export default function ClubCaredItems(props: clubInfo) {
   const router = Router;
 
   const deleteClub = () => {
-    if (
-      confirm(
-        `정말 <${title}> 모임을 탈퇴하시겠습니까?\n모임 탈퇴를 번복할 수 없습니다.`
-      )
-    ) {
-      //탏퇴하는 api 통신
-      //성공한다면
-      deleteFunction(index, id);
+    if (email === localStorage.getItem("email")) {
+      if (
+        confirm(
+          `정말 <${title}> 모임을 삭제하시겠습니까?\n모임 탈퇴를 번복할 수 없습니다.`
+        )
+      ) {
+        deleteFunction(index, id);
+      }
+    } else {
+      if (
+        confirm(
+          `정말 <${title}> 모임을 탈퇴하시겠습니까?\n모임 탈퇴를 번복할 수 없습니다.`
+        )
+      ) {
+        resignFunction(index, id);
+      }
     }
   };
 
@@ -50,10 +60,6 @@ export default function ClubCaredItems(props: clubInfo) {
       pathname: `meeting/${id}`,
     });
   };
-
-  useEffect(() => {
-    console.log(tag);
-  }, []);
 
   return (
     <div className="container">
@@ -67,8 +73,14 @@ export default function ClubCaredItems(props: clubInfo) {
       <div className="inner-box" onClick={() => onClickBody()}>
         <div className="tag-box">
           {tag ? (
-            tag.map((t) =>
-              t !== null ? <span className="tag">#{t}</span> : <></>
+            tag.map((t, index) =>
+              t !== null ? (
+                <span className="tag" key={index}>
+                  #{t}
+                </span>
+              ) : (
+                <></>
+              )
             )
           ) : (
             <></>

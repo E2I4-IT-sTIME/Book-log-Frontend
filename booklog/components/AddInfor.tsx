@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import basicprofile from "./Img/basicprofile.png";
 import axios from "axios";
+import Router from "next/router";
 
 interface infor {
   email: string;
@@ -14,11 +15,13 @@ export default function AddInfor(props: infor) {
   const { email, password } = props;
   const [profile, setProfile] = useState("");
   const [attachment, setAttachment] = useState(basicprofile);
+  const [imgFile, setImgFile] = useState<File>();
   const [userName, setUserName] = useState("");
   const [nickName, setNickName] = useState("");
   const [birth, setBirth] = useState("");
   const [job, setJob] = useState("학생");
   const [country, setCountry] = useState("임시");
+  const router = Router;
 
   const onImageHandler = (e: any) => {
     const {
@@ -32,6 +35,7 @@ export default function AddInfor(props: infor) {
         currentTarget: { result },
       } = finishedEvent;
       setAttachment(result);
+      setImgFile(theFile);
     };
     reader.readAsDataURL(theFile);
   };
@@ -58,33 +62,40 @@ export default function AddInfor(props: infor) {
     e.preventDefault();
   };
 
-  const okButtonHandler = async (e: any) => {
-    // console.log(`사진 : ${attachment}`);
-    console.log(`email: ${email},
-    password: ${password},
-    username: ${userName},
-    nickname: ${nickName},
-    birthday: ${birth},
-    job: ${job},
-    area: ${country},`);
-    try {
-      await axios.post(
-        "http://15.164.193.190:8080/join",
-        {
-          email: email,
-          password: password,
-          username: userName,
-          nickname: nickName,
-          birthday: birth,
-          job: job,
-          area: country,
-          active: 1,
-        },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.log(error);
+  const multipartFile = new FormData();
+  const okButtonHandler = () => {
+    if (imgFile) {
+      multipartFile.append("image", imgFile);
+      multipartFile.append("username", userName);
+      multipartFile.append("password", password);
+      multipartFile.append("email", email);
+      multipartFile.append("birthday", "2010-10-10");
+      multipartFile.append("job", job);
+      join();
+    } else {
+      alert("아직 모든 정보를 입력하지 않으셨습니다.");
     }
+  };
+
+  const join = async () => {
+    axios
+      .post("http://15.164.193.190:8080/join", multipartFile, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (
+          res.data ===
+          "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+        )
+          alert(
+            "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+          );
+        else res.data === "회원가입완료";
+        router.push("/");
+      })
+      .catch((res) => {
+        console.log("Error!");
+      });
   };
 
   return (

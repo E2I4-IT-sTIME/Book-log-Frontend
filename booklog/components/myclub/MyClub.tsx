@@ -2,10 +2,12 @@ import ClubCardItems from "./ClubCardItems";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Router from "next/router";
 
 interface clubInfo {
   username: string;
   id: number;
+  email: string;
   image: string;
   name: string;
   onoff: boolean;
@@ -17,9 +19,9 @@ interface clubInfo {
 
 export default function MyClub() {
   const [editState, setEditState] = useState(false);
-
+  const router = Router;
   const [userId, setUserId] = useState(localStorage.getItem("index"));
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("Booklog");
   const [clubArray, setClubArray] = useState<Array<clubInfo>>();
   const getMyClubs = () => {
     axios
@@ -31,8 +33,16 @@ export default function MyClub() {
         },
       })
       .then((res) => {
-        setClubArray(res.data);
-        setUserName(res.data[0].username);
+        if (res.data.length > 0) {
+          setClubArray(res.data);
+          setUserName(res.data[0].username);
+        } else {
+          alert(
+            "아직 가입하거나 만든 모임이 없어요.\n먼저 모임에 가입해주세요."
+          );
+          router.back();
+        }
+
         console.log(res);
       })
       .catch((error) => {
@@ -114,6 +124,7 @@ export default function MyClub() {
               <div key={index} className="card">
                 <ClubCardItems
                   id={club.id}
+                  email={club.email}
                   img={club.image}
                   title={club.name}
                   onoff={club.onoff}
