@@ -73,8 +73,14 @@ export default function ClubCaredItems(props: clubInfo) {
       <div className="inner-box" onClick={() => onClickBody()}>
         <div className="tag-box">
           {tag ? (
-            tag.map((t) =>
-              t !== null ? <span className="tag">#{t}</span> : <></>
+            tag.map((t, index) =>
+              t !== null ? (
+                <span className="tag" key={index}>
+                  #{t}
+                </span>
+              ) : (
+                <></>
+              )
             )
           ) : (
             <></>

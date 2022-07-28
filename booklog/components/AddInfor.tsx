@@ -71,7 +71,7 @@ export default function AddInfor(props: infor) {
       multipartFile.append("email", email);
       multipartFile.append("birthday", "2010-10-10");
       multipartFile.append("job", job);
-      join;
+      join();
     } else {
       alert("아직 모든 정보를 입력하지 않으셨습니다.");
     }
