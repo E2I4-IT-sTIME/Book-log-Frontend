@@ -11,12 +11,12 @@ const BookReview = () => {
     const port_id = router.query.port_id;
     let short_title = "";
 
-
     const [profTitle, setProfTitle] = useRecoilState<string>(profTitleState);
     const [isReviewEdit, setIsReviewEdit] = useRecoilState<boolean>(isEditState);
     const [isReviewMake, setIsReviewMake] = useRecoilState<boolean>(isMakeState);
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [isAdd, setIsAdd] = useRecoilState<boolean>(isAddState);
+    const [input, setInput] = useState("");
 
     useEffect(()=>{
         setIsTotal(false);
@@ -65,6 +65,14 @@ const BookReview = () => {
         short_title = profTitle;
     }
 
+    const onChangeSearchInput = (e:any) =>{
+        setInput(e.target.value);
+    }
+
+    const onClickSearchButton = (e:any) =>{
+        e.preventDefault();
+    }
+
     return(
         <>      
         <div className="background">
@@ -77,19 +85,22 @@ const BookReview = () => {
                 <hr />
                 <div className="content">
                     <div className="search">
-                        <form><input type="text" className="text" placeholder="서평 검색하기"></input></form>
+                        <form className="form">
+                            <input type="text" className="text" placeholder="서평 검색하기" onChange={onChangeSearchInput}></input>
+                            <button className="search_icon" type="submit" onClick={onClickSearchButton}>&#128269;</button>
+                        </form>
                         <div className="buttons">
-                            <button onClick={onChangeEdit}>{isTotal ? "추가하기" : "편집하기"}</button>
-                            <button onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+새 서평"}</button>
+                            <button className="button" onClick={onChangeEdit}>{isTotal ? "추가하기" : "편집하기"}</button>
+                            <button className="button" onClick={onChangeTotal}>{!isTotal ? "서평목록" : "+새 서평"}</button>
                         </div>
                     </div>
-                    <div className="cards">{isTotal ? <TotalReviewList/> : <ReviewList data={review_arr}/>}</div>                  
+                    <div className="cards">{isTotal ? <TotalReviewList search_input={input}/> : <ReviewList search_input={input} data={review_arr}/>}</div>                  
                 </div>
             </div> 
             {isReviewEdit || isTotal ? 
                 <div className="edit_div">
-                    <button className="cancle" onClick={OnCancle}>취소</button>
-                    <button className="save">저장</button>
+                    <button className="button"  id="cancle" onClick={OnCancle}>취소</button>
+                    <button className="button"  id="save">저장</button>
                 </div>
             : null}
         </div>
@@ -149,6 +160,7 @@ const BookReview = () => {
                 width: calc(100% + 50px);
             }
 
+
             .text{
                 width: 97%;
                 height: 50px;
@@ -163,7 +175,7 @@ const BookReview = () => {
                 justify-content: flex-end;
                 width:30%;
             }
-            button{
+            .button{
                 background-color: #BCC4DA;
                 color:white;
                 font-size:18px;
@@ -177,7 +189,7 @@ const BookReview = () => {
                 margin-left:30px;
                 box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
             }
-            button:hover{
+            .button:hover{
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
                 cursor: pointer;
                 transition: box-shadow 0.1s linear;
@@ -186,19 +198,34 @@ const BookReview = () => {
             .edit_div{
                 position: fixed;
                 bottom: 10%;
-                left:40%;
+                left:36.8%;
                 display:flex;
                 flex-direction:row;
-                width: 20%;;
+                width: 25%;
             }
 
-            .cancle{
+            #cancle{
                 padding: 15px 30px;
                 background-color:#B6BDCD;
-                margin-right:10px;
             }
-            .save{
+
+            #save{
                 background-color:#324A86;
+            }
+
+            .form{
+                position:relative;
+            }
+
+            .search_icon{
+                position:absolute;
+                right:0;
+                top:0;
+                background:none;
+                border:none;
+                height:50px;
+                font-size: 25px;
+                cursor:pointer;
             }
         
         `}</style>

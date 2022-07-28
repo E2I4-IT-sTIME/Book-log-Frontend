@@ -87,6 +87,7 @@ const PortfolioCard = (props: any) => {
         .card:hover{
             background-color:#D8E3FC;
             box-shadow: 5px 5px gray;
+            transition: box-shadow 0.1s linear;
         }
         .btns {
             position:absolute;
@@ -102,7 +103,15 @@ const PortfolioCard = (props: any) => {
             font-weight:600;
             padding: 7px 18px;
             margin-right:5px;
+            cursor:pointer;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
         }
+
+        button:hover{
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 4px rgba(0, 0, 0, 0.2);
+            transition: box-shadow 0.1s linear;
+        }
+
         .del{
             background-color:#F86258;
         }

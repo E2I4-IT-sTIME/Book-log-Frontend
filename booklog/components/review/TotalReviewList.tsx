@@ -12,6 +12,7 @@ const TotalReviewList = (props:any) => {
     const [isTotal, setIsTotal] = useRecoilState<boolean>(isTotalState);
     const [userIndex, setUserIndex] = useRecoilState<String>(userIndexState);
     const [review_arr, setReview_arr] = useState([]);
+    let search_input = props.search_input;
 
     useEffect(() =>{
         LookupHandler();
@@ -44,7 +45,11 @@ const TotalReviewList = (props:any) => {
         <>
             <div className="background" >
                 {review_arr.length == 0 ? null :
-                review_arr.map((ele:any) => {
+                review_arr
+                .filter((val:any)=>{
+                    if(val.title.includes(search_input)) return val;
+                })       
+                .map((ele:any) => {
                     let title = ele.title;
                     let book_name = ele.book_name;
                     let id = ele.review_id;
