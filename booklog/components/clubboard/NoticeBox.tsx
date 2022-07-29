@@ -123,14 +123,20 @@ export default function NoticeBox(props: noticeProps) {
         <div className="notification">
           <span>{noticeContent}</span>
           <div className="btns">
-            <span onClick={() => editNotice()}>수정</span>
-            <span
-              onClick={() => {
-                deleteNotice();
-              }}
-            >
-              삭제
-            </span>
+            {isAdmin ? (
+              <>
+                <span onClick={() => editNotice()}>수정</span>
+                <span
+                  onClick={() => {
+                    deleteNotice();
+                  }}
+                >
+                  삭제
+                </span>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       ) : (
