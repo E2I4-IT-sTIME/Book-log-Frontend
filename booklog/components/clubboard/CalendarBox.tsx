@@ -41,8 +41,11 @@ export default function CalendarBox(props: dateProps) {
         },
       })
       .then((res) => {
-        console.log(res);
-        alert("출석이 완료되었습니다.");
+        if (res.data === "출석 완료") {
+          alert("출석이 완료되었습니다.");
+        } else {
+          alert(res.data);
+        }
       })
       .catch((res) => {
         console.log(res);
@@ -52,7 +55,7 @@ export default function CalendarBox(props: dateProps) {
 
   return (
     <div className="container">
-      <span>Stamp</span>
+      <span className="title">Stamp</span>
       <Calendar onChange={setDate} value={date} />
       <div className="check-box">
         <span>{selectDate}</span>
@@ -69,6 +72,27 @@ export default function CalendarBox(props: dateProps) {
         )}
       </div>
       <style jsx>{`
+        .container {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 50px;
+          background: rgb(255, 255, 255);
+          background: linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(238, 238, 249, 1) 50%,
+            rgba(255, 255, 255, 1) 100%
+          );
+        }
+
+        .title {
+          color: #324a86;
+          font-size: 32px;
+          font-weight: 900;
+          text-shadow: 1px 1px 3px #00000034;
+        }
         .check-box {
           width: 400px;
           height: 200px;

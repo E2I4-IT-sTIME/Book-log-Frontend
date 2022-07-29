@@ -42,8 +42,6 @@ export default function MyClub() {
           );
           router.back();
         }
-
-        console.log(res);
       })
       .catch((error) => {
         console.log(error);
@@ -69,7 +67,6 @@ export default function MyClub() {
         },
       })
       .then((res) => {
-        console.log(res);
         if (clubArray) {
           let filtered = clubArray.filter((club, index) => index !== ind);
           setClubArray(filtered);
@@ -91,8 +88,6 @@ export default function MyClub() {
         },
       })
       .then((res) => {
-        console.log(res);
-
         if (clubArray) {
           let filtered = clubArray.filter((club, index) => index !== ind);
           setClubArray(filtered);

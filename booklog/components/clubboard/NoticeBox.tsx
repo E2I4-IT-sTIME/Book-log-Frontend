@@ -120,9 +120,9 @@ export default function NoticeBox(props: noticeProps) {
     <div className="container">
       <span className="title">공지사항</span>
       {isEmpty ? (
-        <div>
+        <div className="notification">
           <span>{noticeContent}</span>
-          <div>
+          <div className="btns">
             <span onClick={() => editNotice()}>수정</span>
             <span
               onClick={() => {
@@ -137,20 +137,26 @@ export default function NoticeBox(props: noticeProps) {
         <>
           {isAdmin ? (
             addBtn ? (
-              <div>
+              <div className="notice-box">
                 <textarea
                   value={noticeWritten}
                   onChange={(e) => setNoticeWritten(e.target.value)}
                 />
-                <button onClick={() => saveNotice()}>저장</button>
+                <button onClick={() => saveNotice()} className="save-btn">
+                  저장
+                </button>
               </div>
             ) : (
-              <button onClick={() => setAddBtn(true)}>공지 추가하기</button>
+              <div className="notice-box">
+                <button onClick={() => setAddBtn(true)} className="make-btn">
+                  공지 추가하기
+                </button>
+              </div>
             )
           ) : (
-            <>
+            <div className="notice-box">
               <span>등록된 공지가 없어요😨</span>
-            </>
+            </div>
           )}
         </>
       )}
@@ -165,8 +171,8 @@ export default function NoticeBox(props: noticeProps) {
       )}
       <style jsx>{`
         .container {
-          width: 600px;
-          padding: 20px 20px 30px 20px;
+          width: 1200px;
+          padding: 40px 40px 50px 40px;
           background-color: #eeeef9;
           border-radius: 10px;
           box-shadow: 0 13px 27px -5px rgba(50, 50, 93, 0.044),
@@ -177,9 +183,92 @@ export default function NoticeBox(props: noticeProps) {
         .title {
           padding: 5px 15px 7px 15px;
           background-color: #6b86c9;
-          border-radius: 15px;
+          font-size: 22px;
+          border-radius: 10px;
           color: white;
           font-weight: 600;
+        }
+
+        .notice-box {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: start;
+          padding: 30px 0px 30px 0px;
+        }
+
+        textarea {
+          width: 85%;
+          min-height: 200px;
+        }
+
+        .make-btn {
+          padding: 20px 40px;
+          border-radius: 10px;
+          border: 2px solid #6b86c9;
+          background: white;
+          font-size: 18px;
+          font-weight: 600;
+          color: #6b86c9;
+          transition: all 0.25s;
+          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
+            0 3px 10px -3px rgba(0, 0, 0, 0.137),
+            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
+          cursor: pointer;
+        }
+
+        .make-btn:hover {
+          border: 2px solid white;
+          background: #6b86c9;
+          color: white;
+        }
+
+        .save-btn {
+          width: 8%;
+          height: 60px;
+          border-radius: 15px;
+          border: none;
+          background-color: #6b86c9;
+          color: white;
+          font-size: 18px;
+          font-weight: 900;
+          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
+            0 3px 10px -3px rgba(0, 0, 0, 0.137),
+            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+
+        .save-btn:hover {
+          background-color: #f85b5b;
+        }
+
+        .notification {
+          padding: 30px 10px 30px 10px;
+          font-size: 18px;
+          font-weight: 550;
+          position: relative;
+        }
+
+        .btns {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+        }
+
+        .btns span {
+          font-size: 20px;
+          color: #6b86c9;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+
+        .btns span:hover {
+          color: #f85b5b;
         }
       `}</style>
     </div>

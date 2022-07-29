@@ -81,7 +81,6 @@ export default function ClubInfo(props: ClubInfoProps) {
         }
       )
       .then((res) => {
-        console.log(res);
         setSteps(true);
       })
       .catch((error) => {
