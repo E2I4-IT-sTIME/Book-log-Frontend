@@ -12,7 +12,8 @@ export default function BasicModal(props: modalState) {
   const { open, close, save, header } = props;
   const [button, setButton] = useState("저장");
   useEffect(() => {
-    if (header === "수락 대기인원") setButton("닫기");
+    if (header === "수락 대기인원" || header === "추가정보 입력")
+      setButton("닫기");
   }, []);
   return (
     <div className={open ? "openModal modal" : "modal"}>
