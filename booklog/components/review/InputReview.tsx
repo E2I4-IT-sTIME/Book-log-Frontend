@@ -79,14 +79,14 @@ const InputReview = (props:any) => {
     <>
     <form className="background">
         <div className="title">서평 제목</div>
-        <input type="text" className="review_input" onChange={titleChangeHandler} value={title}></input>
+        <input type="text" className="review_input" onChange={titleChangeHandler} value={title} placeholder="20자 이내의 서평의 제목을 입력해주세요 !"></input>
         <div className="title">책 제목</div>
         <div className="book_title">
-            <input type="text" className="title_input" onChange={book_nameChangeHandler} value={book_name}></input>
+            <input type="text" className="title_input" onChange={book_nameChangeHandler} value={book_name} placeholder="검색 버튼을 이용하여 책 제목을 정확히 입력해주세요 !"></input>
             <div className="search_btn" onClick={onClickSearchBtn}>책 제목 검색</div>
         </div>
         <div className="title">서평 내용</div>
-        <textarea className="content_input" onChange={contentChangeHandler} value={content}></textarea>
+        <textarea className="content_input" onChange={contentChangeHandler} value={content} placeholder="서평의 내용을 입력해주세요 !"></textarea>
         <div className="edit_div">
                 <button className="cancle" onClick={onCancle}>취소</button>
                 <button className="save" onClick={submitHandler}>저장</button>

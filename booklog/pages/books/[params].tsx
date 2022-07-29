@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import defaultImg from "../../components/Img/book_title_no.png";
 import Image from "next/image";
+import BookREviewList from "../../components/community/BookReviewList";
 
 const Kakao = axios.create({
   baseURL: "https://dapi.kakao.com",
@@ -101,7 +102,11 @@ function Detail() {
             </div>
           </div>
           <div className="portfolio-box">
-            <span>이 책으로 쓰여진 서평들</span>
+            <span className="review-title">이 책으로 쓰여진 서평들</span>
+            <div className="review-list">
+              <BookREviewList  book_name={book.title}/>
+            </div>
+            
           </div>
           <style jsx>{`
             .container {
@@ -194,6 +199,21 @@ function Detail() {
               width: 100%;
               transition: 800ms ease all;
             }
+
+            .portfolio-box{
+              width: calc(100% - 140px);
+              margin: 0 70px 0 100px;
+            }
+
+            .review-title{
+              font-size: 1.5rem;
+              font-weight: bold;
+            }
+            .review-list {
+              margin: 0 auto;
+              margin-top:10px;
+            }
+
           `}</style>
         </div>
       )}
