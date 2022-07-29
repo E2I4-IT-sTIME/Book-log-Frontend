@@ -56,6 +56,29 @@ export default function Club() {
     }
   };
 
+  const searchArray = (keyword: string) => {
+    axios
+      .get("http://15.164.193.190:8080/meetings")
+      .then((res) => {
+        const data = res.data;
+        const searched = data.filter((club: arrayType) =>
+          club.name.includes(keyword)
+        );
+        setClubArray(searched);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const [keyword, setKeyword] = useState("");
+  const search = () => {
+    getArray();
+    if (keyword !== "") {
+      searchArray(keyword);
+    }
+  };
+
   return (
     <>
       <div className="container">
@@ -66,9 +89,14 @@ export default function Club() {
             모두 BookLog에서
           </div>
           <div className="first-inner-box">
-            <form className="search-box">
-              <input type="text" placeholder="모임명을 입력해주세요"></input>
-              <button>🔍</button>
+            <form className="search-box" onSubmit={(e) => e.preventDefault()}>
+              <input
+                type="text"
+                placeholder="모임명을 입력해주세요"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+              ></input>
+              <button onClick={() => search()}>🔍</button>
             </form>
             <Link href="/myclub">
               <button className="btns" onClick={() => moveMyClub()}>

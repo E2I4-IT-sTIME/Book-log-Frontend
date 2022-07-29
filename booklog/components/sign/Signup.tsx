@@ -7,6 +7,7 @@ import axios from "axios";
 import google from "../Img/google.png";
 import kakao from "../Img/kakao.png";
 import naver from "../Img/naver.png";
+import BasicModal from "../BasicModal";
 
 const Signup: NextPage<{ onChange: () => void }> = (props) => {
   const [email, setEmail] = useState("");
@@ -50,7 +51,7 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
       setError("비밀번호 입력 조건을 확인해주세요.");
     } else {
       setCheck(true);
-      setOk(true);
+      setModalOpen(true);
     }
   };
 
@@ -92,6 +93,11 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
     } else {
       // 경고메시지 출력
     }
+  };
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -189,176 +195,190 @@ const Signup: NextPage<{ onChange: () => void }> = (props) => {
         <div className="back">
           <a onClick={props.onChange}>로그인 화면으로 돌아가기</a>
         </div>
-        <style jsx>{`
-          .signup_background {
-            width: 500px;
-            margin: 0px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-          }
-          .main_text {
-            text-align: center;
-            font-size: 30px;
-            font-weight: 600;
-            margin: 10px 0;
-          }
-          .sub_text {
-            font-size: 13px;
-            margin-bottom: 20px;
-          }
-
-          .name_box {
-            width: 80%;
-            display: flex;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-          }
-          .other_box {
-            width: 100%;
-          }
-
-          .email_div {
-            display: flex;
-            flex-direction: row;
-            width: 100%;
-            margin-bottom: 10px;
-          }
-          .email_box {
-            width: 70%;
-            padding: 0 5px;
-          }
-
-          .otherBtn {
-            width: 30%;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #b9c4e0;
-            color: white;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-left: 5px;
-          }
-
-          .service_check {
-            font-size: 13px;
-          }
-
-          .notice {
-            font-size: 13px;
-            margin-bottom: 10px;
-            width: 100%;
-          }
-
-          .text_box_small {
-            width: 47%;
-            height: 25px;
-            margin-bottom: 10px;
-          }
-          .text_box {
-            width: 97%;
-            height: 30px;
-            margin-bottom: 10px;
-            padding: 0 5px;
-          }
-          .sign {
-            font-size: 20px;
-            font-weight: 600;
-          }
-
-          .signBtn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #324a86;
-            color: white;
-            border: 0px;
-            border-radius: 5px;
-            width: 100%;
-            height: 45px;
-            margin: 10px 0px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-          }
-          .other_signup {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-          .googleBtn {
-            width: 70%;
-            background-color: #ececec;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: row;
-            margin-bottom: 10px;
-            font-size: 13px;
-            cursor: pointer;
-          }
-          .kakaoBtn {
-            width: 70%;
-            background-color: #f4df4b;
-            height: 40px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: row;
-            margin-bottom: 10px;
-            font-size: 13px;
-            cursor: pointer;
-          }
-          .naverBtn {
-            width: 70%;
-            background-color: #30c71f;
-            height: 40px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: row;
-            font-size: 13px;
-            cursor: pointer;
-          }
-
-          .btntext {
-            width: 80%;
-            height: 100%;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 8px;
-            border-left: 1px solid white;
-          }
-
-          .others {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-direction: row;
-          }
-
-          .back {
-            margin-top: 20px;
-            font-size: 13px;
-            font-weight: 600;
-          }
-        `}</style>
       </div>
-      {ok ? <AddInfor email={email} password={password} /> : null}
+
+      <BasicModal
+        open={modalOpen}
+        close={closeModal}
+        save={closeModal}
+        header="추가정보 입력"
+      >
+        <AddInfor email={email} password={password} />
+      </BasicModal>
+
+      <style jsx>{`
+        .signup_background {
+          width: 500px;
+          margin: 0px auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+        .main_text {
+          text-align: center;
+          font-size: 30px;
+          font-weight: 600;
+          margin: 10px 0;
+        }
+        .sub_text {
+          font-size: 13px;
+          margin-bottom: 20px;
+        }
+
+        .name_box {
+          width: 80%;
+          display: flex;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .other_box {
+          width: 100%;
+        }
+
+        .email_div {
+          display: flex;
+          flex-direction: row;
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        .email_box {
+          width: 70%;
+          padding: 0 5px;
+        }
+
+        .otherBtn {
+          width: 30%;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #b9c4e0;
+          color: white;
+          font-size: 13px;
+          font-weight: 600;
+          cursor: pointer;
+          border-radius: 5px;
+          margin-left: 5px;
+        }
+
+        .service_check {
+          font-size: 13px;
+        }
+
+        .notice {
+          font-size: 13px;
+          margin-bottom: 10px;
+          width: 100%;
+        }
+
+        .text_box_small {
+          width: 47%;
+          height: 25px;
+          margin-bottom: 10px;
+        }
+        .text_box {
+          width: 97%;
+          height: 30px;
+          margin-bottom: 10px;
+          padding: 0 5px;
+        }
+        .sign {
+          font-size: 20px;
+          font-weight: 600;
+        }
+
+        .signBtn {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: #324a86;
+          color: white;
+          border: 0px;
+          border-radius: 5px;
+          width: 100%;
+          height: 45px;
+          margin: 10px 0px;
+          font-size: 18px;
+          font-weight: 600;
+          cursor: pointer;
+        }
+        .other_signup {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        .googleBtn {
+          width: 70%;
+          background-color: #ececec;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          margin-bottom: 10px;
+          font-size: 13px;
+          cursor: pointer;
+        }
+        .kakaoBtn {
+          width: 70%;
+          background-color: #f4df4b;
+          height: 40px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          margin-bottom: 10px;
+          font-size: 13px;
+          cursor: pointer;
+        }
+        .naverBtn {
+          width: 70%;
+          background-color: #30c71f;
+          height: 40px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          font-size: 13px;
+          cursor: pointer;
+        }
+
+        .btntext {
+          width: 80%;
+          height: 100%;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 8px;
+          border-left: 1px solid white;
+        }
+
+        .others {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+        }
+
+        .back {
+          margin-top: 20px;
+          font-size: 13px;
+          font-weight: 600;
+        }
+
+        .hide-box {
+          position: absolute;
+        }
+      `}</style>
     </>
   );
 };

@@ -65,9 +65,22 @@ export default function NavBar() {
 
         <div className="third-box">
           {isLogined ? (
-            <a className="non-active" onClick={() => logout()}>
-              LOG OUT
-            </a>
+            <>
+              <Link href={`/mypage/${localStorage.getItem("index")}`}>
+                <a
+                  className={
+                    router.pathname.includes("/mypage")
+                      ? "active"
+                      : "non-active"
+                  }
+                >
+                  MY PAGE
+                </a>
+              </Link>
+              <a className="non-active" onClick={() => logout()}>
+                LOG OUT
+              </a>
+            </>
           ) : (
             <Link href="/sign">
               <a
@@ -121,6 +134,8 @@ export default function NavBar() {
           gap: 20px;
         }
         .third-box {
+          display: flex;
+          gap: 20px;
           margin-right: 40px;
         }
       `}</style>

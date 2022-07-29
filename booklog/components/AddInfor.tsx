@@ -194,13 +194,38 @@ export default function AddInfor(props: infor) {
           />
           <label htmlFor="블로거">블로거</label>
         </div>
-        <div>
-          <h3>관심 지역(최소 3개)</h3>
-        </div>
       </form>
 
-      <button onClick={okButtonHandler}>완료</button>
-      <button>취소</button>
+      <div className="btns">
+        <button onClick={okButtonHandler} className="save">
+          완료
+        </button>
+        <button className="cancel">취소</button>
+      </div>
+      <style jsx>{`
+        .btns {
+          display: flex;
+          flex-direction: row;
+          gap: 20px;
+          padding: 20px 0px;
+        }
+        .btns button {
+          border: none;
+          border-radius: 5px;
+          color: white;
+          font-weight: 600;
+          font-size: 15px;
+          padding: 5px 10px;
+          cursor: pointer;
+        }
+
+        .cancel {
+          background-color: #f86258;
+        }
+        .save {
+          background-color: #6b86c9;
+        }
+      `}</style>
     </div>
   );
 }
