@@ -118,39 +118,42 @@ export default function CommentBox(props: commentProps) {
 
   return (
     <div className="container">
-      <span>댓글</span>
-      <div>
+      <span className="title">댓글</span>
+      <div className="write-box">
         <textarea
           value={content}
           onChange={(e) => writeComment(e.target.value)}
         />
-        <button onClick={() => addComment()}>입력</button>
+        <button onClick={() => addComment()} className="save-btn">
+          입력
+        </button>
       </div>
       {commentList ? (
-        <div>
+        <div className="comment-box">
           {commentList.length > 0 ? (
             commentList.map((comment) => (
-              <div key={comment.comment_id}>
+              <div key={comment.comment_id} className="comment">
                 {edit && editNumber === comment.comment_id ? (
-                  <>
+                  <div className="write-box">
                     <textarea
                       value={editContent}
                       onChange={(e) => setEditContent(e.target.value)}
                     />
                     <button
                       onClick={() => editCompleteHandler(comment.comment_id)}
+                      className="save-btn"
                     >
                       수정
                     </button>
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <span>{comment.username}</span>
-                    <span>{comment.content}</span>
-                  </>
+                  <div className="content-box">
+                    <span className="name">{comment.username}</span>
+                    <span className="content">{comment.content}</span>
+                  </div>
                 )}
                 {comment.email === localStorage.getItem("email") && !edit ? (
-                  <div>
+                  <div className="btns">
                     <button
                       onClick={() =>
                         editClickHandler(comment.content, comment.comment_id)
@@ -174,6 +177,108 @@ export default function CommentBox(props: commentProps) {
       ) : (
         <></>
       )}
+      <style jsx>{`
+        .container {
+          width: 100%;
+          padding: 30px 0px 30px 0px;
+          display: flex;
+          flex-direction: column;
+          align-items: start;
+          gap: 20px;
+        }
+        .title {
+          padding: 5px 15px 7px 15px;
+          background-color: #6b86c9;
+          font-size: 22px;
+          border-radius: 10px;
+          color: white;
+          font-weight: 600;
+        }
+
+        .write-box {
+          width: 100%;
+          display: flex;
+          align-items: start;
+          justify-content: space-evenly;
+        }
+
+        .write-box textarea {
+          width: 85%;
+          min-height: 100px;
+        }
+        .save-btn {
+          width: 8%;
+          height: 60px;
+          border-radius: 15px;
+          border: none;
+          background-color: #6b86c9;
+          color: white;
+          font-size: 18px;
+          font-weight: 900;
+          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.111),
+            0 3px 10px -3px rgba(0, 0, 0, 0.137),
+            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
+          cursor: pointer;
+          transition: all 0.25s;
+        }
+
+        .save-btn:hover {
+          background-color: #f85b5b;
+        }
+
+        .comment-box {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 30px;
+        }
+
+        .content-box {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .name {
+          font-size: 18px;
+          font-weight: 600;
+        }
+        .content {
+          font-size: 16px;
+          font-weight: 500;
+        }
+        .comment {
+          width: 90%;
+          position: relative;
+          background-color: white;
+          border: none;
+          border-radius: 20px;
+          box-shadow: 0 5px 18px 0px rgba(50, 50, 93, 0.2),
+            0 3px 10px -3px rgba(0, 0, 0, 0.25),
+            0 -1px 8px -1px rgba(0, 0, 0, 0.025);
+          margin: auto;
+          padding: 20px 40px 20px 40px;
+        }
+        .btns {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          display: flex;
+          flex-direction: row;
+        }
+        .btns button {
+          border: none;
+          background: none;
+          border-radius: 5px;
+          padding: 5px 10px 5px 10px;
+          color: #4f4f4f;
+          font-weight: 600;
+          transition: all 0.25s;
+          cursor: pointer;
+        }
+        .btns button:hover {
+          color: #f85b5b;
+        }
+      `}</style>
     </div>
   );
 }
